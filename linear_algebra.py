@@ -33,31 +33,30 @@ class Matrix:
         return self.elements
 
     def inv(self):
-        if self.size["rows"] != self.size["columns"]:
+        if self.is_square:
             raise Exception("Matrix must be square")
         
-    def det(self):
-        pass
-
-    def lu_decomp(self):
-        n = self.size()["rows"]
-        L = U = [[0.0] * n for _ in range(n)]
-
-        for i in range(n):
-            L[i][i] = 1.0
-
-        for j in range(n):
-            for i in range(j, n):
-                sum_upper = sum(L[i][k] * U[k][j] for k in range(j))
-                U[i][j] = self.elements[i][j] - sum_upper
-
-            for i in range(j, n):
-                sum_lower = sum(L[i][k] * U[k][j] for k in range(j))
-                L[i][j] = (self.elements[i][j] - sum_lower) / U[j][j]
-
-        return L, U
+    def is_square(self):
+        return self.size["rows"] == self.size["columns"]
+                
+    def minor(self, i, j):
+        minor_elements = [row[:j] + row[j+1:] for row_idx, row in enumerate(self.elements) if row_idx != i]
+        return Matrix(minor_elements)
 
 
+def det(A):
+    if A.is_square():
+        size = A.size()["rows"]
+        
+        if size <= 2:
+            pass
+
+        else:
+            sum = 0
+            i = 0
+
+            for j in range(0, size):
+                A.get()[i][j] * (-1 ** (i + j)) * det(A.minor(i, j))
 
 A = Matrix(
     [[1,2], 
@@ -65,4 +64,3 @@ A = Matrix(
      )
      
 print(A)
-L, U = A.lu_decomp()
