@@ -37,30 +37,37 @@ class Matrix:
             raise Exception("Matrix must be square")
         
     def is_square(self):
-        return self.size["rows"] == self.size["columns"]
+        return self.size()["rows"] == self.size()["columns"]
                 
     def minor(self, i, j):
         minor_elements = [row[:j] + row[j+1:] for row_idx, row in enumerate(self.elements) if row_idx != i]
         return Matrix(minor_elements)
 
-
 def det(A):
     if A.is_square():
         size = A.size()["rows"]
-        
-        if size <= 2:
-            pass
+        a = A.get()
+
+        if size == 1:
+            return a[0][0]
+
+        elif size == 2:
+            return (a[0][0] * a[1][1]) - (a[0][1] * a[1][0])
 
         else:
-            sum = 0
-            i = 0
+            for i in range(size):
+                sum = 0
 
-            for j in range(0, size):
-                A.get()[i][j] * (-1 ** (i + j)) * det(A.minor(i, j))
+                for j in range(size):
+                    sum += a[i][j] * ((-1) ** (i + j + 2)) * det(A.minor(i, j))
+
+            return sum
 
 A = Matrix(
-    [[1,2], 
-     [3,4]]
+    [[1,2,3], 
+     [3,4,5],
+     [6,7,8]]
      )
      
 print(A)
+print(det(A))
