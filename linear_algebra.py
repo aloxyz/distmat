@@ -33,9 +33,36 @@ class Matrix:
         return self.elements
 
     def inv(self):
-        if self.is_square:
+        if not self.is_square():
             raise Exception("Matrix must be square")
         
+        elif det(self) == 0:
+            raise Exception("Matrix is not invertible")
+        
+        else:
+            size = A.size()["rows"]
+            a = A.get()
+            cof_matrix = []
+
+            for i in range(size):
+                for j in range(size):
+                    cof_matrix[i][j] = a[i][j] * ((-1) ** (i + j + 2)) * det(A.minor(i, j))
+
+
+        
+    def transpose(self):        
+        a = self.get()
+        rows = self.size()["rows"]
+        columns = self.size()["columns"]
+
+        transpose_matrix = [[0] * rows for _ in range(columns)]
+
+        for i in range(rows):
+            for j in range(columns):
+                transpose_matrix[j][i] = a[i][j]
+
+        return Matrix(transpose_matrix)
+
     def is_square(self):
         return self.size()["rows"] == self.size()["columns"]
                 
@@ -64,10 +91,13 @@ def det(A):
             return sum
 
 A = Matrix(
-    [[1,2,3], 
-     [3,4,5],
-     [6,7,8]]
+    [[1,2,3,4], 
+     [3,4,5,6],
+     [6,7,8,7],
+     [8,9,0,1]]
      )
      
 print(A)
 print(det(A))
+print(A.transpose())
+
