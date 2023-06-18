@@ -42,14 +42,16 @@ class Matrix:
         else:
             size = A.size()["rows"]
             a = A.get()
-            cof_matrix = []
+            cof_arr = []
 
             for i in range(size):
                 for j in range(size):
-                    cof_matrix[i][j] = a[i][j] * ((-1) ** (i + j + 2)) * det(A.minor(i, j))
+                    cof_arr[i][j] = a[i][j] * ((-1) ** (i + j + 2)) * det(A.minor(i, j))
 
+            cof_matrix = Matrix(cof_arr)
 
-        
+            # return (1/det(self)) * cof_matrix
+
     def transpose(self):        
         a = self.get()
         rows = self.size()["rows"]
@@ -89,6 +91,30 @@ def det(A):
                     sum += a[i][j] * ((-1) ** (i + j + 2)) * det(A.minor(i, j))
 
             return sum
+
+def product(A, B):
+    a_columns = A.size()["columns"];
+    a_rows = A.size()["rows"]
+
+    b_columns = B.size()["columns"]
+    b_rows = B.size()["rows"];
+
+    if a_columns != b_rows:
+        raise ValueError("Number of columns of first matrix must match the number of rows of second matrix")
+
+    else:
+        a = A.get()
+        b = B.get()
+
+        result = [[0] * a_rows for _ in range(b_columns)]
+
+
+        for i in range(a_rows):
+            for j in range(b_columns):
+                result[i][j] = a[i]
+
+                
+
 
 A = Matrix(
     [[1,2,3,4], 
