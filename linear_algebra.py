@@ -123,8 +123,8 @@ def product(a, b):
     a_columns = a.size()["columns"];
     a_rows = a.size()["rows"]
 
-    b_columns = B.size()["columns"]
-    b_rows = B.size()["rows"];
+    b_columns = b.size()["columns"]
+    b_rows = b.size()["rows"];
 
     if a_rows != b_columns:
         raise ValueError("Number of columns of first matrix must match the number of rows of second matrix")
@@ -143,11 +143,14 @@ def product(a, b):
 
     return Matrix(result)
 
+def range():
+    pass
 
 A = Matrix([
     [1, 0, 2],
     [0, 3, -1],
 ])
+
 B = Matrix([
     [4, 1],
     [-2, 2],
@@ -155,7 +158,7 @@ B = Matrix([
 ])
 #print(A)
 #print(A.det())
-print(A.product(B))
+print(product(A, B))
 
 #print(A.transpose())
 
