@@ -107,6 +107,18 @@ def det(A):
 
             return sum
 
+def scalar_product(matrix, scalar):
+    elems = matrix.get()
+
+    rows = matrix.size()['rows']
+    cols = matrix.size()['columns']
+
+    for i in range(rows):
+        for j in range(cols):
+            elems[i][j] *= scalar
+
+    return Matrix(elems)
+
 def product(a, b):
     a_columns = a.size()["columns"];
     a_rows = a.size()["rows"]
