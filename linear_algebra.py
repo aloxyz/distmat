@@ -23,6 +23,21 @@ class Matrix:
 
         return tmp
 
+    @staticmethod
+    def fromarray(elements: list[int], num_rows: int, num_cols: int):
+        print('size', '=', elements.__len__())
+
+        if elements.__len__() != (num_rows * num_cols):
+            raise ValueError("Invalid Matrix size")
+
+        mat_elems = [[0 * i for i in range(num_cols)] * j for j in range(num_rows)]
+
+        for i in range(num_rows):
+            for j in range(num_cols):
+                mat_elems[i][j] = elements[i+j]
+
+        return Matrix(mat_elems)
+
     def size(self):
         rows = len(self.elements)
         columns = len(self.elements[0])        
@@ -92,38 +107,43 @@ def det(A):
 
             return sum
 
-def product(A, B):
-    a_columns = A.size()["columns"];
-    a_rows = A.size()["rows"]
+def product(a, b):
+    a_columns = a.size()["columns"];
+    a_rows = a.size()["rows"]
 
     b_columns = B.size()["columns"]
     b_rows = B.size()["rows"];
 
-    if a_columns != b_rows:
+    if a_rows != b_columns:
         raise ValueError("Number of columns of first matrix must match the number of rows of second matrix")
 
     else:
-        a = A.get()
-        b = B.get()
+        a = a.get()
+        b = b.get()
 
-        result = [[0] * a_rows for _ in range(b_columns)]
-
+        result = [[[0] * i for i in range(b_columns)] for j in range(a_rows)]
 
         for i in range(a_rows):
             for j in range(b_columns):
-                result[i][j] = a[i]
+                result[i][j] = 0
+                for k in range(a_columns):
+                    result[i][j] += a[i][k] * b[k][j]
 
-                
+    return Matrix(result)
 
 
-A = Matrix(
-    [[1,2,3,4], 
-     [3,4,5,6],
-     [6,7,8,7],
-     [8,9,0,1]]
-     )
-     
-print(A)
-print(det(A))
-print(A.transpose())
+A = Matrix([
+    [1, 0, 2],
+    [0, 3, -1],
+])
+B = Matrix([
+    [4, 1],
+    [-2, 2],
+    [0, 3]
+])
+#print(A)
+#print(A.det())
+print(A.product(B))
+
+#print(A.transpose())
 
