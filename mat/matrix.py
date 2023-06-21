@@ -22,21 +22,6 @@ class Matrix:
 
         return tmp
 
-    @staticmethod
-    def fromarray(elements: list[int], num_rows: int, num_cols: int):
-        print('size', '=', elements.__len__())
-
-        if elements.__len__() != (num_rows * num_cols):
-            raise ValueError("Invalid Matrix size")
-
-        mat_elems = [[0 * i for i in range(num_cols)] * j for j in range(num_rows)]
-
-        for i in range(num_rows):
-            for j in range(num_cols):
-                mat_elems[i][j] = elements[i + j]
-
-        return Matrix(mat_elems)
-
     def size(self):
         rows = len(self.elements)
         columns = len(self.elements[0])
