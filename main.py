@@ -1,21 +1,17 @@
-from mat import matrix as mat
+from mat import raymatrix as rm
+import ray
+
 
 def main():
-    A = mat.Matrix([
-        [1, 0, 2, 5],
-        [0, 3, -1, 6],
-        [3, 2, 4, 8],
-        [1, 2, 6, 9],
-        [3, 4, 6, 8]
-    ])
+    counters = [rm.ParallelMatrix.remote([
+        [4, 5, 7],
+        [5, 3, 2],
+        [9, 4, 6],
+        [1, 3, 8]
+    ]) for i in range(4)]
 
-    B = mat.Matrix([
-        [4, 1],
-        [-2, 2],
-        [0, 3]
-    ])
-
-    print(A.range())
+    futures = [c.range.remote() for c in counters]
+    print(ray.get(futures))
 
 
 if __name__ == "__main__":
