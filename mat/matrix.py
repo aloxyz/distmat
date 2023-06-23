@@ -1,3 +1,6 @@
+from mat import base_ops as bm
+
+
 class Matrix:
     def __init__(self, elements):
         for i in elements:
@@ -145,13 +148,14 @@ class Matrix:
 
         return submatrices
 
-    def range(self):
+    def rank(self):
         j1 = min(self.size()['rows'], self.size()['columns'])
 
         for i in range(j1, 1, -1):
-            for m in self.get_square_submatrices(i):
-                if m.det() != 0:
-                    return i
+            if bm.get_submatrices_rank(self, i) != -1:
+                return i
+
+
 
 
 
