@@ -133,17 +133,19 @@ class Matrix:
         return Matrix(result)
 
     def get_square_submatrices(self, order):
-        matrix = self.get()
-
-        num_rows = len(matrix)
-        num_cols = len(matrix[0])
+        '''
+        Returns an array of square submatrices
+        '''
+        rows = self.size()["rows"]
+        cols = self.size()["columns"]
         submatrices = []
 
-        for start_row in range(num_rows - order + 1):
-            for start_col in range(num_cols - order + 1):
+        for start_row in range(rows - order + 1):
+            for start_col in range(cols - order + 1):
                 submatrix = []
+                
                 for row in range(order):
-                    submatrix.append(matrix[start_row + row][start_col:start_col + order])
+                    submatrix.append(self.elements[start_row + row][start_col:start_col + order])
                 submatrices.append(Matrix(submatrix))
 
         return submatrices

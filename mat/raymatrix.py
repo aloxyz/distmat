@@ -1,16 +1,26 @@
-from mat import matrix as mat
-from mat import base_ops as bm
+from mat.matrix import Matrix
 
 import ray
 
 
-@ray.remote
-class RayMatrix(mat.Matrix):
+class RayMatrix(Matrix):
+    def __init__(self, elements):
+        super().__init__(elements)
+
+    @ray.remote
+    def mod_rank_det(submatrix, j):
+        if submatrix.det() != 0:
+            return j
 
     def rank(self):
-        j1 = min(self.size()['rows'], self.size()['columns'])
+        rows = self.size()["rows"]
+        columns = self.size()["columns"]
 
-        for i in range(j1, 1, -1):
-            if bm.get_submatrices_rank(self, i) != -1:
-                return i
-    pass
+        j1 = min(rows, columns)
+
+        for j in range(j1, 1, -1):            
+            jth_submatrices = self.get_square_submatrices(j)
+            
+            for submatrix in jth_submatrices:
+                return self.mod_rank_det.remote(submatrix, j)
+
