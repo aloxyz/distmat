@@ -12,10 +12,12 @@ class RayMatrix(Matrix):
     
     @ray.remote
     def task_get_square_submatrix(self, start_row, start_col, row, order):
+        print("called task_get_square_submatrices()")
         return self.elements[start_row + row][start_col:start_col + order]
 
     @ray.remote
     def task_det(self, elements, i):
+        print("called det()")
         size = len(elements)
         submatrix_det_sum = 0
 
@@ -43,7 +45,12 @@ class RayMatrix(Matrix):
 
         return submatrices
 
+    def minor(self, i, j):
+        minor_elements = [row[:j] + row[j + 1:] for row_idx, row in enumerate(self.elements) if row_idx != i]
+        return RayMatrix(minor_elements)
+
     def det(self):
+        print("called det()")
         if self.is_square():
             size = self.size()["rows"]
             a = self.get()

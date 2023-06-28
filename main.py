@@ -24,7 +24,7 @@ def main():
         [9, 5, 6],
         [1, 3, 8]])
     
-    B = RayMatrix([[random.randint(0, 9) for _ in range(9)] for _ in range(8)])
+    B = RayMatrix([[random.randint(0, 9) for _ in range(7)] for _ in range(6)])
 
     print(B.rank())
 
