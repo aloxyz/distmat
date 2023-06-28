@@ -23,6 +23,12 @@ def main():
         [9, 5, 6],
         [1, 3, 8]])
     
+    B = RayMatrix([
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]])
+    
+
     print(A.rank())
 
     ray.shutdown()

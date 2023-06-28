@@ -26,7 +26,7 @@ class RayMatrix(Matrix):
                 tasks.append(self.task_rank_det.remote(submatrix, j))
 
 
-            ready_tasks, _ = ray.wait(tasks, num_returns=2) # num_returns must be calculated
+            ready_tasks, _ = ray.wait(tasks, num_returns = max(rows, columns) - j + 1) # num_returns must be calculated
             for ready_task in ready_tasks:
                     result = ray.get(ready_task)
 
