@@ -17,14 +17,13 @@ import ray
 def main():
     ray.init()
     A = RayMatrix([
+        [1, 2, 3],
         [4, 5, 7],
         [5, 3, 2],
-        [9, 4, 6],
+        [9, 5, 6],
         [1, 3, 8]])
     
-    
-    results = ray.get(A.rank())
-    print(results)
+    print(A.rank())
 
     ray.shutdown()
 
