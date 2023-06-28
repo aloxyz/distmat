@@ -1,5 +1,6 @@
 from mat.raymatrix import RayMatrix
 import ray
+import random
 
 
 # def main():
@@ -23,13 +24,9 @@ def main():
         [9, 5, 6],
         [1, 3, 8]])
     
-    B = RayMatrix([
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9]])
-    
+    B = RayMatrix([[random.randint(0, 9) for _ in range(9)] for _ in range(8)])
 
-    print(A.rank())
+    print(B.rank())
 
     ray.shutdown()
 
