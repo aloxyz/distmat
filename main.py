@@ -24,12 +24,14 @@ def main():
         [9, 5, 6],
         [1, 3, 8]])
     
-    B = RayMatrix([[random.randint(0, 99) for _ in range(4)] for _ in range(4)])
-    C = RayMatrix([[random.randint(0, 99) for _ in range(6)] for _ in range(7)])
+    B = RayMatrix([[random.randint(0, 99) for _ in range(40)] for _ in range(40)])
+    C = RayMatrix([[random.randint(0, 99) for _ in range(40)] for _ in range(40)])
 
-    print(B)
+    D = RayMatrix([[1,2,3],
+                  [4,5,6],
+                  [7,8,9]])
 
-    print(B.inv())
+    print(RayMatrix.product(B,C))
     
 
     ray.shutdown()

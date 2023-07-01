@@ -149,12 +149,12 @@ class Matrix:
 
         return submatrices
 
-    def rank(self):
-        j1 = min(self.size()['rows'], self.size()['columns'])
+    # def rank(self):
+    #     j1 = min(self.size()['rows'], self.size()['columns'])
 
-        for i in range(j1, 1, -1):
-            if bm.get_submatrices_rank(self, i) != -1:
-                return i
+    #     for i in range(j1, 1, -1):
+    #         if bm.get_submatrices_rank(self, i) != -1:
+    #             return i
 
 
 

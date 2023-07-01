@@ -123,3 +123,50 @@ class RayMatrix(Matrix):
 
             cof_matrix = Matrix(cof_arr)
             return cof_matrix.scalar_product(1 / self.det())
+
+    @staticmethod
+    @ray.remote
+    def task_multiply(a, b, i, j, k):
+        return a[i][k] * b[k][j]
+
+    @staticmethod
+    @ray.remote
+    def task_sum(results):
+        return sum(results)
+
+    @staticmethod
+    def product(a, b):
+        a_columns = a.size()["columns"]
+        a_rows = a.size()["rows"]
+
+        b_columns = b.size()["columns"]
+        b_rows = b.size()["rows"]
+
+        if a_rows != b_columns:
+            raise ValueError("Number of columns of the first matrix must match the number of rows of the second matrix")
+
+        else:
+            a_elements = a.get()
+            b_elements = b.get()
+
+            result = [[0] * b_columns for _ in range(a_rows)]
+            tasks = []
+
+            for i in range(a_rows):
+                for j in range(b_columns):
+                    elements_to_multiply = []
+                    
+                    for k in range(a_columns):
+                        elements_to_multiply.append(
+                            RayMatrix.task_multiply.remote(a=a_elements, b=b_elements, i=i, j=j, k=k)
+                        )
+                    
+                    tasks.append(RayMatrix.task_sum.remote(results=ray.get(elements_to_multiply)))
+
+            results = ray.get(tasks)
+
+            for i in range(a_rows):
+                for j in range(b_columns):
+                    result[i][j] = results.pop(0)
+
+            return RayMatrix(result)
