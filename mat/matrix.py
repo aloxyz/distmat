@@ -66,25 +66,25 @@ class Matrix:
 
         return Matrix(elems)
 
-    def inv(self):
-        if not self.is_square():
-            raise Exception("Matrix must be square")
+    # def inv(self):
+    #     if not self.is_square():
+    #         raise Exception("Matrix must be square")
 
-        elif Matrix.det(self) == 0:
-            raise Exception("Matrix is not invertible")
+    #     elif Matrix.det(self) == 0:
+    #         raise Exception("Matrix is not invertible")
 
-        else:
-            size = self.size()["rows"]
-            a = self.get()
-            cof_arr = []
+    #     else:
+    #         size = self.size()["rows"]
+    #         a = self.get()
+    #         cof_arr = []
 
-            for i in range(size):
-                for j in range(size):
-                    cof_arr[i][j] = a[i][j] * ((-1) ** (i + j + 2)) * self.minor(i, j).det()
+    #         for i in range(size):
+    #             for j in range(size):
+    #                 cof_arr[i][j] = a[i][j] * ((-1) ** (i + j + 2)) * self.minor(i, j).det()
 
-            cof_matrix = Matrix(cof_arr)
+    #         cof_matrix = Matrix(cof_arr)
 
-            return cof_matrix.scalar_product(1 / self.det())
+    #         return cof_matrix.scalar_product(1 / self.det())
 
     # def det(self):
     #     if self.is_square():

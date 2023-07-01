@@ -29,7 +29,7 @@ def main():
 
     print(B)
 
-    print(B.det())
+    print(B.inv())
     
 
     ray.shutdown()

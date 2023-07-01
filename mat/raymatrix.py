@@ -94,3 +94,32 @@ class RayMatrix(Matrix):
                         return result
                     
         return 0
+    
+    @ray.remote
+    def task_inv_cof(self, a, i, j):
+        det = self.minor(i, j).det()
+        return (i, j, a[i][j] * ((-1) ** (i + j + 2)) * det)
+
+    def inv(self):
+        if not self.is_square():
+            raise Exception("Matrix must be square")
+
+        elif self.det() == 0:
+            raise Exception("Matrix is not invertible")
+
+        else:
+            size = self.size()["rows"]
+            a = self.get()
+            cof_arr = [[0] * size for _ in range(size)]
+
+            tasks = []
+            for i in range(size):
+                for j in range(size):
+                    tasks.append(self.task_inv_cof.remote(self=self, a=a, i=i, j=j))
+
+            results = ray.get(tasks)
+            for i, j, value in results:
+                cof_arr[i][j] = value
+
+            cof_matrix = Matrix(cof_arr)
+            return cof_matrix.scalar_product(1 / self.det())
