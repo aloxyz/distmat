@@ -1,5 +1,5 @@
 \beamer@sectionintoc {1}{Introduction}{2}{0}{1}
-\beamer@sectionintoc {2}{Background on linear algebra operations}{6}{0}{2}
-\beamer@sectionintoc {3}{The Ray library}{10}{0}{3}
-\beamer@sectionintoc {4}{Implementation in Python}{13}{0}{4}
-\beamer@subsectionintoc {4}{1}{The Matrix and RayMatrix classes}{15}{0}{4}
+\beamer@sectionintoc {2}{Background on linear algebra operations}{12}{0}{2}
+\beamer@sectionintoc {3}{The Ray library}{16}{0}{3}
+\beamer@sectionintoc {4}{Implementation in Python}{19}{0}{4}
+\beamer@subsectionintoc {4}{1}{The Matrix and RayMatrix classes}{21}{0}{4}
