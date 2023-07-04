@@ -1,20 +1,6 @@
-\frametitle{Determinant with Ray (2)}
-
-    \begin{small}
+\frametitle{Rank with Ray}
+\begin{small}
         \begin{verbatim}
-@ray.remote
-def task_det(self, elements, i):
-    size = len(elements)
-    submatrix_det_sum = 0
-    mats = self.get_square_submatrices(i)
-
-    for j in range(1, size):
-        submatrix_det = mats[j].det2()
-        submatrix_det_sum +=
-            elements[i][j] * ((-1) ** (i + j + 2))
-                * submatrix_det
-
-    return submatrix_det_sum
-    \end{verbatim}
+            codice rango
+        \end{verbatim}
     \end{small}
-

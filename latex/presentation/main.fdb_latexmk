@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1688487477 "/home/alo/dev/labresid-matrix-computation/latex/presentation/main.tex" "main.pdf" "main" 1688487479 0
-  "/home/alo/dev/labresid-matrix-computation/latex/presentation/main.tex" 1688487477 12282 29596e7049e4f91a4285275f9b49449b ""
+["pdflatex"] 1688507201 "/home/alo/dev/labresid-matrix-computation/latex/presentation/main.tex" "main.pdf" "main" 1688507202 0
+  "/home/alo/dev/labresid-matrix-computation/latex/presentation/main.tex" 1688507198 15065 c93d9536be26b58bc7b2cdfc658c6550 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcss1095.tfm" 1136768653 1536 f0fa079cdc83a6ffeda21e42352cf1ea ""
@@ -36,6 +36,7 @@
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb" 1248133631 25150 e0d09798d232ab9d00c5c0a8df6cc22d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi8.pfb" 1248133631 25168 33771b85f45c82138dd7745db7092d1c ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1248133631 32626 4f5c1b83753b1dd3a97d1b399a005b4b ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb" 1248133631 31099 c85edf1dd5b9e826d67c9c7293b6786c ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb" 1248133631 24287 6b803fa9eb1ddff9112e00519b09dd9e ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/cm-super/sfss1095.pfb" 1215737283 97272 e31c1319e3ff43b442c57e2c8f2acc52 ""
@@ -224,12 +225,12 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1684972800 40326 aba987258e6d6b6da5dec3a727ea174b ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1688393277 4603178 f922b3a8d38e69501903df0e74a512d4 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1688394148 7862959 e6e94a8e4da38cf2bbda6f7067042555 ""
-  "main.aux" 1688487478 6144 a4f30dc7c912fb77235ad9b5140ba97a "pdflatex"
-  "main.nav" 1688487478 3828 85dbd99e56a9ba628ba4f5523d0b511d "pdflatex"
-  "main.out" 1688487478 606 03d305881c2658856eabf660417db3ad "pdflatex"
-  "main.tex" 1688487477 12282 29596e7049e4f91a4285275f9b49449b ""
-  "main.toc" 1688487478 267 29521d6e26088f3ccc3fde70735d542d "pdflatex"
-  "main.vrb" 1688487478 467 1d0f661a5ba038409c408f6d3c2857cb "pdflatex"
+  "main.aux" 1688507202 8044 c5902cb3e0902698bb6dac3c4461dfa0 "pdflatex"
+  "main.nav" 1688507202 5079 70a46f33e711ec475d96fdccd0323f82 "pdflatex"
+  "main.out" 1688507202 717 39abe4534e06294c9ace13119c000ce9 "pdflatex"
+  "main.tex" 1688507198 15065 c93d9536be26b58bc7b2cdfc658c6550 ""
+  "main.toc" 1688507202 340 d3b8c21252acbcb38e219b440275a1a9 "pdflatex"
+  "main.vrb" 1688507202 130 fdcc5f519c7590bcad8ead632881382f "pdflatex"
   "unime.png" 1688396263 1985265 b0d686c439ed37f076f41c0d4a9ba095 ""
   (generated)
   "main.aux"

@@ -1,5 +1,7 @@
-\beamer@sectionintoc {1}{Introduction}{2}{0}{1}
-\beamer@sectionintoc {2}{Implementation in Python}{12}{0}{2}
-\beamer@sectionintoc {3}{Operations}{17}{0}{3}
-\beamer@subsectionintoc {3}{1}{Multiplication}{19}{0}{3}
-\beamer@subsectionintoc {3}{2}{Determinant}{25}{0}{3}
+\beamer@sectionintoc {1}{Introduction}{3}{0}{1}
+\beamer@sectionintoc {2}{Implementation in Python}{13}{0}{2}
+\beamer@sectionintoc {3}{Operations}{18}{0}{3}
+\beamer@sectionintoc {4}{Multiplication}{20}{0}{4}
+\beamer@sectionintoc {5}{Determinant}{27}{0}{5}
+\beamer@sectionintoc {6}{Inverse}{34}{0}{6}
+\beamer@sectionintoc {7}{Rank}{38}{0}{7}

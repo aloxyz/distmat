@@ -2,13 +2,13 @@
 \usetheme{metropolis}
 \usepackage{verbatim}
 
-\AtBeginSection[]
-{
-  \begin{frame}
-    \frametitle{Table of Contents}
-    \tableofcontents[currentsection]
-  \end{frame}
-}
+% \AtBeginSection[]
+% {
+%   \begin{frame}
+%     \frametitle{Table of Contents}
+%     \tableofcontents[currentsection]
+%   \end{frame}
+% }
 
 \title{Distributed computation of linear algebra operations}
 \subtitle{Distributed systems and networks laboratory}
@@ -23,6 +23,10 @@
 
 \begin{document}
 \maketitle
+
+\begin{frame}{Table of contents}
+    \tableofcontents
+\end{frame}
 
 \section{Introduction}
 \begin{frame}{Matrix operations}
@@ -144,7 +148,7 @@
     \end{itemize}
 \end{frame}
 
-\subsection{Multiplication}
+\section{Multiplication}
 \begin{frame}{Multiplication}
     \alert{Matrix multiplication} is a binary operation that produces a matrix from two matrices. For matrix multiplication, the number of columns in the first matrix must be equal to the number of rows in the second matrix. The resulting matrix, known as the matrix \textbf{product}, has the number of rows of the first and the number of columns of the second matrix.
     $$
@@ -260,7 +264,7 @@ return RayMatrix(result)
     \end{verbatim}
 \end{frame}
 
-\subsection{Determinant}
+\section{Determinant}
 \begin{frame}{Determinant}
     The \alert{determinant} is a scalar value that is a function of the entries of a square matrix. It characterizes some properties of the matrix and the linear map represented by the matrix. In particular, the determinant is nonzero if and only if the matrix is \textbf{invertible}.
 
@@ -289,10 +293,12 @@ return RayMatrix(result)
     where $\det(M_{ij})$ represents the determinant of the submatrix obtained by deleting the $i$th row and $j$th column from matrix $A$.
 \end{frame}
 
-\begin{frame}{Determinant}
+\begin{frame}{Determinant - Laplace method}
     Using the Laplace method, the determinant can be calculated recursively by expanding along any row or column until a $2 \times 2$ matrix is reached, for which the determinant can be directly computed.
 
     The Laplace method provides an alternative approach for determining the determinant of a matrix and can be particularly useful for matrices of larger sizes.
+
+    It's an essential operation since it's used in the other operations of this study.
 \end{frame}
 
 \begin{frame}[fragile]{Determinant with Ray (1)}
@@ -349,6 +355,64 @@ def task_det(self, elements, i):
     \end{verbatim}
     \end{small}
 
+\end{frame}
+
+\section{Inverse}
+\begin{frame}{Inverse of a matrix (1)}
+    The \alert{inverse of a matrix} is a fundamental concept in linear algebra. For a square matrix $A$, if an inverse exists, it is denoted as $A^{-1}$. A matrix is invertible (or non-singular) if and only if its determinant is non-zero.
+
+    The inverse of matrix $A$ satisfies the following condition:
+    $$
+        A \cdot A^{-1} = A^{-1} \cdot A = I
+    $$
+    where $I$ represents the identity matrix.
+
+\end{frame}
+
+\begin{frame}{Inverse of a matrix (2)}
+    To find the inverse of a matrix, one common method is to use the formula:
+    $$
+        A^{-1} = \frac{1}{\det(A)} \cdot \text{adj}(A)
+    $$
+    where $\det(A)$ denotes the determinant of matrix $A$ and $\text{adj}(A)$ represents the adjugate (or adjoint) of matrix $A$.
+
+    The adjugate of matrix $A$ is obtained by taking the transpose of the matrix of cofactors of $A$. The cofactor $C_{ij}$ is calculated as:
+    $$
+        C_{ij} = (-1)^{i+j} \cdot \det(M_{ij})
+    $$
+    where $\det(M_{ij})$ represents the determinant of the submatrix obtained by deleting the $i$th row and $j$th column from matrix $A$.
+\end{frame}
+
+\begin{frame}[fragile]{Inverse with Ray}
+    \begin{small}
+        \begin{verbatim}
+            codice inversa
+        \end{verbatim}
+    \end{small}
+\end{frame}
+
+\section{Rank}
+\begin{frame}{Rank (1)}
+    The \alert{rank} of a matrix $A$, denoted as $\text{rank}(A)$, is defined as the maximum number of linearly independent rows or columns in the matrix.
+
+    The rank of a matrix can be determined using the minor criterion, also known as the \alert{criterion of minors}. According to this criterion, the rank of a matrix is equal to the largest order of a non-zero determinant of any square submatrix within the given matrix.
+\end{frame}
+
+\begin{frame}{Criterion of minors}
+
+Let $A$ be a matrix of size $m \times n$, and let $j$ be the order of the largest non-zero determinant among all square submatrices of $A$. Then the rank of $A$, denoted as $\text{rank}(A)$, is equal to $j$.
+
+To apply the minor criterion, we calculate the determinants of all possible square submatrices of $A$, ranging from $1 \times 1$ to $\min(m,n) \times \min(m,n)$. The order of the largest non-zero determinant among these submatrices gives us the rank of $A$.
+
+If there is a non-zero determinant of order $j$, but all determinants of order $k+1$ or higher are zero, then the rank of $A$ is $j$.
+\end{frame}
+
+\begin{frame}[fragile]{Rank with Ray}
+    \begin{small}
+        \begin{verbatim}
+            codice rango
+        \end{verbatim}
+    \end{small}
 \end{frame}
 
 \end{document}

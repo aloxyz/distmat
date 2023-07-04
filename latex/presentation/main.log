@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/CVE-2023-32700 patched) (preloaded format=pdflatex 2023.7.3)  4 JUL 2023 18:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/CVE-2023-32700 patched) (preloaded format=pdflatex 2023.7.3)  4 JUL 2023 23:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -791,19 +791,26 @@ Overfull \vbox (15.63992pt too high) detected at line 25
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./main.toc)
-<unime.png, id=48, 1778.645pt x 1790.69pt>
+<unime.png, id=58, 1778.645pt x 1790.69pt>
 File: unime.png Graphic file (type png)
 <use unime.png>
-Package pdftex.def Info: unime.png  used on input line 27.
+Package pdftex.def Info: unime.png  used on input line 29.
 (pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
  [2
 
  <./unime.png>]
-File: unime.png Graphic file (type png)
-<use unime.png>
-Package pdftex.def Info: unime.png  used on input line 30.
-(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
- [3
+LaTeX Font Info:    Trying to load font information for U+msa on input line 31.
+ (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 31.
+ (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Trying to load font information for OT1+mathkerncmss on input line 31.
+ (/usr/share/texlive/texmf-dist/tex/latex/sansmathaccent/ot1mathkerncmss.fd
+File: ot1mathkerncmss.fd 2020/01/31 Fontinst v1.933 font definitions for OT1/mathkerncmss.
+) [3
 
 ]
 File: unime.png Graphic file (type png)
@@ -815,25 +822,25 @@ Package pdftex.def Info: unime.png  used on input line 34.
 ]
 File: unime.png Graphic file (type png)
 <use unime.png>
-Package pdftex.def Info: unime.png  used on input line 40.
+Package pdftex.def Info: unime.png  used on input line 38.
 (pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
  [5
 
 ]
-LaTeX Font Info:    Trying to load font information for TS1+cmss on input line 51.
+File: unime.png Graphic file (type png)
+<use unime.png>
+Package pdftex.def Info: unime.png  used on input line 44.
+(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
+ [6
+
+]
+LaTeX Font Info:    Trying to load font information for TS1+cmss on input line 55.
  (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmss.fd
 File: ts1cmss.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
 File: unime.png Graphic file (type png)
 <use unime.png>
-Package pdftex.def Info: unime.png  used on input line 51.
-(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
- [6
-
-]
-File: unime.png Graphic file (type png)
-<use unime.png>
-Package pdftex.def Info: unime.png  used on input line 61.
+Package pdftex.def Info: unime.png  used on input line 55.
 (pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
  [7
 
@@ -865,39 +872,41 @@ Package pdftex.def Info: unime.png  used on input line 77.
 (pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
  [11
 
-] (./main.toc)
+]
 File: unime.png Graphic file (type png)
 <use unime.png>
-Package pdftex.def Info: unime.png  used on input line 79.
+Package pdftex.def Info: unime.png  used on input line 81.
 (pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
  [12
+
+] [13
 
 ]
 File: unime.png Graphic file (type png)
 <use unime.png>
-Package pdftex.def Info: unime.png  used on input line 82.
+Package pdftex.def Info: unime.png  used on input line 86.
 (pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
- [13
+ [14
 
 ]
 \openout4 = `main.vrb'.
 
  (./main.vrb)
-Overfull \vbox (6.78558pt too high) detected at line 99
+Overfull \vbox (6.78558pt too high) detected at line 103
  []
 
-File: unime.png Graphic file (type png)
-<use unime.png>
-Package pdftex.def Info: unime.png  used on input line 99.
-(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
-[14
-
-]
 File: unime.png Graphic file (type png)
 <use unime.png>
 Package pdftex.def Info: unime.png  used on input line 103.
 (pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
- [15
+[15
+
+]
+File: unime.png Graphic file (type png)
+<use unime.png>
+Package pdftex.def Info: unime.png  used on input line 107.
+(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
+ [16
 
 ]
 \openout4 = `main.vrb'.
@@ -905,52 +914,37 @@ Package pdftex.def Info: unime.png  used on input line 103.
  (./main.vrb)
 File: unime.png Graphic file (type png)
 <use unime.png>
-Package pdftex.def Info: unime.png  used on input line 134.
-(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
- [16
-
-] (./main.toc)
-File: unime.png Graphic file (type png)
-<use unime.png>
-Package pdftex.def Info: unime.png  used on input line 136.
+Package pdftex.def Info: unime.png  used on input line 138.
 (pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
  [17
 
-]
-File: unime.png Graphic file (type png)
-<use unime.png>
-Package pdftex.def Info: unime.png  used on input line 145.
-(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
- [18
+] [18
 
 ]
-LaTeX Font Info:    Trying to load font information for U+msa on input line 164.
- (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 164.
- (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-LaTeX Font Info:    Trying to load font information for OT1+mathkerncmss on input line 164.
- (/usr/share/texlive/texmf-dist/tex/latex/sansmathaccent/ot1mathkerncmss.fd
-File: ot1mathkerncmss.fd 2020/01/31 Fontinst v1.933 font definitions for OT1/mathkerncmss.
-)
 File: unime.png Graphic file (type png)
 <use unime.png>
-Package pdftex.def Info: unime.png  used on input line 164.
+Package pdftex.def Info: unime.png  used on input line 149.
 (pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
  [19
 
+] [20
+
 ]
-Overfull \vbox (4.31834pt too high) detected at line 185
+File: unime.png Graphic file (type png)
+<use unime.png>
+Package pdftex.def Info: unime.png  used on input line 168.
+(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
+ [21
+
+]
+Overfull \vbox (4.31834pt too high) detected at line 189
  []
 
 File: unime.png Graphic file (type png)
 <use unime.png>
-Package pdftex.def Info: unime.png  used on input line 185.
+Package pdftex.def Info: unime.png  used on input line 189.
 (pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
-[20
+[22
 
 ]
 \openout4 = `main.vrb'.
@@ -961,14 +955,14 @@ Overfull \hbox (18.20729pt too wide) in paragraph at lines 15--15
  []
 
 )
-Overfull \vbox (43.65277pt too high) detected at line 209
+Overfull \vbox (43.65277pt too high) detected at line 213
  []
 
 File: unime.png Graphic file (type png)
 <use unime.png>
-Package pdftex.def Info: unime.png  used on input line 209.
+Package pdftex.def Info: unime.png  used on input line 213.
 (pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
-[21
+[23
 
 ]
 \openout4 = `main.vrb'.
@@ -981,70 +975,72 @@ Overfull \hbox (11.4647pt too wide) in paragraph at lines 14--14
 )
 File: unime.png Graphic file (type png)
 <use unime.png>
-Package pdftex.def Info: unime.png  used on input line 237.
-(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
- [22
-
-]
-\openout4 = `main.vrb'.
-
- (./main.vrb)
-File: unime.png Graphic file (type png)
-<use unime.png>
-Package pdftex.def Info: unime.png  used on input line 252.
-(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
- [23
-
-]
-\openout4 = `main.vrb'.
-
- (./main.vrb)
-File: unime.png Graphic file (type png)
-<use unime.png>
-Package pdftex.def Info: unime.png  used on input line 261.
+Package pdftex.def Info: unime.png  used on input line 241.
 (pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
  [24
 
 ]
+\openout4 = `main.vrb'.
+
+ (./main.vrb)
 File: unime.png Graphic file (type png)
 <use unime.png>
-Package pdftex.def Info: unime.png  used on input line 267.
+Package pdftex.def Info: unime.png  used on input line 256.
 (pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
  [25
 
 ]
+\openout4 = `main.vrb'.
+
+ (./main.vrb)
 File: unime.png Graphic file (type png)
 <use unime.png>
-Package pdftex.def Info: unime.png  used on input line 280.
+Package pdftex.def Info: unime.png  used on input line 265.
 (pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
  [26
 
-]
-File: unime.png Graphic file (type png)
-<use unime.png>
-Package pdftex.def Info: unime.png  used on input line 290.
-(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
- [27
+] [27
 
 ]
 File: unime.png Graphic file (type png)
 <use unime.png>
-Package pdftex.def Info: unime.png  used on input line 296.
+Package pdftex.def Info: unime.png  used on input line 271.
 (pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
  [28
 
 ]
+File: unime.png Graphic file (type png)
+<use unime.png>
+Package pdftex.def Info: unime.png  used on input line 284.
+(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
+ [29
+
+]
+File: unime.png Graphic file (type png)
+<use unime.png>
+Package pdftex.def Info: unime.png  used on input line 294.
+(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
+ [30
+
+]
+File: unime.png Graphic file (type png)
+<use unime.png>
+Package pdftex.def Info: unime.png  used on input line 302.
+(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
+ [31
+
+]
 \openout4 = `main.vrb'.
 
  (./main.vrb)
-Overfull \vbox (20.6529pt too high) detected at line 330
+Overfull \vbox (20.6529pt too high) detected at line 336
  []
 
 File: unime.png Graphic file (type png)
 <use unime.png>
-Package pdftex.def Info: unime.png  used on input line 330.
+Package pdftex.def Info: unime.png  used on input line 336.
 (pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
-[29
+[32
 
 ]
 \openout4 = `main.vrb'.
@@ -1052,9 +1048,61 @@ Package pdftex.def Info: unime.png  used on input line 330.
  (./main.vrb)
 File: unime.png Graphic file (type png)
 <use unime.png>
-Package pdftex.def Info: unime.png  used on input line 352.
+Package pdftex.def Info: unime.png  used on input line 358.
 (pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
- [30
+ [33
+
+] [34
+
+]
+File: unime.png Graphic file (type png)
+<use unime.png>
+Package pdftex.def Info: unime.png  used on input line 370.
+(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
+ [35
+
+]
+File: unime.png Graphic file (type png)
+<use unime.png>
+Package pdftex.def Info: unime.png  used on input line 384.
+(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
+ [36
+
+]
+\openout4 = `main.vrb'.
+
+ (./main.vrb)
+File: unime.png Graphic file (type png)
+<use unime.png>
+Package pdftex.def Info: unime.png  used on input line 392.
+(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
+ [37
+
+] [38
+
+]
+File: unime.png Graphic file (type png)
+<use unime.png>
+Package pdftex.def Info: unime.png  used on input line 399.
+(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
+ [39
+
+]
+File: unime.png Graphic file (type png)
+<use unime.png>
+Package pdftex.def Info: unime.png  used on input line 408.
+(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
+ [40
+
+]
+\openout4 = `main.vrb'.
+
+ (./main.vrb)
+File: unime.png Graphic file (type png)
+<use unime.png>
+Package pdftex.def Info: unime.png  used on input line 416.
+(pdftex.def)             Requested size: 28.25262pt x 28.45274pt.
+ [41
 
 ]
 \tf@nav=\write6
@@ -1068,21 +1116,21 @@ Package pdftex.def Info: unime.png  used on input line 352.
 
  (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 03D305881C2658856EABF660417DB3AD;606.
+(rerunfilecheck)             Checksum: 39ABE4534E06294C9ACE13119C000CE9;717.
  ) 
 Here is how much of TeX's memory you used:
- 25443 strings out of 476182
- 516513 string characters out of 5796582
+ 25510 strings out of 476182
+ 517567 string characters out of 5796582
  1862793 words of memory out of 6000000
- 45137 multiletter control sequences out of 15000+600000
+ 45180 multiletter control sequences out of 15000+600000
  521736 words of font info for 66 fonts, out of 8000000 for 9000
  1137 hyphenation exceptions out of 8191
- 128i,14n,122p,1932b,582s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cm-super/sfss1095.pfb>
-Output written on main.pdf (30 pages, 1591586 bytes).
+ 128i,14n,122p,1932b,753s stack positions out of 10000i,1000n,20000p,200000b,200000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/cm-super/sfss1095.pfb>
+Output written on main.pdf (41 pages, 1607484 bytes).
 PDF statistics:
- 291 PDF objects out of 1000 (max. 8388607)
- 223 compressed objects within 3 object streams
- 66 named destinations out of 1000 (max. 500000)
- 88 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 367 PDF objects out of 1000 (max. 8388607)
+ 286 compressed objects within 3 object streams
+ 90 named destinations out of 1000 (max. 500000)
+ 104 words of extra memory for PDF output out of 10000 (max. 10000000)
 
