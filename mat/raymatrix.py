@@ -187,7 +187,6 @@ class RayMatrix(Matrix):
         a_rows = a.size()["rows"]
 
         b_columns = b.size()["columns"]
-        b_rows = b.size()["rows"]
 
         if a_rows != b_columns:
             raise ValueError("Number of columns of the first matrix must match the number of rows of the second matrix")

@@ -1,5 +1,6 @@
 \documentclass{beamer}
 \usetheme{metropolis}
+\usepackage{verbatim}
 
 \AtBeginSection[]
 {
@@ -33,9 +34,9 @@
 \end{frame}
 
 \begin{frame}{Overview of distributed systems and networks}
-A \alert{distributed system} consists of multiple interconnected computers that collaborate and coordinate their activities to achieve a common goal. These systems are designed to tackle  tasks that cannot be efficiently computed by a single machine.
+    A \alert{distributed system} consists of multiple interconnected computers that collaborate and coordinate their activities to achieve a common goal. These systems are designed to tackle  tasks that cannot be efficiently computed by a single machine.
 
-\alert{Networks} serve as the backbone of distributed systems, enabling communication among the connected nodes. Network infrastructures enable coordination, data sharing, and synchronization across distributed systems, regardless of their physical locations.
+    \alert{Networks} serve as the backbone of distributed systems, enabling communication among the connected nodes. Network infrastructures enable coordination, data sharing, and synchronization across distributed systems, regardless of their physical locations.
 \end{frame}
 
 
@@ -52,10 +53,10 @@ A \alert{distributed system} consists of multiple interconnected computers that 
 \begin{frame}{Solving challenges with Ray}
     When it comes to matrix operation computation, using Ray for distributed computation offers several advantages over performing the operations on a single machine:
     \begin{itemize}
-    \item Faster execution
-    \item Scalability
-    \item Fault tolerance
-    \item Resource utilization
+        \item Faster execution
+        \item Scalability
+        \item Fault tolerance
+        \item Resource utilization
     \end{itemize}
 \end{frame}
 
@@ -76,29 +77,278 @@ A \alert{distributed system} consists of multiple interconnected computers that 
 \end{frame}
 
 \section{Implementation in Python}
+\begin{frame}{The Matrix and RayMatrix classes}
+    Before implementing the parallelized algorithms for Ray, we wrote the code for the serial execution in the \alert{Matrix} class:
+\end{frame}
+
+\begin{frame}[fragile]{The Matrix class}
+    \begin{verbatim}
+        class Matrix:
+            def __init__(self, elements):
+                [...]
+                self.elements = elements
+            def inv(self): [...]
+            def det(self): [...]
+            def product(self, b): [...]
+            def rank(self, order): [...]
+            [...]
+
+    \end{verbatim}
+
+    (Most of the functions defined in the class are auxiliary therefore were excluded for practical purposes)
+\end{frame}
+
+\begin{frame}{The RayMatrix class}
+    The \alert{RayMatrix} class is an extension of the Matrix class that inherits its attributes and methods. Operations that had to be parallelized were overrided and new auxiliary methods (methods that start with \textit{task\textunderscore}) decorated with \textbf{@ray.remote} were added:
+\end{frame}
+
+\begin{frame}[fragile]{The RayMatrix class}
+    \begin{tiny}
+        \begin{verbatim}
+        class RayMatrix(Matrix):
+            def __init__(self, elements):
+                super().__init__(elements)
+            
+            @ray.remote
+            def task_rank_det(submatrix, j):
+
+            @ray.remote
+            def task_get_square_submatrix(self, start_row, start_col, row, order):
+
+            @ray.remote
+            def task_det(self, elements, i):
+
+            @ray.remote
+            def task_inv_cof(self, a, i, j):
+
+            @staticmethod
+            @ray.remote
+            def task_multiply(a, b, i, j, k):
+            
+            @staticmethod
+            @ray.remote
+            def task_sum(results):
+        
+    \end{verbatim}
+    \end{tiny}
+\end{frame}
+
+\section{Operations}
 \begin{frame}{List of operation}
     We will showcase the following operations:
     \begin{itemize}
-        \item{Product}
+        \item{Multiplication}
         \item{Determinant}
         \item{Inverse}
         \item{Rank}
     \end{itemize}
 \end{frame}
 
-\subsection{The Matrix and RayMatrix classes}
-\begin{frame}{The Matrix and RayMatrix classes}
+\subsection{Multiplication}
+\begin{frame}{Multiplication}
+    \alert{Matrix multiplication} is a binary operation that produces a matrix from two matrices. For matrix multiplication, the number of columns in the first matrix must be equal to the number of rows in the second matrix. The resulting matrix, known as the matrix \textbf{product}, has the number of rows of the first and the number of columns of the second matrix.
+    $$
+        A = \begin{bmatrix}
+            a_{11} & a_{12} & \dots  & a_{1n} \\
+            a_{21} & a_{22} & \dots  & a_{2n} \\
+            \vdots & \vdots & \ddots & \vdots \\
+            a_{m1} & a_{m2} & \dots  & a_{mn}
+        \end{bmatrix}, \quad
+        B = \begin{bmatrix}
+            b_{11} & b_{12} & \dots  & b_{1p} \\
+            b_{21} & b_{22} & \dots  & b_{2p} \\
+            \vdots & \vdots & \ddots & \vdots \\
+            b_{n1} & b_{n2} & \dots  & b_{np}
+        \end{bmatrix}
+    $$
+\end{frame}
+
+\begin{frame}{Multiplication}
+    The matrix multiplication of $A$ and $B$ is denoted as $C = A \cdot B$. The resulting matrix $C$ will have dimensions $m \times p$.
+
+    The entry $c_{ij}$ of the resulting matrix $C$ is computed as follows:
+
+    $$
+        c_{ij} = a_{i1} \cdot b_{1j} + a_{i2} \cdot b_{2j} + \dots + a_{in} \cdot b_{nj} = \sum_{k=1}^{n} a_{ik} \cdot b_{kj}
+    $$
+
+    The resulting matrix $C$ can be expressed as:
+
+    $$
+        C = \begin{bmatrix}
+            c_{11} & c_{12} & \dots  & c_{1p} \\
+            c_{21} & c_{22} & \dots  & c_{2p} \\
+            \vdots & \vdots & \ddots & \vdots \\
+            c_{m1} & c_{m2} & \dots  & c_{mp}
+        \end{bmatrix}
+    $$
+\end{frame}
+
+\begin{frame}[fragile]{Multiplication with Ray (1)}
+    \begin{small}
+        \begin{verbatim}
+@staticmethod
+def product(a, b):
+    a_columns = a.size()["columns"]
+    a_rows = a.size()["rows"]
+
+    b_columns = b.size()["columns"]
+
+    if a_rows != b_columns:
+        raise ValueError(
+            """
+            Number of columns of the first matrix 
+            must match the number of rows of the second matrix
+            """
+            )
+    else:
+    ...
+    
+    \end{verbatim}
+    \end{small}
+\end{frame}
+
+\begin{frame}[fragile]{Multiplication with Ray (2)}
+    \begin{tiny}
+        \begin{verbatim}
+a_elements = a.get()  # Get the elements of matrix a
+b_elements = b.get()  # Get the elements of matrix b
+
+result = [[0] * b_columns for _ in range(a_rows)]  # Create a result matrix filled with zeros
+tasks = []  # Initialize an empty list to store the tasks
+
+# Iterate over rows of matrix a
+for i in range(a_rows):
+    # Iterate over columns of matrix b
+    for j in range(b_columns):
+        elements_to_multiply = []  # Initialize an empty list to store the elements to be multiplied
+        
+        # Iterate over columns of matrix a and rows of matrix b
+        for k in range(a_columns):
+            # Add a task to multiply the elements at position (i, k) and (k, j)
+            elements_to_multiply.append(
+                RayMatrix.task_multiply.remote(a=a_elements, b=b_elements, i=i, j=j, k=k)
+            )
+        
+        # Add the task to compute the sum of multiplied elements
+        tasks.append(RayMatrix.task_sum.remote(results=ray.get(elements_to_multiply)))
+    \end{verbatim}
+    \end{tiny}
+\end{frame}
+
+\begin{frame}[fragile]{Multiplication with Ray (3)}
+    \begin{verbatim}
+# Get the results of all the tasks
+results = ray.get(tasks)
+
+# Fill the result matrix with the computed results
+for i in range(a_rows):
+    for j in range(b_columns):
+        result[i][j] = results.pop(0)
+
+return RayMatrix(result)
+            
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Multiplication with Ray(4)}
+    \begin{verbatim}
+        @staticmethod
+        @ray.remote
+        def task_multiply(a, b, i, j, k):
+            return a[i][k] * b[k][j]
+    \end{verbatim}
+\end{frame}
+
+\subsection{Determinant}
+\begin{frame}{Determinant}
+    The \alert{determinant} is a scalar value that is a function of the entries of a square matrix. It characterizes some properties of the matrix and the linear map represented by the matrix. In particular, the determinant is nonzero if and only if the matrix is \textbf{invertible}.
 
 \end{frame}
 
-\begin{frame}{The Matrix class}
+\begin{frame}{Determinant - Laplace method}
+    To compute the determinant of matrices with order greater than 2 we are going to use the \alert{Laplace method}.
 
+
+    Let $A$ be a square matrix of size $n \times n$. The Laplace expansion of the determinant along the $i$th row is given by:
+
+    $$
+        \det(A) = a_{i1} C_{i1} + a_{i2} C_{i2} + \ldots + a_{in} C_{in}
+    $$
+
+    where $C_{ij}$ denotes the cofactor of the element $a_{ij}$.
 \end{frame}
 
-\begin{frame}{The RayMatrix class}
+\begin{frame}{Determinant - Cofactor}
+    The \alert{cofactor} $C_{ij}$ is calculated as follows:
 
+    $$
+        C_{ij} = (-1)^{i+j} \cdot \det(M_{ij})
+    $$
+
+    where $\det(M_{ij})$ represents the determinant of the submatrix obtained by deleting the $i$th row and $j$th column from matrix $A$.
 \end{frame}
 
-\subsection{Operations}
+\begin{frame}{Determinant}
+    Using the Laplace method, the determinant can be calculated recursively by expanding along any row or column until a $2 \times 2$ matrix is reached, for which the determinant can be directly computed.
+
+    The Laplace method provides an alternative approach for determining the determinant of a matrix and can be particularly useful for matrices of larger sizes.
+\end{frame}
+
+\begin{frame}[fragile]{Determinant with Ray (1)}
+    \begin{tiny}
+        \begin{verbatim}
+def det(self):
+if self.is_square():
+    size = self.size()["rows"]
+    a = self.get()
+
+    if size == 1:
+        return a[0][0]
+
+    elif size == 2:
+        return (a[0][0] * a[1][1]) - (a[0][1] * a[1][0])
+
+    else:
+        sum = 0
+
+        for i in range(1, size):
+            print(i)
+
+            futures = self.task_det.remote(self=self, elements=a, i=i)
+            print(ray.get(futures))
+
+            sum += ray.get(futures)
+
+        return sum
+
+else:
+    raise ValueError("Cannot compute determinant of a non-square matrix")
+        
+            \end{verbatim}
+    \end{tiny}
+\end{frame}
+
+\begin{frame}[fragile]{Determinant with Ray (2)}
+
+    \begin{small}
+        \begin{verbatim}
+@ray.remote
+def task_det(self, elements, i):
+    size = len(elements)
+    submatrix_det_sum = 0
+    mats = self.get_square_submatrices(i)
+
+    for j in range(1, size):
+        submatrix_det = mats[j].det2()
+        submatrix_det_sum += 
+            elements[i][j] * ((-1) ** (i + j + 2)) 
+                * submatrix_det
+
+    return submatrix_det_sum
+    \end{verbatim}
+    \end{small}
+
+\end{frame}
 
 \end{document}
