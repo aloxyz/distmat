@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1688400641 "/home/alo/dev/labresid-matrix-computation/latex/presentation/main.tex" "main.pdf" "main" 1688400643 0
-  "/home/alo/dev/labresid-matrix-computation/latex/presentation/main.tex" 1688400641 4493 0de9045e2c8e768403aa17d1729e3df5 ""
+["pdflatex"] 1688401140 "/home/alo/dev/labresid-matrix-computation/latex/presentation/main.tex" "main.pdf" "main" 1688401141 0
+  "/home/alo/dev/labresid-matrix-computation/latex/presentation/main.tex" 1688401138 4044 aa518814cbef3f94938a630109f0d810 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcss1095.tfm" 1136768653 1536 f0fa079cdc83a6ffeda21e42352cf1ea ""
@@ -195,11 +195,11 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1684972800 40326 aba987258e6d6b6da5dec3a727ea174b ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1688393277 4603178 f922b3a8d38e69501903df0e74a512d4 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1688394148 7862959 e6e94a8e4da38cf2bbda6f7067042555 ""
-  "main.aux" 1688400643 5386 b2fd6d7e1c462048db88608f288c3af4 "pdflatex"
-  "main.nav" 1688400643 3259 2b3b597e98307ef330b6e08db7e8d9e6 "pdflatex"
-  "main.out" 1688400643 876 05b2b7b065b51ad42da0b9169e96f40a "pdflatex"
-  "main.tex" 1688400641 4493 0de9045e2c8e768403aa17d1729e3df5 ""
-  "main.toc" 1688400643 312 2fd29fa1e39bcf8dd2718916ac1f0b0b "pdflatex"
+  "main.aux" 1688401141 3836 c5314730890480db92a3d675b10d8d72 "pdflatex"
+  "main.nav" 1688401141 2233 29646bdb85cce75409e966f6a5a6c9e4 "pdflatex"
+  "main.out" 1688401141 502 7d5021e0155ff598d6881892bc74e72b "pdflatex"
+  "main.tex" 1688401138 4044 aa518814cbef3f94938a630109f0d810 ""
+  "main.toc" 1688401141 184 53bec710c8ae3d93913fb45ea16e1936 "pdflatex"
   "unime.png" 1688396263 1985265 b0d686c439ed37f076f41c0d4a9ba095 ""
   (generated)
   "main.aux"
