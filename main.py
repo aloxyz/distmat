@@ -46,12 +46,14 @@ def main():
         [6, 3, 0, 2]
     ])
 
-    print(E.inv())
-    print(F.inv())
+    #print(E.inv())
+    #print(F.inv())
 
     #print(RayMatrix.product(B,C))
     #print(E.det())
 
+    print(F.det())
+    print(E.det())
     ray.shutdown()
 
 if __name__ == "__main__":

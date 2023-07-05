@@ -16,15 +16,18 @@ class RayMatrix(Matrix):
         return self.elements[start_row + row][start_col:start_col + order]
 
     @ray.remote
-    def task_det(self, elements, i):
-        size = len(elements)
-        submatrix_det_sum = 0
+    def task_det(self, col_index):
+        elems = self.get()
+        submat = self.minor(0, col_index)
 
-        for j in range(size):
-            submatrix_det = self.minor(i=i, j=j).det()
-            submatrix_det_sum += elements[i][j] * ((-1) ** (i + j + 2)) * submatrix_det
+        submat_det_sum = 0
 
-        return submatrix_det_sum
+        for i in range(len(elems)):
+            submatrix_det = submat.det()
+
+            submat_det_sum += elems[i][col_index] * ((-1) ** (i + col_index + 2)) * submatrix_det
+
+        return submat_det_sum
 
     @staticmethod
     @ray.remote
@@ -58,74 +61,26 @@ class RayMatrix(Matrix):
 
     def det(self):
         if self.is_square():
-            size = self.size()["rows"]
+            cols = self.size()["columns"]
             a = self.get()
 
-            if size == 1:
+            if cols == 1:
                 return a[0][0]
 
-            elif size == 2:
+            elif cols == 2:
                 return (a[0][0] * a[1][1]) - (a[0][1] * a[1][0])
 
             else:
-                '''
-                NON FUNZIONA
-                sum = 0
+                futures = []
 
-                                for i in range(size):
-                                    print(i)
+                for j in range(cols):
+                    futures.append(self.task_det.remote(self=self, col_index=j))
 
-                                    futures = self.task_det.remote(self=self, elements=a, i=0)
-                                    print(ray.get(futures))
-
-                                    sum += ray.get(futures)
-
-                                return sum'''
-
-                futures = self.task_det.remote(self=self, elements=a, i=0)
-                return ray.get(futures)
-        
-        else:
-            raise ValueError("Cannot compute determinant of a non-square matrix")
-
-    def det2(self):
-        if self.is_square():
-            size = self.size()["rows"]
-            a = self.get()
-
-            if size == 1:
-                return a[0][0]
-
-            elif size == 2:
-                return (a[0][0] * a[1][1]) - (a[0][1] * a[1][0])
-
-            else:
-                sum = 0
-
-                for i in range(1, size):
-                    print(i)
-
-                    futures = self.task_det.remote(self=self, elements=a, i=i)
-                    print(ray.get(futures))
-
-                    sum += ray.get(futures)
-
-                return sum
+                return sum(ray.get(futures))
 
         else:
             raise ValueError("Cannot compute determinant of a non-square matrix")
 
-    @ray.remote
-    def task_det2(self, elements, i):
-        size = len(elements)
-        submatrix_det_sum = 0
-        mats = self.get_square_submatrices(i)
-
-        for j in range(1, size):
-            submatrix_det = mats[j].det2()
-            submatrix_det_sum += elements[i][j] * ((-1) ** (i + j + 2)) * submatrix_det
-
-        return submatrix_det_sum
     def rank(self):
         rows = self.size()["rows"]
         columns = self.size()["columns"]
