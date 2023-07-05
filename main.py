@@ -1,4 +1,5 @@
 from startup.cmd import get_args, init_parser
+import ray
 
 
 def boot():
@@ -7,6 +8,9 @@ def boot():
 
 
 def run():
+    ray.init()
+    ray.shutdown()
+
     pass
 
 
