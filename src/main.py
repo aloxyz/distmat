@@ -9,7 +9,7 @@ def boot():
     init_parser()
     args = get_args()
 
-    cfg.MATRIX_SIZE = args.load
+    cfg.MATRIX_SIZE = int(args.load[0])
     
     proc.operations = du.filter(proc.operations, args.ignore)
 
@@ -19,7 +19,8 @@ def boot():
 def run():
     ray.init()
 
-    #processor.run_test()
+    proc.exec_test(cfg.MATRIX_SIZE)
+
     ray.shutdown()
 
 
