@@ -1,4 +1,6 @@
 from mat.raymatrix import RayMatrix
+from mat.matrix import Matrix
+
 import ray
 import random
 
@@ -37,8 +39,18 @@ def main():
         [5, 8, 4, 1],
         [6, 3, 0, 2]
     ])
+    F = Matrix([
+        [4, 10, 2, 6],
+        [8, 9, 1, 3],
+        [5, 8, 4, 1],
+        [6, 3, 0, 2]
+    ])
+
+    print(E.inv())
+    print(F.inv())
+
     #print(RayMatrix.product(B,C))
-    print(E.det())
+    #print(E.det())
 
     ray.shutdown()
 

@@ -66,46 +66,46 @@ class Matrix:
 
         return Matrix(elems)
 
-    # def inv(self):
-    #     if not self.is_square():
-    #         raise Exception("Matrix must be square")
+    def inv(self):
+        if not self.is_square():
+            raise Exception("Matrix must be square")
 
-    #     elif Matrix.det(self) == 0:
-    #         raise Exception("Matrix is not invertible")
+        elif Matrix.det(self) == 0:
+            raise Exception("Matrix is not invertible")
 
-    #     else:
-    #         size = self.size()["rows"]
-    #         a = self.get()
-    #         cof_arr = []
+        else:
+            size = self.size()["rows"]
+            a = self.get()
+            cof_arr = [[0] * size for _ in range(size)]
 
-    #         for i in range(size):
-    #             for j in range(size):
-    #                 cof_arr[i][j] = a[i][j] * ((-1) ** (i + j + 2)) * self.minor(i, j).det()
+            for i in range(size):
+                for j in range(size):
+                    cof_arr[i][j] = a[i][j] * ((-1) ** (i + j + 2)) * self.minor(i, j).det()
 
-    #         cof_matrix = Matrix(cof_arr)
+            cof_matrix = Matrix(cof_arr)
 
-    #         return cof_matrix.scalar_product(1 / self.det())
+            return cof_matrix.scalar_product(1 / self.det())
 
-    # def det(self):
-    #     if self.is_square():
-    #         size = self.size()["rows"]
-    #         a = self.get()
+    def det(self):
+        if self.is_square():
+            size = self.size()["rows"]
+            a = self.get()
 
-    #         if size == 1:
-    #             return a[0][0]
+            if size == 1:
+                return a[0][0]
 
-    #         elif size == 2:
-    #             return (a[0][0] * a[1][1]) - (a[0][1] * a[1][0])
+            elif size == 2:
+                return (a[0][0] * a[1][1]) - (a[0][1] * a[1][0])
 
-    #         else:
+            else:
 
-    #             for i in range(size):
-    #                 sum = 0
+                for i in range(size):
+                    sum = 0
 
-    #                 for j in range(size):
-    #                     sum += a[i][j] * ((-1) ** (i + j + 2)) * self.minor(i, j).det()
+                    for j in range(size):
+                        sum += a[i][j] * ((-1) ** (i + j + 2)) * self.minor(i, j).det()
 
-    #             return sum
+                return sum
 
     def product(self, b):
         a_columns = self.size()["columns"]

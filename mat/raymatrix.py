@@ -1,6 +1,7 @@
 from mat.matrix import Matrix
 import ray
 
+
 class RayMatrix(Matrix):
     def __init__(self, elements):
         super().__init__(elements)
@@ -24,6 +25,14 @@ class RayMatrix(Matrix):
             submatrix_det_sum += elements[i][j] * ((-1) ** (i + j + 2)) * submatrix_det
 
         return submatrix_det_sum
+
+    @staticmethod
+    @ray.remote
+    def task_scalar_product(row, scalar):
+        for j in range(len(row)):
+            row[j] *= scalar
+
+        return row
 
     def get_square_submatrices(self, order):
         rows = self.size()["rows"]
@@ -168,7 +177,7 @@ class RayMatrix(Matrix):
             for i, j, value in results:
                 cof_arr[i][j] = value
 
-            cof_matrix = Matrix(cof_arr)
+            cof_matrix = RayMatrix(cof_arr)
             return cof_matrix.scalar_product(1 / self.det())
 
     @staticmethod
@@ -216,3 +225,16 @@ class RayMatrix(Matrix):
                     result[i][j] = results.pop(0)
 
             return RayMatrix(result)
+
+    def scalar_product(self, scalar):
+        elems = self.get()
+        res = []
+
+        futures = []
+
+        for r in elems:
+            futures.append(RayMatrix.task_scalar_product.remote(r, scalar))
+
+        res = ray.get(futures)
+
+        return Matrix(res)
