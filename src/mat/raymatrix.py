@@ -34,24 +34,25 @@ class RayMatrix(Matrix):
         return row
 
     @ray.remote
-    def task_get_square_submatrix(self, start_row, start_col, order):
+    def task_get_square_submatrix(elements, start_row, start_col, order):
         futures = []
 
         for row in range(order):
-            futures.append(self.get()[start_row + row][start_col:start_col + order])
+            futures.append(elements[start_row + row][start_col:start_col + order])
 
         return futures
 
     def get_square_submatrices(self, order):
+        elements_id = ray.put(self.get())
+
         rows = self.size()["rows"]
         cols = self.size()["columns"]
-        submatrices = []
         futures = []
 
         for start_row in range(rows - order + 1):
 
             for start_col in range(cols - order + 1):
-                futures.append(self.task_get_square_submatrix.remote(self=self, start_row=start_row, start_col=start_col, order=order))
+                futures.append(self.task_get_square_submatrix.remote(elements=elements_id, start_row=start_row, start_col=start_col, order=order))
 
         return [RayMatrix(m) for m in ray.get(futures)]
 
