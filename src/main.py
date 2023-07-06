@@ -4,6 +4,8 @@ import ray
 import process.processor as proc
 import utils.dict_utils as du
 from data.storage_manager import store_data
+
+
 def boot():
     init_parser()
     args = get_args()
