@@ -24,7 +24,6 @@ def run():
     store_data('test/single', data_res[0])
     store_data('test/parallel', data_res[1])
 
-
     ray.shutdown()
 
 
