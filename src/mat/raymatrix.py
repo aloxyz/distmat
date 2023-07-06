@@ -45,14 +45,15 @@ class RayMatrix(Matrix):
 
         for start_row in range(rows - order + 1):
             
-            for start_col in range(cols - order + 1):
-                submatrix_rows = []
-                
+            for start_col in range(cols - order + 1):                
                 for row in range(order):
                     futures.append(self.task_get_square_submatrix.remote(self=self, start_row=start_row, start_col=start_col, row=row, order=order))
                 
-                submatrix_rows = ray.get(futures)
-                submatrices.append(RayMatrix(submatrix_rows))
+        submatrix_rows = ray.get(futures)
+                
+        for i in range(0, len(submatrix_rows), order):
+            sub_list = submatrix_rows[i:i+order]
+            submatrices.append(RayMatrix(sub_list))
 
         return submatrices
 
