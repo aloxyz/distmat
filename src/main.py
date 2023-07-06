@@ -3,15 +3,15 @@ import utils.config as cfg
 import ray
 import process.processor as proc
 import utils.dict_utils as du
-
-
+from data.storage_manager import store_data
 def boot():
     init_parser()
     args = get_args()
 
     cfg.MATRIX_SIZE = int(args.load[0])
-    
-    proc.operations = du.filter(proc.operations, args.ignore)
+
+    if args.ignore is not None:
+        proc.operations = du.filter(proc.operations, args.ignore)
 
     run()
 
@@ -19,7 +19,11 @@ def boot():
 def run():
     ray.init()
 
-    proc.exec_test(cfg.MATRIX_SIZE)
+    data_res = proc.exec_test(cfg.MATRIX_SIZE)
+
+    store_data('test/single', data_res[0])
+    store_data('test/parallel', data_res[1])
+
 
     ray.shutdown()
 

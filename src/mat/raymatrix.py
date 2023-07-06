@@ -145,10 +145,9 @@ class RayMatrix(Matrix):
     def task_sum(results):
         return sum(results)
 
-    @staticmethod
-    def product(a, b):
-        a_columns = a.size()["columns"]
-        a_rows = a.size()["rows"]
+    def product(self, b):
+        a_columns = self.size()["columns"]
+        a_rows = self.size()["rows"]
 
         b_columns = b.size()["columns"]
 
@@ -156,7 +155,7 @@ class RayMatrix(Matrix):
             raise ValueError("Number of columns of the first matrix must match the number of rows of the second matrix")
 
         else:
-            a_elements = a.get()
+            a_elements = self.get()
             b_elements = b.get()
 
             result = [[0] * b_columns for _ in range(a_rows)]
