@@ -39,8 +39,7 @@ def main():
     # print(RayMatrix.product(B,C))
     # print(E.det())
 
-    print(B)
-    [print(m) for m in B.get_square_submatrices(2)]
+    print(F.rank())
     ray.shutdown()
 
 

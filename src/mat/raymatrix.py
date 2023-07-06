@@ -42,7 +42,7 @@ class RayMatrix(Matrix):
         cols = self.size()["columns"]
         submatrices = []
         futures = []
-        
+
         for start_row in range(rows - order + 1):
             
             for start_col in range(cols - order + 1):
@@ -88,25 +88,23 @@ class RayMatrix(Matrix):
         columns = self.size()["columns"]
 
         j1 = min(rows, columns)
-
-        for j in range(j1, 1, -1):            
+        for j in range(j1, 1, -1):
             jth_submatrices = self.get_square_submatrices(j)
-            
-
             tasks = []
 
             for submatrix in jth_submatrices:
                 tasks.append(self.task_rank_det.remote(submatrix, j))
 
-
-            ready_tasks, _ = ray.wait(tasks, num_returns = max(rows, columns) - j + 1)
+            ready_tasks, _ = ray.wait(tasks, num_returns=max(rows, columns) - j + 1)
+            
             for ready_task in ready_tasks:
-                    result = ray.get(ready_task)
+                result = ray.get(ready_task)
+                
+                if result is not None:
+                    return result
 
-                    if result is not None:
-                        return result
-                    
         return 0
+
     
     @ray.remote
     def task_inv_cof(self, a, i, j):
