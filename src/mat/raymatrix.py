@@ -41,19 +41,21 @@ class RayMatrix(Matrix):
         rows = self.size()["rows"]
         cols = self.size()["columns"]
         submatrices = []
-
+        futures = []
+        
         for start_row in range(rows - order + 1):
+            
             for start_col in range(cols - order + 1):
-                submatrix = []
+                submatrix_rows = []
                 
                 for row in range(order):
-                    futures = self.task_get_square_submatrix.remote(self=self, start_row=start_row, start_col=start_col, row=row, order=order)
-                    
-                    submatrix.append(ray.get(futures))
+                    futures.append(self.task_get_square_submatrix.remote(self=self, start_row=start_row, start_col=start_col, row=row, order=order))
                 
-                submatrices.append(RayMatrix(submatrix))
+                submatrix_rows = ray.get(futures)
+                submatrices.append(RayMatrix(submatrix_rows))
 
         return submatrices
+
 
     def minor(self, i, j):
         minor_elements = [row[:j] + row[j + 1:] for row_idx, row in enumerate(self.elements) if row_idx != i]

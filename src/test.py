@@ -4,19 +4,6 @@ from mat.matrix import Matrix
 import ray
 import random
 
-
-# def main():
-#     counters = [rm.ParallelMatrix.remote([
-#         [4, 5, 7],
-#         [5, 3, 2],
-#         [9, 4, 6],
-#         [1, 3, 8]
-#     ]) for i in range(4)]
-
-#     futures = [c.range.remote() for c in counters]
-#     print(ray.get(futures))
-
-
 def main():
     ray.init()
     A = RayMatrix([
@@ -52,8 +39,8 @@ def main():
     # print(RayMatrix.product(B,C))
     # print(E.det())
 
-    print(F.det())
-    print(E.det())
+    print(B)
+    [print(m) for m in B.get_square_submatrices(2)]
     ray.shutdown()
 
 
