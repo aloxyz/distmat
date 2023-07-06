@@ -132,9 +132,6 @@ class Matrix:
         return Matrix(result)
 
     def get_square_submatrices(self, order):
-        '''
-        Returns an array of square submatrices
-        '''
         rows = self.size()["rows"]
         cols = self.size()["columns"]
         submatrices = []

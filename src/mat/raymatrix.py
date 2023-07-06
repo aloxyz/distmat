@@ -10,10 +10,6 @@ class RayMatrix(Matrix):
     def task_rank_det(submatrix, j):
         if submatrix.det() != 0:
             return j
-    
-    @ray.remote
-    def task_get_square_submatrix(self, start_row, start_col, row, order):
-        return self.elements[start_row + row][start_col:start_col + order]
 
     @ray.remote
     def task_det(self, col_index):
@@ -37,6 +33,15 @@ class RayMatrix(Matrix):
 
         return row
 
+    @ray.remote
+    def task_get_square_submatrix(self, start_row, start_col, order):
+        futures = []
+
+        for row in range(order):
+            futures.append(self.get()[start_row + row][start_col:start_col + order])
+
+        return futures
+
     def get_square_submatrices(self, order):
         rows = self.size()["rows"]
         cols = self.size()["columns"]
@@ -44,18 +49,11 @@ class RayMatrix(Matrix):
         futures = []
 
         for start_row in range(rows - order + 1):
-            
-            for start_col in range(cols - order + 1):                
-                for row in range(order):
-                    futures.append(self.task_get_square_submatrix.remote(self=self, start_row=start_row, start_col=start_col, row=row, order=order))
-                
-        submatrix_rows = ray.get(futures)
-                
-        for i in range(0, len(submatrix_rows), order):
-            sub_list = submatrix_rows[i:i+order]
-            submatrices.append(RayMatrix(sub_list))
 
-        return submatrices
+            for start_col in range(cols - order + 1):
+                futures.append(self.task_get_square_submatrix.remote(self=self, start_row=start_row, start_col=start_col, order=order))
+
+        return [RayMatrix(m) for m in ray.get(futures)]
 
 
     def minor(self, i, j):
