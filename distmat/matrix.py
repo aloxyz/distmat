@@ -5,7 +5,7 @@ class Matrix:
             if len(i) != len(elements[0]):
                 raise ValueError("Invalid row size")
 
-        self.elements = elements
+        self.elements = [[float(val) for val in row] for row in elements]
 
         self.rows = len(self.elements[0])
         self.columns = len(self.elements)
@@ -43,6 +43,34 @@ class Matrix:
 
         return (self.rows, self.columns)
 
+    def is_square(self):
+        rows, columns = self.get_size()
+
+        return rows == columns
+
+    @staticmethod
+    def product(A, B):
+        a_rows, a_columns = A.get_size()
+        _, b_columns = B.get_size()
+
+        if a_rows != b_columns:
+            raise ValueError("Number of columns of first matrix must match the number of rows of second matrix")
+
+        else:
+            a_elements = A.get_elements()
+            b_elements = B.get_elements()
+
+            result = [[[0] * i for i in range(b_columns)] for j in range(a_rows)]
+
+            for i in range(a_rows):
+                for j in range(b_columns):
+                    result[i][j] = 0
+
+                    for k in range(a_columns):
+                        result[i][j] += a_elements[i][k] * b_elements[k][j]
+
+        return Matrix(result)
+    
     def transpose(self):
         elements = self.get_elements()
         rows, columns = self.get_size()
@@ -55,10 +83,6 @@ class Matrix:
 
         return Matrix(transpose_matrix)
 
-    def is_square(self):
-        rows, columns = self.get_size()
-
-        return rows == columns
 
     def minor(self, i, j):
         '''
@@ -74,15 +98,16 @@ class Matrix:
         '''
         Multiply a matrix by a scalar
         '''
+        rows, columns = self.get_size()
 
         elements = self.get_elements()
-        rows, columns = self.get_size()
+        result_elements = [[0] * rows for _ in range(columns)]
 
         for i in range(rows):
             for j in range(columns):
-                elements[i][j] *= scalar
+                result_elements[i][j] = elements[i][j] * scalar
 
-        return Matrix(elements)
+        return Matrix(result_elements)
 
     def inv(self):
         if not self.is_square():
@@ -117,40 +142,20 @@ class Matrix:
                 return (elements[0][0] * elements[1][1]) - (elements[0][1] * elements[1][0])
 
             else:
-                minors = [self.minor(0, j) for j in range(columns)]
-                results = [minor.det() for minor in minors]
+                det_value = 0
 
-                return sum(results)
+                for j in range(columns):
+                    minor = self.minor(0, j)
+                    det_value += ((-1) ** j) * elements[0][j] * minor.det()
+
+                return det_value
 
         else:
             raise ValueError("Cannot compute determinant of a non-square matrix")
 
-    @staticmethod
-    def product(A, B):
-        a_rows, a_columns = A.get_size()
-        _, b_columns = B.get_size()
-
-        if a_rows != b_columns:
-            raise ValueError("Number of columns of first matrix must match the number of rows of second matrix")
-
-        else:
-            a_elements = A.get_elements()
-            b_elements = B.get_elements()
-
-            result = [[[0] * i for i in range(b_columns)] for j in range(a_rows)]
-
-            for i in range(a_rows):
-                for j in range(b_columns):
-                    result[i][j] = 0
-
-                    for k in range(a_columns):
-                        result[i][j] += a_elements[i][k] * b_elements[k][j]
-
-        return Matrix(result)
-
     def get_square_submatrices(self, order):
         '''
-        Auxiliary function for the rank()
+        Auxiliary function for the rank() function
         '''
         elements = self.get_elements()
         rows, columns = self.get_size()
@@ -168,13 +173,9 @@ class Matrix:
         return submatrices
 
     def rank(self):
-        j1 = min(self.size()['rows'], self.size()['columns'])
+        rows, columns = self.get_size()
+        j1 = min(rows, columns)
 
         for i in range(j1, 1, -1):
-            if self.get_submatrices_rank(self, i) != -1:
+            if self.get_square_submatrices(i) != -1:
                 return i
-
-
-
-
-

@@ -1,6 +1,6 @@
 
 from matrix import Matrix
-
+import numpy as np
 import random
 
 def main():
@@ -11,10 +11,12 @@ def main():
         [6, 3, 0, 2]
     ])
 
-    B = Matrix([[random.randint(0, 99) for _ in range(4)] for _ in range(4)])
+    elements = [[random.randint(0, 99) for _ in range(8)] for _ in range(8)]
+    B = Matrix(elements)
 
-    print(A, B)
-    print(Matrix.product(A,B))
+    print(np.linalg.det(np.array(elements)))
+    
+    print(B.det())
 
 if __name__ == "__main__":
     main()
