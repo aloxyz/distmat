@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1688507201 "/home/alo/dev/labresid-matrix-computation/latex/presentation/main.tex" "main.pdf" "main" 1688507202 0
-  "/home/alo/dev/labresid-matrix-computation/latex/presentation/main.tex" 1688507198 15065 c93d9536be26b58bc7b2cdfc658c6550 ""
+["pdflatex"] 1691482176 "/home/alo/dev/labresid-matrix-computation/latex/presentation/main.tex" "main.pdf" "main" 1691482179 0
+  "/home/alo/dev/labresid-matrix-computation/latex/presentation/main.tex" 1691482176 15013 fbd6ab449a84576a622fe453426b0c4b ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcss1095.tfm" 1136768653 1536 f0fa079cdc83a6ffeda21e42352cf1ea ""
@@ -225,12 +225,12 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1684972800 40326 aba987258e6d6b6da5dec3a727ea174b ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1688393277 4603178 f922b3a8d38e69501903df0e74a512d4 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1688394148 7862959 e6e94a8e4da38cf2bbda6f7067042555 ""
-  "main.aux" 1688507202 8044 c5902cb3e0902698bb6dac3c4461dfa0 "pdflatex"
-  "main.nav" 1688507202 5079 70a46f33e711ec475d96fdccd0323f82 "pdflatex"
-  "main.out" 1688507202 717 39abe4534e06294c9ace13119c000ce9 "pdflatex"
-  "main.tex" 1688507198 15065 c93d9536be26b58bc7b2cdfc658c6550 ""
-  "main.toc" 1688507202 340 d3b8c21252acbcb38e219b440275a1a9 "pdflatex"
-  "main.vrb" 1688507202 130 fdcc5f519c7590bcad8ead632881382f "pdflatex"
+  "main.aux" 1691482178 8044 c5902cb3e0902698bb6dac3c4461dfa0 "pdflatex"
+  "main.nav" 1691482178 5079 70a46f33e711ec475d96fdccd0323f82 "pdflatex"
+  "main.out" 1691482178 717 39abe4534e06294c9ace13119c000ce9 "pdflatex"
+  "main.tex" 1691482176 15013 fbd6ab449a84576a622fe453426b0c4b ""
+  "main.toc" 1691482178 340 d3b8c21252acbcb38e219b440275a1a9 "pdflatex"
+  "main.vrb" 1691482178 130 fdcc5f519c7590bcad8ead632881382f "pdflatex"
   "unime.png" 1688396263 1985265 b0d686c439ed37f076f41c0d4a9ba095 ""
   (generated)
   "main.aux"

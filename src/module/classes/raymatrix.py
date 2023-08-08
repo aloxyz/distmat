@@ -11,20 +11,6 @@ class RayMatrix(Matrix):
         if submatrix.det() != 0:
             return j
 
-    @ray.remote
-    def task_det(self, col_index):
-        elems = self.get()
-        submat = self.minor(0, col_index)
-
-        submat_det_sum = 0
-
-        for i in range(len(elems)):
-            submatrix_det = submat.det()
-
-            submat_det_sum += elems[i][col_index] * ((-1) ** (i + col_index + 2)) * submatrix_det
-
-        return submat_det_sum
-
     @staticmethod
     @ray.remote
     def task_scalar_product(row, scalar):
@@ -33,55 +19,81 @@ class RayMatrix(Matrix):
 
         return row
 
-    @ray.remote
-    def task_get_square_submatrix(elements, start_row, start_col, order):
-        futures = []
+    # @ray.remote
+    # def task_gen_submatrix(elements, start_row, start_col, order):
+    #     futures = []
 
-        for row in range(order):
-            futures.append(elements[start_row + row][start_col:start_col + order])
+    #     for row in range(order):
+    #         futures.append(elements[start_row + row][start_col:start_col + order])
 
-        return futures
+    #     return futures
 
-    def get_square_submatrices(self, order):
-        elements_id = ray.put(self.get())
+    # def get_square_submatrices(self, order):
+    #     elements_id = ray.put(self.get())
 
-        rows = self.size()["rows"]
-        cols = self.size()["columns"]
-        futures = []
+    #     rows = self.size()["rows"]
+    #     cols = self.size()["columns"]
+    #     futures = []
 
-        for start_row in range(rows - order + 1):
+    #     for start_row in range(rows - order + 1):
+    #         for start_col in range(cols - order + 1):
+    #             futures.append(self.task_gen_submatrix.remote(elements=elements_id, start_row=start_row, start_col=start_col, order=order))
 
-            for start_col in range(cols - order + 1):
-                futures.append(self.task_get_square_submatrix.remote(elements=elements_id, start_row=start_row, start_col=start_col, order=order))
-
-        return [RayMatrix(m) for m in ray.get(futures)]
+    #     return [RayMatrix(m) for m in ray.get(futures)]
 
 
     def minor(self, i, j):
         minor_elements = [row[:j] + row[j + 1:] for row_idx, row in enumerate(self.elements) if row_idx != i]
         return RayMatrix(minor_elements)
 
+    @staticmethod
+    @ray.remote
+    def task_det(submatrix):
+        return submatrix.det()
+
     def det(self):
         if self.is_square():
             cols = self.size()["columns"]
-            a = self.get()
+            elements = self.get()
 
             if cols == 1:
-                return a[0][0]
+                return elements[0][0]
 
             elif cols == 2:
-                return (a[0][0] * a[1][1]) - (a[0][1] * a[1][0])
+                return (elements[0][0] * elements[1][1]) - (elements[0][1] * elements[1][0])
 
             else:
-                futures = []
+                # Iterative computation of determinant
+                submatrices = [[self.minor(row, col) for col in range(cols)] for row in range(cols)]
+                determinants = []
+                batch_size = 10  # Adjust batch size as needed
 
-                for j in range(cols):
-                    futures.append(self.task_det.remote(self=self, col_index=j))
+                for i in range(0, cols, batch_size):
+                    batch_results = ray.get([self.task_det.remote(submatrix) for submatrix_row in submatrices[i:i+batch_size] for submatrix in submatrix_row])
+                    determinants.extend(batch_results)
 
-                return sum(ray.get(futures))
+                determinant = 0
+
+                for col in range(cols):
+                    sign = (-1) ** col
+                    sub_determinants = [determinants[row * cols + col] for row in range(cols)]
+                    determinant += sign * elements[0][col] * self._cofactor(sub_determinants)
+
+                return determinant
 
         else:
             raise ValueError("Cannot compute determinant of a non-square matrix")
+
+    @staticmethod
+    def _cofactor(sub_determinants):
+        n = len(sub_determinants)
+        if n == 2:
+            return sub_determinants[0] * sub_determinants[3] - sub_determinants[1] * sub_determinants[2]
+        else:
+            return sum(
+                (-1) ** i * sub_determinants[i] * RayMatrix._cofactor(sub_determinants[:i] + sub_determinants[i + 1:])
+                for i in range(n)
+            )
 
     def rank(self):
         rows = self.size()["rows"]

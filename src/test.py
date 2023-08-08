@@ -1,6 +1,6 @@
 import time
-from mat.raymatrix import RayMatrix
-from mat.matrix import Matrix
+from module.classes.raymatrix import RayMatrix
+from module.classes.matrix import Matrix
 
 import ray
 import random
@@ -39,19 +39,19 @@ def main():
     # print(RayMatrix.product(B,C))
     # print(E.det())
 
-    elements = [[random.randint(0, 99) for _ in range(100)] for _ in range(100)]
+    elements = [[random.randint(0, 99) for _ in range(10)] for _ in range(10)]
 
     # [print(m) for m in Matrix(elements).get_square_submatrices(2)]
 
 
-    ray.init(num_cpus=12)
+    ray.init(num_cpus=12, ignore_reinit_error=True)
 
     start = time.time()
-    Matrix(elements).get_square_submatrices(2)
+    print(Matrix(elements).det())
     print("standard duration = ", time.time() - start)
 
     start = time.time()
-    RayMatrix(elements).get_square_submatrices(2)
+    print(RayMatrix(elements).det())
     print("ray duration = ", time.time() - start)
 
     ray.shutdown()

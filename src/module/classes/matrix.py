@@ -88,24 +88,23 @@ class Matrix:
 
     def det(self):
         if self.is_square():
-            size = self.size()["rows"]
-            a = self.get()
+            cols = self.size()["columns"]
+            elements = self.get()
 
-            if size == 1:
-                return a[0][0]
+            if cols == 1:
+                return elements[0][0]
 
-            elif size == 2:
-                return (a[0][0] * a[1][1]) - (a[0][1] * a[1][0])
+            elif cols == 2:
+                return (elements[0][0] * elements[1][1]) - (elements[0][1] * elements[1][0])
 
             else:
+                submatrices = [self.minor(0, j) for j in range(cols)]
+                results = [submatrix.det() for submatrix in submatrices]
 
-                for i in range(size):
-                    sum = 0
+                return sum(results)
 
-                    for j in range(size):
-                        sum += a[i][j] * ((-1) ** (i + j + 2)) * self.minor(i, j).det()
-
-                return sum
+        else:
+            raise ValueError("Cannot compute determinant of a non-square matrix")
 
     def product(self, b):
         a_columns = self.size()["columns"]

@@ -1,1 +1,0 @@
-MATRIX_SIZE = 0

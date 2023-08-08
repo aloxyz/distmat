@@ -1,0 +1,12 @@
+[project]
+name = "distmat"
+version = "0.0.1"
+description = "Distributed linear algebra operations using Ray library"
+
+authors = [
+    {name = "Gabriele Aloisio", email = "gabriele.aloisio@proton.me"}
+    ]
+
+dependencies = [
+    "ray[air]"
+    ]
