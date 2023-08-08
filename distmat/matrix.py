@@ -48,14 +48,21 @@ class Matrix:
 
         return rows == columns
 
-    def is_vector(self):
+    def get_type(self):
         rows, columns = self.get_size()
 
-        return (rows == 1 and columns > 1) or (columns == 1 and rows > 1)
+        if rows == 1 and columns == 1:
+            return 1 # scalar
+        
+        elif rows == 1 and columns > 1:
+            return 2 # row vector
+        
+        elif columns == 1 and rows > 1:
+            return 3 # column vector
+        
+        else:
+            return 4 # matrix
 
-    def is_scalar(self):
-        rows, columns = self.get_size()
-        return rows == 1 and columns == 1
 
     @staticmethod
     def product(A, B):
@@ -103,14 +110,40 @@ class Matrix:
 
         return Matrix(minor_elements)
 
-    def dot(self, scalar):
+    @staticmethod
+    def eq_size(A, B):
+        '''
+        Return true if A and B have the same size
+        '''
+        a_rows, a_columns = A.get_size()
+        b_rows, b_columns = B.get_size()
+
+        if a_rows == b_rows and a_columns == b_columns:
+            return True
+
+        # Check if A and B are both column vectors or row vectors and have the same size
+        if (a_rows == 1 and b_rows == 1) or (a_columns == 1 and b_columns == 1):
+            return True
+
+        return False
+
+
+
+    @staticmethod
+    def dot(A, B):
         '''
         
         '''
-        rows, columns = self.get_size()
+        a_rows, a_columns = A.get_size()
+        b_rows, b_columns = B.get_size()
 
-        elements = self.get_elements()
-        result_elements = [[0] * rows for _ in range(columns)]
+        a_elements = A.get_elements()
+        
+        # result_elements = [[0] * rows for _ in range(columns)]
+
+        if A.
+        if A.is_vector() and B.is_vector():
+            for i in 
 
         for i in range(rows):
             for j in range(columns):
