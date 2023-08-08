@@ -5,7 +5,7 @@ class Matrix:
             if len(i) != len(elements[0]):
                 raise ValueError("Invalid row size")
 
-        self.elements = [[float(val) for val in row] for row in elements]
+        self.elements = elements
 
         self.rows = len(self.elements[0])
         self.columns = len(self.elements)
@@ -47,6 +47,15 @@ class Matrix:
         rows, columns = self.get_size()
 
         return rows == columns
+
+    def is_vector(self):
+        rows, columns = self.get_size()
+
+        return (rows == 1 and columns > 1) or (columns == 1 and rows > 1)
+
+    def is_scalar(self):
+        rows, columns = self.get_size()
+        return rows == 1 and columns == 1
 
     @staticmethod
     def product(A, B):
@@ -94,9 +103,9 @@ class Matrix:
 
         return Matrix(minor_elements)
 
-    def scalar_product(self, scalar):
+    def dot(self, scalar):
         '''
-        Multiply a matrix by a scalar
+        
         '''
         rows, columns = self.get_size()
 
@@ -113,22 +122,23 @@ class Matrix:
         if not self.is_square():
             raise Exception("Matrix must be square")
 
-        elif Matrix.det(self) == 0:
+        elif self.det() == 0:
             raise Exception("Matrix is not invertible")
 
         else:
-            elements = self.get_elements()
             rows, _ = self.get_size()
 
             cof_elements = [[0] * rows for _ in range(rows)]
 
             for i in range(rows):
                 for j in range(rows):
-                    cof_elements[i][j] = elements[i][j] * ((-1) ** (i + j + 2)) * self.minor(i, j).det()
+                    cof_elements[i][j] = ((-1) ** (i + j + 2)) * self.minor(i, j).det()
 
             cof_matrix = Matrix(cof_elements)
+            det_reciprocal = 1 / self.det()
+            inv_matrix = cof_matrix.dot(det_reciprocal)
 
-            return cof_matrix.scalar_product(1 / self.det())
+            return inv_matrix
 
     def det(self):
         if self.is_square():

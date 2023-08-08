@@ -11,12 +11,19 @@ def main():
         [6, 3, 0, 2]
     ])
 
-    elements = [[random.randint(0, 99) for _ in range(8)] for _ in range(8)]
+    elements = [[random.randint(0, 99) for _ in range(1)] for _ in range(1)]
     B = Matrix(elements)
 
-    print(np.linalg.det(np.array(elements)))
-    
-    print(B.det())
+    # print(np.linalg.det(np.array(elements)))
+    # print(B.det())
+
+    # print(Matrix(np.linalg.inv(np.array(elements))))
+    # print(B.inv().transpose())
+
+    # print(Matrix(np.dot(np.array(elements))))
+    # print(B.inv().transpose())
+
+    print(B.is_scalar())
 
 if __name__ == "__main__":
     main()
