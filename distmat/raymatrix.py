@@ -1,7 +1,8 @@
-from mat.matrix import Matrix
+from . import Matrix
 import ray
 
 
+@ray.remote
 class RayMatrix(Matrix):
     def __init__(self, elements):
         super().__init__(elements)
@@ -63,23 +64,10 @@ class RayMatrix(Matrix):
                 return (elements[0][0] * elements[1][1]) - (elements[0][1] * elements[1][0])
 
             else:
-                # Iterative computation of determinant
-                submatrices = [[self.minor(row, col) for col in range(cols)] for row in range(cols)]
-                determinants = []
-                batch_size = 10  # Adjust batch size as needed
+                submatrices = [self.minor(0, j) for j in range(cols)]
+                results = [submatrix.det() for submatrix in submatrices]
 
-                for i in range(0, cols, batch_size):
-                    batch_results = ray.get([self.task_det.remote(submatrix) for submatrix_row in submatrices[i:i+batch_size] for submatrix in submatrix_row])
-                    determinants.extend(batch_results)
-
-                determinant = 0
-
-                for col in range(cols):
-                    sign = (-1) ** col
-                    sub_determinants = [determinants[row * cols + col] for row in range(cols)]
-                    determinant += sign * elements[0][col] * self._cofactor(sub_determinants)
-
-                return determinant
+                return sum(results)
 
         else:
             raise ValueError("Cannot compute determinant of a non-square matrix")

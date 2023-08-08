@@ -1,10 +1,8 @@
 import ray
-
-def run():
-    ray.init()
-
-    ray.shutdown()
-
+import logging
 
 if __name__ == "__main__":
-    run()
+    # if ray.is_initialized:
+    #     ray.shutdown()
+    # ray.init(logging_level=logging.ERROR)
+    
