@@ -1,0 +1,6 @@
+Metadata-Version: 2.1
+Name: distmat
+Version: 0.0.1
+Summary: Distributed linear algebra matrix operations using Ray library
+Author-email: Gabriele Aloisio <gabriele.aloisio@proton.me>
+License-File: LICENSE
