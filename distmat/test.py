@@ -11,8 +11,6 @@ def main():
         [6, 3, 0, 2]
     ])
 
-    elements = [[random.randint(0, 99) for _ in range(1)] for _ in range(1)]
-    B = Matrix(elements)
 
     # print(np.linalg.det(np.array(elements)))
     # print(B.det())
@@ -23,7 +21,18 @@ def main():
     # print(Matrix(np.dot(np.array(elements))))
     # print(B.inv().transpose())
 
-    print(B.is_scalar())
+    A_elements = [[random.randint(0, 99) for _ in range(5)] for _ in range(5)]
+    b_elements = [[random.randint(0, 99)] for _ in range(5)]
+    
+    A = Matrix(A_elements)
+    print(A, A.transpose())
+
+    b = Matrix(b_elements)
+
+    print(b, b.transpose())
+
+    # print(Matrix.dot(B,B))
+
 
 if __name__ == "__main__":
     main()

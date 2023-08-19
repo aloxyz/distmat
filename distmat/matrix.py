@@ -1,34 +1,66 @@
-
 class Matrix:
     def __init__(self, elements):
-        for i in elements:
-            if len(i) != len(elements[0]):
-                raise ValueError("Invalid row size")
+        if Matrix.is_array_scalar(elements):
+            self.type = 1
+            self.rows = 1
+            self.columns = 1
+
+        elif Matrix.is_array_row(elements):
+            self.type = 2
+            self.rows = len(elements)
+            self.columns = 1
+
+        elif Matrix.is_array_column(elements):
+            self.type = 3
+            self.rows = 1
+            self.columns = len(elements)
+
+        elif Matrix.is_array_2d(elements):
+            # Check for same-length rows
+            for i in elements:
+                if len(i) != len(elements[0]):
+                    raise ValueError("Invalid row size")
+            
+            self.rows = len(elements[0])
+            self.columns = len(elements)
+
+            self.type = 4
+
+        else:
+            raise ValueError("Cannot determine array type")
 
         self.elements = elements
 
-        self.rows = len(self.elements[0])
-        self.columns = len(self.elements)
+    # def __str__(self):
+    #     elements = self.get_elements()
+
+    #     tmp = ''
+
+    #     if self.is_array_column(elements):
+    #         tmp = [[i] for i in elements]
+        
+    #     elif self.is_array_row(elements):            
+    #         tmp = elements
+        
+    #     else:
+    #         tmp = "\n"
+    #         for column in elements:
+    #             tmp += [i for i in column].join('\t') + '\n'
+
+    #     return tmp
+
+    # def print(self):
+    #     elements = self.get_elements()
+
+    #     print(elements())
 
     def __str__(self):
-        tmp = "\n"
+        if self.get_type() <= 2:
+            return ' ' + ' '.join(['{:2}'.format(i) for i in self.get_elements()]) + '\n\n'
 
-        rows, _ = self.get_size()
-        elements = self.get_elements()
-
-        max_lengths = []
-        for i in range(rows):
-            column_lengths = [len(str(row[i])) for row in elements]
-            max_lengths.append(max(column_lengths))
-
-        for row in elements:
-            tmp += "| "
-            for i in range(rows):
-                tmp += f"{str(row[i]):^{max_lengths[i]}} "
-            tmp += "|\n"
-
-        return tmp
-
+        if self.get_type() >= 3:
+            return '\n' + '\n'.join([''.join(['{:4}'.format(item) for item in row]) for row in self.get_elements()]) + '\n\n'
+        
     def get_elements(self):
         '''
         Returns a 2D array of the matrix elements 
@@ -43,26 +75,40 @@ class Matrix:
 
         return (self.rows, self.columns)
 
+    def get_type(self):
+        '''
+        Returns:
+            int: An integer code representing the type of the matrix or vector.
+                - 1: Scalar (1x1 matrix)
+                - 2: Row Vector (1 row, multiple columns)
+                - 3: Column Vector (1 column, multiple rows)
+                - 4: Matrix (multiple rows and columns)
+        '''
+        return self.type
+
     def is_square(self):
         rows, columns = self.get_size()
 
         return rows == columns
 
-    def get_type(self):
-        rows, columns = self.get_size()
+    @staticmethod
+    def is_array_scalar(array):
+        return isinstance(array, (int, float))
+    
+    @staticmethod
+    def is_array_row(array):
+        return isinstance(array, list) and len(array) >= 1 and isinstance(array[0], (int, float))
+    
+    @staticmethod
+    def is_array_column(array):
+        return isinstance(array, list) and len(array) >= 1 and isinstance(array[0], list) and len(array[0]) == 1
+        
+    @staticmethod
+    def is_array_2d(array):
+        return not (Matrix.is_array_row(array) and Matrix.is_array_column(array))
 
-        if rows == 1 and columns == 1:
-            return 1 # scalar
-        
-        elif rows == 1 and columns > 1:
-            return 2 # row vector
-        
-        elif columns == 1 and rows > 1:
-            return 3 # column vector
-        
-        else:
-            return 4 # matrix
-
+    def is_vector(self):
+        return self.get_type() == 2 or self.get_type() == 3
 
     @staticmethod
     def product(A, B):
@@ -90,14 +136,18 @@ class Matrix:
     def transpose(self):
         elements = self.get_elements()
         rows, columns = self.get_size()
+        transpose_array = None
 
-        transpose_matrix = [[0] * rows for _ in range(columns)]
+        if self.get_type() == 2:
+            transpose_array = [[i] for i in elements]
 
-        for i in range(rows):
-            for j in range(columns):
-                transpose_matrix[j][i] = elements[i][j]
+        elif self.get_type() == 3:
+            transpose_array = [i[0] for i in elements]
 
-        return Matrix(transpose_matrix)
+        elif self.get_type() == 4:
+            transpose_array = [[row[column] for row in elements] for column in range(len(elements[0]))]
+
+        return Matrix(transpose_array)
 
 
     def minor(self, i, j):
@@ -111,7 +161,7 @@ class Matrix:
         return Matrix(minor_elements)
 
     @staticmethod
-    def eq_size(A, B):
+    def same_size(A, B):
         '''
         Return true if A and B have the same size
         '''
@@ -127,29 +177,46 @@ class Matrix:
 
         return False
 
-
+    def make_column_vector(self):
+        if self.is_vector():
+            if self.get_type() == 2:
+                return Matrix(self.transpose())
+            
+            else:
+                return Matrix(self)
+        
+        else:
+            raise ValueError("Input is not a valid vector")
 
     @staticmethod
     def dot(A, B):
-        '''
+        if A.is_vector() and B.is_vector() and Matrix.same_size(A, B):
+            A = A.make_column_vector()
+            B = B.make_column_vector()
+
+            a_rows, _ = A.get_size()
+            a_elements = A.get_elements()
+            b_elements = B.get_elements()
+
+            sum = 0
+
+            for i in range(a_rows):
+                sum += a_elements[i] * b_elements[i]
+            
+            return sum
         
-        '''
-        a_rows, a_columns = A.get_size()
-        b_rows, b_columns = B.get_size()
+    @staticmethod
+    def empty_2d_array(rows, columns):
+        return [[0] * rows for _ in range(columns)]
 
-        a_elements = A.get_elements()
-        
-        # result_elements = [[0] * rows for _ in range(columns)]
 
-        if A.
-        if A.is_vector() and B.is_vector():
-            for i in 
+    @staticmethod
+    def empty_row_array(n):
+        return [0 for _ in range(n)]
 
-        for i in range(rows):
-            for j in range(columns):
-                result_elements[i][j] = elements[i][j] * scalar
-
-        return Matrix(result_elements)
+    @staticmethod
+    def empty_column_array(n):
+        return [[0] for _ in range(n)]
 
     def inv(self):
         if not self.is_square():
