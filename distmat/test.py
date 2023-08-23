@@ -20,14 +20,11 @@ def main():
 
     # print(Matrix(np.dot(np.array(elements))))
     # print(B.inv().transpose())
-
-    A_elements = [[random.randint(0, 99) for _ in range(5)] for _ in range(5)]
-    b_elements = [[random.randint(0, 99)] for _ in range(5)]
     
-    A = Matrix(A_elements)
-    print(A, A.transpose())
+    A = Matrix.random(5, 5, 0, 99)
+    print(A)
 
-    b = Matrix(b_elements)
+    b = Matrix.random(1, 5, 0, 99)
 
     print(b, b.transpose())
 

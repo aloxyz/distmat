@@ -1,3 +1,5 @@
+import random
+
 class Matrix:
     def __init__(self, elements):
         if Matrix.is_array_scalar(elements):
@@ -61,6 +63,19 @@ class Matrix:
         if self.get_type() >= 3:
             return '\n' + '\n'.join([''.join(['{:4}'.format(item) for item in row]) for row in self.get_elements()]) + '\n\n'
         
+    @staticmethod
+    def random(rows, columns, l, u):
+        if rows > 2 and columns > 2:
+            elements = [[random.randint(l, u) for _ in range(rows)] for _ in range(columns)]
+
+        elif rows == 1 and columns > 1:
+            elements = [random.randint(l, u) for _ in range(columns)]
+
+        elif rows > 1 and rows == 1:
+            elements = [[random.randint(l, u)] for _ in range(columns)]
+        
+        return Matrix(elements)
+
     def get_elements(self):
         '''
         Returns a 2D array of the matrix elements 
