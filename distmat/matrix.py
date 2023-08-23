@@ -71,9 +71,9 @@ class Matrix:
         elif rows == 1 and columns > 1:
             elements = [random.randint(l, u) for _ in range(columns)]
 
-        elif rows > 1 and rows == 1:
-            elements = [[random.randint(l, u)] for _ in range(columns)]
-        
+        elif rows > 1 and columns == 1:
+            elements = [[random.randint(l, u)] for _ in range(columns) for _ in range(rows)]
+
         return Matrix(elements)
 
     def get_elements(self):
@@ -216,19 +216,24 @@ class Matrix:
 
     @staticmethod
     def dot(A, B):
-        if A.is_vector() and B.is_vector() and Matrix.same_size(A, B):
-            A = A.make_column_vector()
-            B = B.make_column_vector()
+        if A.is_vector() and B.is_vector():
+            A = A.make_row_vector()
+            B = B.make_row_vector()
 
-            a_elements = A.get_elements()
-            b_elements = B.get_elements()
+            if Matrix.same_size(A, B):
+                a_elements = A.get_elements()
+                b_elements = B.get_elements()
 
-            result = 0
+                result = 0
 
-            for a, b in zip(a_elements, b_elements):
-                result += a[0] * b[0]
+                for a, b in zip(a_elements, b_elements):
+                    result += a * b
 
-            return result
+                return result
+            
+            else:
+                raise ValueError("Vectors must be of the same size")
+
 
         
     @staticmethod
