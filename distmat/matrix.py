@@ -195,10 +195,21 @@ class Matrix:
     def make_column_vector(self):
         if self.is_vector():
             if self.get_type() == 2:
-                return Matrix(self.transpose())
+                return self.transpose()
             
             else:
-                return Matrix(self)
+                return self
+        
+        else:
+            raise ValueError("Input is not a valid vector")
+
+    def make_row_vector(self):
+        if self.is_vector():
+            if self.get_type() == 3:
+                return self.transpose()
+            
+            else:
+                return self
         
         else:
             raise ValueError("Input is not a valid vector")
@@ -209,16 +220,16 @@ class Matrix:
             A = A.make_column_vector()
             B = B.make_column_vector()
 
-            a_rows, _ = A.get_size()
             a_elements = A.get_elements()
             b_elements = B.get_elements()
 
-            sum = 0
+            result = 0
 
-            for i in range(a_rows):
-                sum += a_elements[i] * b_elements[i]
-            
-            return sum
+            for a, b in zip(a_elements, b_elements):
+                result += a[0] * b[0]
+
+            return result
+
         
     @staticmethod
     def empty_2d_array(rows, columns):

@@ -1,7 +1,6 @@
 
 from matrix import Matrix
 import numpy as np
-import random
 
 def main():
     A = Matrix([
@@ -21,14 +20,19 @@ def main():
     # print(Matrix(np.dot(np.array(elements))))
     # print(B.inv().transpose())
     
-    A = Matrix.random(5, 5, 0, 99)
-    print(A)
+    # A = Matrix.random(5, 5, 0, 99)
+    # print(A)
 
-    b = Matrix.random(1, 5, 0, 99)
+    # b = Matrix.random(1, 5, 0, 99)
+    # print(b)
+    # print(Matrix.dot(b,b))
 
-    print(b, b.transpose())
+    elements = [12,42,63,94,215]
+    A = Matrix(elements)
 
-    # print(Matrix.dot(B,B))
+    print(A.get_elements())
+    print("numpy: ", np.dot(np.array(elements), np.array(elements)))
+    print("distmat: ", Matrix.dot(A, A))
 
 
 if __name__ == "__main__":
