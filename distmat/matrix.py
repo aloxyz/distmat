@@ -57,15 +57,26 @@ class Matrix:
 
     #     print(elements())
 
+    @staticmethod
+    def format_number(number, padding=12, max_decimals=4):
+        formatted = '{:.{}f}'.format(number, max_decimals)
+        if '.' in formatted:
+            integer_part, decimal_part = formatted.split('.')
+            if len(decimal_part) > 0 and len(decimal_part) < max_decimals:
+                formatted += '0' * (max_decimals - len(decimal_part))
+            formatted = formatted.rstrip('0').rstrip('.')  # Strip unnecessary zeros and dot
+        return '{:>{}}'.format(formatted, padding)
+
     def __str__(self):
         if self.get_type() <= 2:
-            return ' ' + ' '.join(['{:12.8f}'.format(i) for i in self.get_elements()]) + '\n\n'
+            return ' '.join([Matrix.format_number(i) for i in self.get_elements()]) + '\n\n'
 
         if self.get_type() >= 3:
-            return '\n' + '\n'.join([''.join(['{:12.8f}'.format(item) for item in row]) for row in self.get_elements()]) + '\n\n'
+            return '\n'.join([''.join([Matrix.format_number(item) for item in row]) for row in self.get_elements()]) + '\n\n'
+
 
     @staticmethod
-    def random(rows, columns, l, u):
+    def random_int(rows, columns, l, u):
         if rows > 1 and columns > 1:
             elements = [[random.randint(l, u) for _ in range(rows)]
                         for _ in range(columns)]
@@ -75,6 +86,21 @@ class Matrix:
 
         elif rows > 1 and columns == 1:
             elements = [[random.randint(l, u)]
+                        for _ in range(columns) for _ in range(rows)]
+
+        return Matrix(elements)
+
+    @staticmethod
+    def random_float(rows, columns, l, u):
+        if rows > 1 and columns > 1:
+            elements = [[random.uniform(l, u) for _ in range(rows)]
+                        for _ in range(columns)]
+
+        elif rows == 1 and columns > 1:
+            elements = [random.uniform(l, u) for _ in range(columns)]
+
+        elif rows > 1 and columns == 1:
+            elements = [[random.uniform(l, u)]
                         for _ in range(columns) for _ in range(rows)]
 
         return Matrix(elements)
@@ -222,6 +248,8 @@ class Matrix:
 
     @staticmethod
     def dot(A, B):
+        result_array = []
+        
         if not A.is_vector() and isinstance(B, (int, float, complex)):      # matrix * scalar
             a_elements = A.get_elements()
             result_array = [[a * B for a in column] for column in a_elements]
@@ -247,12 +275,11 @@ class Matrix:
                 raise ValueError("Vectors must be of the same size")
 
         if A.is_vector() and not B.is_vector():    # vector * matrix
-            result_array = []
 
             # if row vector
             if A.get_type() == 2:
                 b_elements = B.transpose().get_elements()
-        
+
                 for column in b_elements:
                     sum = 0
 
@@ -274,7 +301,6 @@ class Matrix:
             return Matrix(result_array)
 
         if not A.is_vector() and B.is_vector():    # matrix * vector
-            result_array = []
 
             # if row vector
             if B.get_type() == 2:
@@ -285,7 +311,7 @@ class Matrix:
                         row_sum += a * b
 
                     result_array.append(row_sum)
-            
+
             # if column vector
             elif B.get_type() == 3:
                 for row in A.get_elements():
@@ -303,14 +329,22 @@ class Matrix:
             a_rows, a_columns = A.get_size()
             b_rows, b_columns = B.get_size()
 
-            if a_columns == b_rows:
-                result_array = Matrix.empty_2d_array(a_rows, b_columns)
-
-                return Matrix(result_array)
+            if a_rows != b_columns:
+                raise ValueError(
+                    "Number of columns of first matrix must match the number of rows of second matrix")
 
             else:
-                raise ValueError(
-                    "Matrix dimensions must be compatible for matrix multiplication")
+                a_elements = A.get_elements()
+                b_elements = B.get_elements()
+
+                result_array = Matrix.empty_2d_array(a_rows, b_columns)
+
+                for i in range(a_rows):
+                    for j in range(b_columns):
+                        for k in range(a_columns - 1):
+                            result_array[i][j] += a_elements[i][k] * b_elements[k][j]
+
+            return Matrix(result_array)
 
     @staticmethod
     def empty_2d_array(rows, columns):
@@ -336,34 +370,34 @@ class Matrix:
             elements = self.get_elements()
 
             det = self.det()
-            
-            #special case for 2x2 matrix:
+
+            # special case for 2x2 matrix:
             if rows == columns == 2:
                 return [[elements[1][1] / det, -1 * elements[0][1] / det],
                         [-1 * elements[1][0] / det, elements[0][0] / det]]
 
-            #find matrix of cofactors
+            # find matrix of cofactors
             cof_matrix = []
 
             for row in range(rows):
                 cof_row = []
-                
+
                 for column in range(columns):
                     minor = self.minor(row, column)
 
                     cof_row.append(((-1)**(row + column)) * minor.det())
-                
+
                 cof_matrix.append(cof_row)
 
             cof_matrix = Matrix(cof_matrix).transpose()
-            
+
             cof_rows, cof_columns = cof_matrix.get_size()
             cof_elements = cof_matrix.get_elements()
 
             for row in range(cof_rows):
                 for column in range(cof_columns):
                     cof_elements[row][column] = cof_elements[row][column] / det
-            
+
             return cof_matrix
 
     def det(self):
