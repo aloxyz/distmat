@@ -59,10 +59,10 @@ class Matrix:
 
     def __str__(self):
         if self.get_type() <= 2:
-            return ' ' + ' '.join(['{:2}'.format(i) for i in self.get_elements()]) + '\n\n'
+            return ' ' + ' '.join(['{:12.8f}'.format(i) for i in self.get_elements()]) + '\n\n'
 
         if self.get_type() >= 3:
-            return '\n' + '\n'.join([''.join(['{:8}'.format(item) for item in row]) for row in self.get_elements()]) + '\n\n'
+            return '\n' + '\n'.join([''.join(['{:12.8f}'.format(item) for item in row]) for row in self.get_elements()]) + '\n\n'
 
     @staticmethod
     def random(rows, columns, l, u):
@@ -332,20 +332,39 @@ class Matrix:
             raise Exception("Matrix is not invertible")
 
         else:
-            rows, _ = self.get_size()
+            rows, columns = self.get_size()
+            elements = self.get_elements()
 
-            cof_elements = [[0] * rows for _ in range(rows)]
+            det = self.det()
+            
+            #special case for 2x2 matrix:
+            if rows == columns == 2:
+                return [[elements[1][1] / det, -1 * elements[0][1] / det],
+                        [-1 * elements[1][0] / det, elements[0][0] / det]]
 
-            for i in range(rows):
-                for j in range(rows):
-                    cof_elements[i][j] = (
-                        (-1) ** (i + j + 2)) * self.minor(i, j).det()
+            #find matrix of cofactors
+            cof_matrix = []
 
-            cof_matrix = Matrix(cof_elements)
-            det_reciprocal = 1 / self.det()
-            inv_matrix = Matrix.dot(cof_matrix, det_reciprocal)
+            for row in range(rows):
+                cof_row = []
+                
+                for column in range(columns):
+                    minor = self.minor(row, column)
 
-            return inv_matrix
+                    cof_row.append(((-1)**(row + column)) * minor.det())
+                
+                cof_matrix.append(cof_row)
+
+            cof_matrix = Matrix(cof_matrix).transpose()
+            
+            cof_rows, cof_columns = cof_matrix.get_size()
+            cof_elements = cof_matrix.get_elements()
+
+            for row in range(cof_rows):
+                for column in range(cof_columns):
+                    cof_elements[row][column] = cof_elements[row][column] / det
+            
+            return cof_matrix
 
     def det(self):
         if self.is_square():

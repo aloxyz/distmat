@@ -10,11 +10,11 @@ def main():
     # DOT PRODUCT
     # print(f"{a}*{b}= {Matrix.dot(a,b)}")
     # print(np.dot(np.array(a.get_elements()), np.array(b.get_elements())))
-    print(a, Matrix.dot(a, 2))
+    # print(a, Matrix.dot(a, 2))
 
     # INVERSE
-    # print("numpy: ", np.linalg.inv(np.array(a.get_elements())))
-    # print("distmat: ", a.inv())
+    print("numpy: \n", np.linalg.inv(np.array(a.get_elements())))
+    print("\ndistmat: ", a.inv())
 
     # DETERMINANT
     # print("numpy: ", np.linalg.det(np.array(a.get_elements())))
