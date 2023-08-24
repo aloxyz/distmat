@@ -3,23 +3,18 @@ from matrix import Matrix
 import numpy as np
 
 def main():
-    # A = Matrix.random(5, 5, -99, 99)
-    # print(A)
 
-    # b = Matrix.random(1, 8, -99, 99)
-    # print(b)
+    a = Matrix.random(1, 3, -99, 99)
+    print(a)
 
-    # c = Matrix.random(8, 1, -99, 99)
-    # print(c)
+    b = Matrix.random(2, 3, -99, 99)
+    print(b)
 
-    # print(Matrix.dot(b,c))
+    print(Matrix.dot(a,b))
 
-    elements = [12,42,63,94,215]
-    A = Matrix(elements)
-
-    print(A.get_elements(), A.transpose().get_elements())
-    print("numpy: ", np.dot(np.array(elements), np.array(elements)))
-    print("distmat: ", Matrix.dot(A, A.transpose()))
+    print(np.dot(np.array(a.get_elements()), np.array(b.get_elements())))
+    # print("numpy: ", np.linalg.inv(np.array(elements)))
+    # print("distmat: ", Matrix.inv(A))
 
 
 if __name__ == "__main__":

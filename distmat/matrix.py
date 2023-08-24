@@ -61,11 +61,11 @@ class Matrix:
             return ' ' + ' '.join(['{:2}'.format(i) for i in self.get_elements()]) + '\n\n'
 
         if self.get_type() >= 3:
-            return '\n' + '\n'.join([''.join(['{:4}'.format(item) for item in row]) for row in self.get_elements()]) + '\n\n'
+            return '\n' + '\n'.join([''.join(['{:8}'.format(item) for item in row]) for row in self.get_elements()]) + '\n\n'
         
     @staticmethod
     def random(rows, columns, l, u):
-        if rows > 2 and columns > 2:
+        if rows > 1 and columns > 1:
             elements = [[random.randint(l, u) for _ in range(rows)] for _ in range(columns)]
 
         elif rows == 1 and columns > 1:
@@ -164,7 +164,6 @@ class Matrix:
 
         return Matrix(transpose_array)
 
-
     def minor(self, i, j):
         '''
         Extract a minor matrix by removing the ith row and jth column
@@ -216,6 +215,12 @@ class Matrix:
 
     @staticmethod
     def dot(A, B):
+        a_rows, a_columns = A.get_size()
+        b_rows, b_columns = B.get_size()
+
+        a_elements = A.get_elements()
+        b_elements = B.get_elements()
+
         if A.is_vector() and B.is_vector():
             A = A.make_row_vector()
             B = B.make_row_vector()
@@ -230,16 +235,44 @@ class Matrix:
                     result += a * b
 
                 return result
-            
+                
             else:
                 raise ValueError("Vectors must be of the same size")
 
+        if A.is_vector() and not B.is_vector():    # If A is a row vector and B is a matrix   
+            if A.get_type() == 2:
+                result_array = []
 
-        
+                for column in B.transpose().get_elements():
+                    row_sum = 0
+
+                    for a, b in zip(a_elements, column):
+                        row_sum += a * b
+                    
+                    result_array.append(row_sum)
+                    
+            return Matrix(result_array)
+
+        if not A.is_vector() and not B.is_vector():
+            if a_columns == b_rows:
+                result_array = Matrix.empty_2d_array(a_rows, b_columns)
+                
+                for i in range(a_rows):
+                    for j in range(b_columns):
+                        dot_product = 0
+                        for k in range(a_columns):
+                            dot_product += a_elements[i][k] * b_elements[k][j]
+                        result_array[i][j] = dot_product
+                
+                return Matrix(result_array)
+
+            else:
+                raise ValueError("Matrix dimensions must be compatible for matrix multiplication")
+
+
     @staticmethod
     def empty_2d_array(rows, columns):
         return [[0] * rows for _ in range(columns)]
-
 
     @staticmethod
     def empty_row_array(n):
@@ -267,7 +300,7 @@ class Matrix:
 
             cof_matrix = Matrix(cof_elements)
             det_reciprocal = 1 / self.det()
-            inv_matrix = cof_matrix.dot(det_reciprocal)
+            inv_matrix = Matrix.dot(cof_matrix, det_reciprocal)
 
             return inv_matrix
 
