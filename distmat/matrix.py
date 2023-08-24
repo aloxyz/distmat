@@ -57,23 +57,12 @@ class Matrix:
 
     #     print(elements())
 
-    @staticmethod
-    def format_number(number, padding=12, max_decimals=4):
-        formatted = '{:.{}f}'.format(number, max_decimals)
-        if '.' in formatted:
-            integer_part, decimal_part = formatted.split('.')
-            if len(decimal_part) > 0 and len(decimal_part) < max_decimals:
-                formatted += '0' * (max_decimals - len(decimal_part))
-            formatted = formatted.rstrip('0').rstrip('.')  # Strip unnecessary zeros and dot
-        return '{:>{}}'.format(formatted, padding)
-
     def __str__(self):
         if self.get_type() <= 2:
-            return ' '.join([Matrix.format_number(i) for i in self.get_elements()]) + '\n\n'
+            return ' ' + ' '.join(['{:12.4f}'.format(i) for i in self.get_elements()]) + '\n\n'
 
         if self.get_type() >= 3:
-            return '\n'.join([''.join([Matrix.format_number(item) for item in row]) for row in self.get_elements()]) + '\n\n'
-
+            return '\n' + '\n'.join([''.join(['{:12.4f}'.format(item) for item in row]) for row in self.get_elements()]) + '\n\n'
 
     @staticmethod
     def random_int(rows, columns, l, u):
@@ -249,7 +238,7 @@ class Matrix:
     @staticmethod
     def dot(A, B):
         result_array = []
-        
+
         if not A.is_vector() and isinstance(B, (int, float, complex)):      # matrix * scalar
             a_elements = A.get_elements()
             result_array = [[a * B for a in column] for column in a_elements]
@@ -342,7 +331,8 @@ class Matrix:
                 for i in range(a_rows):
                     for j in range(b_columns):
                         for k in range(a_columns - 1):
-                            result_array[i][j] += a_elements[i][k] * b_elements[k][j]
+                            result_array[i][j] += a_elements[i][k] * \
+                                b_elements[k][j]
 
             return Matrix(result_array)
 
