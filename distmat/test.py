@@ -4,15 +4,21 @@ import numpy as np
 
 def main():
 
-    a = Matrix.random(3, 1, -99, 99)
+    a = Matrix.random(3, 3, -99, 99)
     b = Matrix.random(3, 3, -99, 99)
 
-    print(f"{a}*{b}= {Matrix.dot(a,b)}")
+    # DOT PRODUCT
+    # print(f"{a}*{b}= {Matrix.dot(a,b)}")
+    # print(np.dot(np.array(a.get_elements()), np.array(b.get_elements())))
+    print(a, Matrix.dot(a, 2))
 
-    print(np.dot(np.array(a.get_elements()), np.array(b.get_elements())))
-    # print("numpy: ", np.linalg.inv(np.array(elements)))
-    # print("distmat: ", Matrix.inv(A))
+    # INVERSE
+    # print("numpy: ", np.linalg.inv(np.array(a.get_elements())))
+    # print("distmat: ", a.inv())
 
+    # DETERMINANT
+    # print("numpy: ", np.linalg.det(np.array(a.get_elements())))
+    # print("distmat: ", a.det())
 
 if __name__ == "__main__":
     main()

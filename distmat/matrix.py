@@ -222,11 +222,11 @@ class Matrix:
 
     @staticmethod
     def dot(A, B):
-        a_rows, a_columns = A.get_size()
-        b_rows, b_columns = B.get_size()
+        if not A.is_vector() and isinstance(B, (int, float, complex)):      # matrix * scalar
+            a_elements = A.get_elements()
+            result_array = [[a * B for a in column] for column in a_elements]
 
-        a_elements = A.get_elements()
-        b_elements = B.get_elements()
+            return Matrix(result_array)
 
         if A.is_vector() and B.is_vector():     # vector * vector
             A = A.make_row_vector()
@@ -298,8 +298,11 @@ class Matrix:
 
             return Matrix(result_array)
 
-
+        # TODO
         if not A.is_vector() and not B.is_vector():     # matrix * matrix
+            a_rows, a_columns = A.get_size()
+            b_rows, b_columns = B.get_size()
+
             if a_columns == b_rows:
                 result_array = Matrix.empty_2d_array(a_rows, b_columns)
 
