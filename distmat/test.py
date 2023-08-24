@@ -4,13 +4,10 @@ import numpy as np
 
 def main():
 
-    a = Matrix.random(1, 3, -99, 99)
-    print(a)
+    a = Matrix.random(3, 1, -99, 99)
+    b = Matrix.random(3, 3, -99, 99)
 
-    b = Matrix.random(2, 3, -99, 99)
-    print(b)
-
-    print(Matrix.dot(a,b))
+    print(f"{a}*{b}= {Matrix.dot(a,b)}")
 
     print(np.dot(np.array(a.get_elements()), np.array(b.get_elements())))
     # print("numpy: ", np.linalg.inv(np.array(elements)))
