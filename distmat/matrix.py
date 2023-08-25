@@ -236,6 +236,21 @@ class Matrix:
             raise ValueError("Input is not a valid vector")
 
     @staticmethod
+    def outer_product(A, B):
+        if A.is_vector() and B.is_vector():
+            A = A.make_column_vector()
+            B = B.make_row_vector()
+
+            a_elements = A.get_elements()
+            b_elements = B.get_elements()
+
+            result_array = [[a * b for b in b_elements] for a in a_elements]
+
+            return Matrix(result_array)
+        else:
+            raise ValueError("Both inputs should be vectors")
+
+    @staticmethod
     def dot(A, B):
         result_array = []
 
@@ -433,6 +448,92 @@ class Matrix:
                 submatrices.append(Matrix(submatrix))
 
         return submatrices
+
+    def lu_solve(L, U, b):
+        """x = lu_solve(L, U, b) is the solution to L U x = b
+       L must be a lower-triangular matrix
+       U must be an upper-triangular matrix of the same size as L
+       b must be a vector of the same leading dimension as L
+        """
+        y = Matrix.fwd_sub(L, b)
+        x = Matrix.back_sub(U, y)
+        
+        return x
+
+    def lu_decomp(self):
+        n, _ = self.get_size()
+
+        if n == 1:
+            L = Matrix([1])
+            U = self.copy()
+            return (L, U)
+
+        elements = self.get_elements()
+
+        A11 = elements[0,0]
+        A12 = elements[0,1:]
+        A21 = elements[1:,0]
+        A22 = elements[1:,1:]
+
+        L11 = 1
+        U11 = A11
+        L12 = Matrix.empty_row_array(n-1)
+        U12 = A12.copy()
+
+        L21 = A21.copy() / U11
+        U21 = Matrix.empty_row_array(n-1)
+
+        S22 = A22 - Matrix.outer_product(L21, U12)
+        (L22, U22) = S22.lu_decomp()
+
+        L = Matrix([L11, L12] + [L21, L22])
+        U = Matrix([U11, U12] + [U21, U22])
+        
+        return (L, U)
+
+    @staticmethod
+    def fwd_sub(L, b):
+        """x = forward_sub(L, b) is the solution to L x = b
+        L must be a lower-triangular matrix
+        b must be a vector of the same leading dimension as L
+        """
+        n, _ = L.get_size()
+        x = Matrix.empty_row_array(n)
+
+        L_elements = L.get_elements()
+        b_elements = b.get_elements()
+
+        for i in range(n):
+            sum = b_elements[i]
+
+            for j in range(i-1):
+                sum -=  L_elements[i][j] * x[j]
+            
+            x[i] = sum / L_elements[i][i]
+
+        return Matrix(x)
+    
+    @staticmethod
+    def back_sub(U, b):
+        """x = back_sub(U, b) is the solution to U x = b
+        U must be an upper-triangular matrix
+        b must be a vector of the same leading dimension as U
+        """
+        n, _ = L.get_size()
+        x = Matrix.empty_row_array(n)
+
+        U_elements = U.get_elements()
+        b_elements = b.get_elements()
+
+        for i in range(n-1, -1, -1):
+            sum = b_elements[i]
+
+            for j in range(i+1, n):
+                sum -=  U_elements[i][j] * x[j]
+            
+            x[i] = sum / U_elements[i][i]
+
+        return Matrix(x)
 
     def rank(self):
         rows, columns = self.get_size()

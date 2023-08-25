@@ -12,8 +12,12 @@ def main():
     # DOT PRODUCT
     # print(f"{a}*\n{b}=\n{Matrix.dot(a,b)}")
     # print(a, Matrix.dot(a, 2))
-    print(Matrix.dot(a, b))
-    print(np.dot(np.array(a.get_elements()), np.array(b.get_elements())))
+    # print(Matrix.dot(a, b))
+    # print(np.dot(np.array(a.get_elements()), np.array(b.get_elements())))
+
+    # OUTER PRODUCT
+    print(f"{a}*\n{b}=\n{Matrix.outer_product(a,b)}")
+    print(np.outer(np.array(a.get_elements()), np.array(b.get_elements())))
 
     # INVERSE
     # print("\ndistmat:\n", a.inv())
@@ -26,6 +30,9 @@ def main():
     # RANK
     # print("numpy: ", np.linalg.matrix_rank(np.array(a.get_elements())))
     # print("distmat: ", a.rank())
+
+    # LINEAR SYSTEM SOLUTION
+    print()
 
 if __name__ == "__main__":
     main()
