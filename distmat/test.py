@@ -5,7 +5,7 @@ import numpy as np
 def main():
 
     a = Matrix.random_int(3, 3, -99, 99)
-    b = Matrix.random_float(3, 3, -99, 99)
+    b = Matrix.random_float(3, 1, -99, 99)
 
     # DOT PRODUCT
     # print(f"{a}*\n{b}=\n{Matrix.dot(a,b)}")
@@ -18,8 +18,8 @@ def main():
     # print(np.outer(np.array(a.get_elements()), np.array(b.get_elements())))
 
     # ADDITION
-    print(a,b)
-    print(Matrix.add(a, b))
+    # print(a,b)
+    # print(Matrix.add(a, b))
 
     # INVERSE
     # print("\ndistmat:\n", a.inv())
@@ -34,7 +34,7 @@ def main():
     # print("distmat: ", a.rank())
 
     # LINEAR SYSTEM SOLUTION
-    #print(a.lu_solve(b))
+    print(a.lu_solve(b))
 
 
 if __name__ == "__main__":

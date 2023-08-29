@@ -424,6 +424,19 @@ class Matrix:
         else:
             raise ValueError("Input matrices must be of same size")
 
+    def sub(A, B):
+        a_elements = A.get_elements()
+        b_elements = B.get_elements()
+
+        if Matrix.same_size(A, B):
+            result_array = [[a - b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(a_elements, b_elements)]
+
+            return Matrix(result_array)
+        
+        else:
+            raise ValueError("Input matrices must be of same size")
+
+
     def det(self):
         if self.is_square():
             elements = self.get_elements()
@@ -473,6 +486,8 @@ class Matrix:
        L must be a lower-triangular matrix
        U must be an upper-triangular matrix of the same size as L
        b must be a vector of the same leading dimension as L
+        
+        https://courses.physics.illinois.edu/cs357/sp2020/notes/ref-9-linsys.html
         """
 
         L, U = self.lu_decomp()
@@ -505,7 +520,7 @@ class Matrix:
         L21 = Matrix.dot(Matrix(A21), 1/U11) #A21.copy() / U11
         U21 = Matrix.empty_row_array(n-1)
 
-        S22 = A22 - Matrix.outer_product(Matrix(L21), Matrix(U12))
+        S22 = Matrix.sub(A22, Matrix.outer_product(Matrix(L21), Matrix(U12)))
         (L22, U22) = S22.lu_decomp()
 
         L = Matrix([L11, L12] + [L21, L22])
