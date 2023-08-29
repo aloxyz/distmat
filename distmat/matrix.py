@@ -244,7 +244,7 @@ class Matrix:
             a_elements = A.get_elements()
             b_elements = B.get_elements()
 
-            result_array = [[a * b for b in b_elements] for a in a_elements]
+            result_array = [[a[0] * b for b in b_elements] for a in a_elements]
 
             return Matrix(result_array)
         else:
@@ -253,6 +253,12 @@ class Matrix:
     @staticmethod
     def dot(A, B):
         result_array = []
+
+        if A.is_vector() and isinstance(B, (int, float, complex)):      # vector * scalar
+            a_elements = A.get_elements()
+            result_array = [a * B for a in a_elements]
+
+            return Matrix(result_array)
 
         if not A.is_vector() and isinstance(B, (int, float, complex)):      # matrix * scalar
             a_elements = A.get_elements()
@@ -404,6 +410,19 @@ class Matrix:
                     cof_elements[row][column] = cof_elements[row][column] / det
 
             return cof_matrix
+    
+    @staticmethod
+    def add(A, B):
+        a_elements = A.get_elements()
+        b_elements = B.get_elements()
+
+        if Matrix.same_size(A, B):
+            result_array = [[a + b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(a_elements, b_elements)]
+
+            return Matrix(result_array)
+        
+        else:
+            raise ValueError("Input matrices must be of same size")
 
     def det(self):
         if self.is_square():
@@ -449,12 +468,15 @@ class Matrix:
 
         return submatrices
 
-    def lu_solve(L, U, b):
+    def lu_solve(self, b):
         """x = lu_solve(L, U, b) is the solution to L U x = b
        L must be a lower-triangular matrix
        U must be an upper-triangular matrix of the same size as L
        b must be a vector of the same leading dimension as L
         """
+
+        L, U = self.lu_decomp()
+
         y = Matrix.fwd_sub(L, b)
         x = Matrix.back_sub(U, y)
         
@@ -470,20 +492,20 @@ class Matrix:
 
         elements = self.get_elements()
 
-        A11 = elements[0,0]
-        A12 = elements[0,1:]
-        A21 = elements[1:,0]
-        A22 = elements[1:,1:]
+        A11 = elements[0][0]
+        A12 = elements[0][1:]
+        A21 = elements[1:][0]
+        A22 = elements[1:][1:]
 
         L11 = 1
         U11 = A11
         L12 = Matrix.empty_row_array(n-1)
         U12 = A12.copy()
 
-        L21 = A21.copy() / U11
+        L21 = Matrix.dot(Matrix(A21), 1/U11) #A21.copy() / U11
         U21 = Matrix.empty_row_array(n-1)
 
-        S22 = A22 - Matrix.outer_product(L21, U12)
+        S22 = A22 - Matrix.outer_product(Matrix(L21), Matrix(U12))
         (L22, U22) = S22.lu_decomp()
 
         L = Matrix([L11, L12] + [L21, L22])
