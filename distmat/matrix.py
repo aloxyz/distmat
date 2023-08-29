@@ -3,6 +3,8 @@ import random
 
 class Matrix:
     def __init__(self, elements):
+        sanitized_elements = self.sanitize_elements(elements)
+        
         if Matrix.is_array_scalar(elements):
             self.type = 1
             self.rows = 1
@@ -63,6 +65,14 @@ class Matrix:
 
         if self.get_type() >= 3:
             return '\n' + '\n'.join([''.join(['{:12.4f}'.format(item) for item in row]) for row in self.get_elements()]) + '\n\n'
+
+    @staticmethod
+    def sanitize_elements(elements):
+        if isinstance(elements, list) and len(elements) == 1 and isinstance(elements[0], list):
+            return elements[0]
+        else:
+            return elements
+
 
     @staticmethod
     def random_int(rows, columns, l, u):
@@ -237,6 +247,7 @@ class Matrix:
 
     @staticmethod
     def outer_product(A, B):
+        print(A.get_elements())
         if A.is_vector() and B.is_vector():
             A = A.make_column_vector()
             B = B.make_row_vector()
@@ -428,13 +439,13 @@ class Matrix:
         a_elements = A.get_elements()
         b_elements = B.get_elements()
 
-        if Matrix.same_size(A, B):
-            result_array = [[a - b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(a_elements, b_elements)]
-
-            return Matrix(result_array)
+        # if Matrix.same_size(A, B):
+        result_array = [[a - b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(a_elements, b_elements)]
         
-        else:
-            raise ValueError("Input matrices must be of same size")
+        return Matrix(result_array)
+    
+        # else:
+        #     raise ValueError("Input matrices must be of same size")
 
 
     def det(self):
@@ -501,7 +512,7 @@ class Matrix:
         n, _ = self.get_size()
 
         if n == 1:
-            L = Matrix([1])
+            L = Matrix([[1]])
             U = self.copy()
             return (L, U)
 
@@ -509,23 +520,23 @@ class Matrix:
 
         A11 = elements[0][0]
         A12 = elements[0][1:]
-        A21 = elements[1:][0]
-        A22 = elements[1:][1:]
+        A21 = [row[0] for row in elements[1:]]
+        A22 = [row[1:] for row in elements[1:]]
 
         L11 = 1
         U11 = A11
         L12 = Matrix.empty_row_array(n-1)
         U12 = A12.copy()
 
-        L21 = Matrix.dot(Matrix(A21), 1/U11) #A21.copy() / U11
+        L21 = Matrix.dot(Matrix([A21]), 1/U11)  # Matrix(A21.copy()) / U11
         U21 = Matrix.empty_row_array(n-1)
 
-        S22 = Matrix.sub(A22, Matrix.outer_product(Matrix(L21), Matrix(U12)))
+        S22 = Matrix.sub(Matrix(A22), Matrix.outer_product(L21, Matrix(U12)))
         (L22, U22) = S22.lu_decomp()
 
-        L = Matrix([L11, L12] + [L21, L22])
-        U = Matrix([U11, U12] + [U21, U22])
-        
+        L = Matrix([[L11] + L12.get_elements()] + [L21.get_elements(), L22.get_elements()])
+        U = Matrix([[U11] + U12.get_elements()] + [U21.get_elements(), U22.get_elements()])
+
         return (L, U)
 
     @staticmethod
