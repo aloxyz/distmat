@@ -1,40 +1,40 @@
 import random
-
+import numpy as np
 
 class Matrix:
     def __init__(self, elements):
         sanitized_elements = self.sanitize_elements(elements)
         
-        if Matrix.is_array_scalar(elements):
+        if Matrix.is_array_scalar(sanitized_elements):
             self.type = 1
             self.rows = 1
             self.columns = 1
 
-        elif Matrix.is_array_row(elements):
+        elif Matrix.is_array_row(sanitized_elements):
             self.type = 2
-            self.rows = len(elements)
+            self.rows = len(sanitized_elements)
             self.columns = 1
 
-        elif Matrix.is_array_column(elements):
+        elif Matrix.is_array_column(sanitized_elements):
             self.type = 3
             self.rows = 1
-            self.columns = len(elements)
+            self.columns = len(sanitized_elements)
 
-        elif Matrix.is_array_2d(elements):
+        elif Matrix.is_array_2d(sanitized_elements):
             # Check for same-length rows
-            for i in elements:
-                if len(i) != len(elements[0]):
+            for i in sanitized_elements:
+                if len(i) != len(sanitized_elements[0]):
                     raise ValueError("Invalid row size")
 
-            self.rows = len(elements[0])
-            self.columns = len(elements)
+            self.rows = len(sanitized_elements[0])
+            self.columns = len(sanitized_elements)
 
             self.type = 4
 
         else:
             raise ValueError("Cannot determine array type")
 
-        self.elements = elements
+        self.elements = sanitized_elements
 
     # def __str__(self):
     #     elements = self.get_elements()
@@ -247,7 +247,6 @@ class Matrix:
 
     @staticmethod
     def outer_product(A, B):
-        print(A.get_elements())
         if A.is_vector() and B.is_vector():
             A = A.make_column_vector()
             B = B.make_row_vector()
@@ -422,31 +421,44 @@ class Matrix:
 
             return cof_matrix
     
-    @staticmethod
-    def add(A, B):
-        a_elements = A.get_elements()
-        b_elements = B.get_elements()
+    def copy(self):
+        elements_copy = [row.copy() for row in self.elements]
+        return Matrix(elements_copy)
 
-        if Matrix.same_size(A, B):
-            result_array = [[a + b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(a_elements, b_elements)]
+    def __add__(self, other):
+        if isinstance(other, Matrix):
+            self.make_row_vector()
+            other.make_row_vector()
 
-            return Matrix(result_array)
-        
+            a_elements = self.get_elements()
+            b_elements = other.get_elements()
+
+            if Matrix.same_size(self, other):
+                result_array = [[a + b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(a_elements, b_elements)]
+                return Matrix(result_array)
+            else:
+                raise ValueError("Input matrices must be of the same size")
+
         else:
-            raise ValueError("Input matrices must be of same size")
+            raise ValueError("Addition can only be performed with another Matrix")
 
-    def sub(A, B):
-        a_elements = A.get_elements()
-        b_elements = B.get_elements()
-
-        # if Matrix.same_size(A, B):
-        result_array = [[a - b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(a_elements, b_elements)]
-        
-        return Matrix(result_array)
     
-        # else:
-        #     raise ValueError("Input matrices must be of same size")
+    def __sub__(self, other):
+        if isinstance(other, Matrix):
+            self.make_row_vector()
+            other.make_row_vector()
 
+            a_elements = self.get_elements()
+            b_elements = other.get_elements()
+
+            if Matrix.same_size(self, other):
+                result_array = [[a - b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(a_elements, b_elements)]
+                return Matrix(result_array)
+            else:
+                raise ValueError("Input matrices must be of the same size")
+
+        else:
+            raise ValueError("Subtraction can only be performed with another Matrix")
 
     def det(self):
         if self.is_square():
@@ -509,6 +521,7 @@ class Matrix:
         return x
 
     def lu_decomp(self):
+        # print(self)
         n, _ = self.get_size()
 
         if n == 1:
@@ -518,10 +531,10 @@ class Matrix:
 
         elements = self.get_elements()
 
-        A11 = elements[0][0]
-        A12 = elements[0][1:]
-        A21 = [row[0] for row in elements[1:]]
-        A22 = [row[1:] for row in elements[1:]]
+        A11 = elements[0][0] # scalar
+        A12 = elements[0][1:] # (n-1)x1 row vector
+        A21 = [row[0] for row in elements[1:]] # (n-1)x1 column vector
+        A22 = [row[1:] for row in elements[1:]] # (n-1)x(n-1)x matrix
 
         L11 = 1
         U11 = A11
@@ -529,9 +542,9 @@ class Matrix:
         U12 = A12.copy()
 
         L21 = Matrix.dot(Matrix([A21]), 1/U11)  # Matrix(A21.copy()) / U11
-        U21 = Matrix.empty_row_array(n-1)
+        U21 = Matrix.empty_row_array(n - 1)
 
-        S22 = Matrix.sub(Matrix(A22), Matrix.outer_product(L21, Matrix(U12)))
+        S22 = Matrix(A22) - Matrix.outer_product(L21, Matrix(U12)) # shur complement
         (L22, U22) = S22.lu_decomp()
 
         L = Matrix([[L11] + L12.get_elements()] + [L21.get_elements(), L22.get_elements()])

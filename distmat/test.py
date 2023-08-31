@@ -4,8 +4,8 @@ import numpy as np
 
 def main():
 
-    a = Matrix.random_int(3, 3, -99, 99)
-    b = Matrix.random_float(3, 1, -99, 99)
+    a = Matrix.random_int(4, 1, -99, 99)
+    b = Matrix.random_float(4, 1, -99, 99)
 
     # DOT PRODUCT
     # print(f"{a}*\n{b}=\n{Matrix.dot(a,b)}")
@@ -14,12 +14,19 @@ def main():
     # print(np.dot(np.array(a.get_elements()), np.array(b.get_elements())))
 
     # OUTER PRODUCT
-    # print(f"{a}*\n{b}=\n{Matrix.outer_product(a,b)}")
+    # print(f"{a}*\n{b}=\n{Matrix.outer_product(a,b).get_elements()}")
     # print(np.outer(np.array(a.get_elements()), np.array(b.get_elements())))
 
     # ADDITION
     # print(a,b)
-    # print(Matrix.add(a, b))
+    # print(Matrix.add(a, 4))
+    # print(np.add(a, 4))
+
+
+    # SUBTRACTIONS
+    # print(a,b)
+    # print(np.subtract(a, b))
+    # print(a - b)
 
     # INVERSE
     # print("\ndistmat:\n", a.inv())
