@@ -10,7 +10,10 @@ class Matrix:
             raise ValueError("Input must be a list")
 
     def __str__(self):
-        return str(self.data)
+        tmp = ""
+        for row in self.data:
+            tmp = tmp + str(row) + '\n'
+        return tmp
 
     def __getitem__(self, index):
         return self.data[index]
@@ -27,32 +30,32 @@ class Matrix:
         return self.data
     
     @staticmethod
-    def random_int(rows, columns, l, u):
-        if rows > 1 and columns > 1:
+    def random_int(rows, cols, l, u):
+        if rows > 1 and cols > 1:
             data = [[random.randint(l, u) for _ in range(rows)]
-                        for _ in range(columns)]
+                        for _ in range(cols)]
 
-        elif rows == 1 and columns > 1:
-            data = [random.randint(l, u) for _ in range(columns)]
+        elif rows == 1 and cols > 1:
+            data = [random.randint(l, u) for _ in range(cols)]
 
-        elif rows > 1 and columns == 1:
+        elif rows > 1 and cols == 1:
             data = [[random.randint(l, u)]
-                        for _ in range(columns) for _ in range(rows)]
+                        for _ in range(cols) for _ in range(rows)]
 
         return Matrix(data)
 
     @staticmethod
-    def random_float(rows, columns, l, u):
-        if rows > 1 and columns > 1:
+    def random_float(rows, cols, l, u):
+        if rows > 1 and cols > 1:
             data = [[random.uniform(l, u) for _ in range(rows)]
-                        for _ in range(columns)]
+                        for _ in range(cols)]
 
-        elif rows == 1 and columns > 1:
-            data = [random.uniform(l, u) for _ in range(columns)]
+        elif rows == 1 and cols > 1:
+            data = [random.uniform(l, u) for _ in range(cols)]
 
-        elif rows > 1 and columns == 1:
+        elif rows > 1 and cols == 1:
             data = [[random.uniform(l, u)]
-                        for _ in range(columns) for _ in range(rows)]
+                        for _ in range(cols) for _ in range(rows)]
 
         return Matrix(data)
 
@@ -94,7 +97,7 @@ class Matrix:
 
     def transpose(self):
         data = self.get()
-        rows, columns = self.shape()
+        rows, cols = self.shape()
         transpose_array = None
 
         if self.is_row_vector():
@@ -159,55 +162,21 @@ class Matrix:
         else:
             raise ValueError("Input is not a valid vector")
 
-    def __add__(self, other):
-        if isinstance(other, Matrix):
-            self.make_row_vector()
-            other.make_row_vector()
-
-            a_data = self.get()
-            b_data = other.get()
-
-            if Matrix.same_size(self, other):
-                result_array = [[a + b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(a_data, b_data)]
-                return Matrix(result_array)
-            else:
-                raise ValueError("Input matrices must be of the same size")
-
-        else:
-            raise ValueError("Addition can only be performed with another Matrix")
-    
-    def __sub__(self, other):
-        if isinstance(other, Matrix):
-            self.make_row_vector()
-            other.make_row_vector()
-
-            a_data = self.get()
-            b_data = other.get()
-
-            if Matrix.same_size(self, other):
-                result_array = [[a - b for a, b in zip(row_a, row_b)] for row_a, row_b in zip(a_data, b_data)]
-                return Matrix(result_array)
-            else:
-                raise ValueError("Input matrices must be of the same size")
-
-        else:
-            raise ValueError("Subtraction can only be performed with another Matrix")
-
     def det(self):
         if self.is_square():
             data = self.get()
-            _, columns = self.shape()
+            _, cols = self.shape()
 
-            if columns == 1:
+            if cols == 1:
                 return data[0][0]
 
-            elif columns == 2:
+            elif cols == 2:
                 return (data[0][0] * data[1][1]) - (data[0][1] * data[1][0])
 
             else:
                 det_value = 0
 
-                for j in range(columns):
+                for j in range(cols):
                     minor = self.minor(0, j)
                     det_value += ((-1) ** j) * data[0][j] * minor.det()
 
@@ -222,11 +191,11 @@ class Matrix:
         Auxiliary function for the rank() function
         '''
         data = self.get()
-        rows, columns = self.shape()
+        rows, cols = self.shape()
         submatrices = []
 
         for start_row in range(rows - order + 1):
-            for start_col in range(columns - order + 1):
+            for start_col in range(cols - order + 1):
                 submatrix = []
 
                 for row in range(order):
@@ -238,16 +207,27 @@ class Matrix:
         return submatrices
     
     def rank(self):
-        rows, columns = self.shape()
-        j1 = min(rows, columns)
+        rows, cols = self.shape()
+        j1 = min(rows, cols)
 
         for i in range(j1, 1, -1):
             if self.get_square_submatrices(i) != -1:
                 return i
 
     @staticmethod
-    def dot(A, B):
-        pass
+    def dot(self, other):
+        if isinstance(other, Matrix):
+            if self.shape()[1] == other.shape()[0]:
+                result = [[0] * other.shape()[1] for _ in range(self.shape()[0])]
+                for i in range(self.shape()[0]):
+                    for j in range(other.shape()[1]):
+                        for k in range(self.shape()[1]):
+                            result[i][j] += self.data[i][k] * other.data[k][j]
+                return Matrix(result)
+            else:
+                raise ValueError("Matrix dimensions do not match for dot product")
+        else:
+            raise ValueError("Dot product requires a Matrix object")
 
     def inv(self):
         if not self.is_square():
@@ -257,13 +237,13 @@ class Matrix:
             raise Exception("Matrix is not invertible")
 
         else:
-            rows, columns = self.shape()
+            rows, cols = self.shape()
             data = self.get()
 
             det = self.det()
 
             # special case for 2x2 matrix:
-            if rows == columns == 2:
+            if rows == cols == 2:
                 return [[data[1][1] / det, -1 * data[0][1] / det],
                         [-1 * data[1][0] / det, data[0][0] / det]]
 
@@ -273,7 +253,7 @@ class Matrix:
             for row in range(rows):
                 cof_row = []
 
-                for column in range(columns):
+                for column in range(cols):
                     minor = self.minor(row, column)
 
                     cof_row.append(((-1)**(row + column)) * minor.det())
@@ -282,11 +262,11 @@ class Matrix:
 
             cof_matrix = Matrix(cof_matrix).transpose()
 
-            cof_rows, cof_columns = cof_matrix.shape()
+            cof_rows, cof_cols = cof_matrix.shape()
             cof_data = cof_matrix.get()
 
             for row in range(cof_rows):
-                for column in range(cof_columns):
+                for column in range(cof_cols):
                     cof_data[row][column] = cof_data[row][column] / det
 
             return cof_matrix
