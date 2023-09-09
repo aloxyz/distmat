@@ -84,21 +84,8 @@ class Matrix:
         rows, cols = self.shape()
         return rows == cols and cols == 1
 
-    def mean(self):
-        return sum(self.data) / len(self.data)
-
-    def sum(self):
-        return sum(self.data)
-
-    def max(self):
-        return max(self.data)
-
-    def min(self):
-        return min(self.data)
-
     def transpose(self):
         data = self.get()
-        rows, cols = self.shape()
         transpose_array = None
 
         if self.is_row_vector():
