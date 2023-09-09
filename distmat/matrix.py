@@ -1,6 +1,7 @@
 import random
 import array as Array
 
+
 class Matrix:
     def __init__(self, data):
         if isinstance(data, list):
@@ -28,19 +29,19 @@ class Matrix:
 
     def get(self):
         return self.data
-    
+
     @staticmethod
     def random_int(rows, cols, l, u):
         if rows > 1 and cols > 1:
             data = [[random.randint(l, u) for _ in range(rows)]
-                        for _ in range(cols)]
+                    for _ in range(cols)]
 
         elif rows == 1 and cols > 1:
             data = [random.randint(l, u) for _ in range(cols)]
 
         elif rows > 1 and cols == 1:
             data = [[random.randint(l, u)]
-                        for _ in range(cols) for _ in range(rows)]
+                    for _ in range(cols) for _ in range(rows)]
 
         return Matrix(data)
 
@@ -48,14 +49,14 @@ class Matrix:
     def random_float(rows, cols, l, u):
         if rows > 1 and cols > 1:
             data = [[random.uniform(l, u) for _ in range(rows)]
-                        for _ in range(cols)]
+                    for _ in range(cols)]
 
         elif rows == 1 and cols > 1:
             data = [random.uniform(l, u) for _ in range(cols)]
 
         elif rows > 1 and cols == 1:
             data = [[random.uniform(l, u)]
-                        for _ in range(cols) for _ in range(rows)]
+                    for _ in range(cols) for _ in range(rows)]
 
         return Matrix(data)
 
@@ -70,7 +71,7 @@ class Matrix:
     def is_vector(self):
         rows, cols = self.shape()
         return rows == 1 ^ cols == 1
-    
+
     def is_row_vector(self):
         rows, cols = self.shape()
         return rows == 1 and cols > 1
@@ -82,7 +83,7 @@ class Matrix:
     def is_scalar(self):
         rows, cols = self.shape()
         return rows == cols and cols == 1
-    
+
     def mean(self):
         return sum(self.data) / len(self.data)
 
@@ -119,7 +120,7 @@ class Matrix:
 
         data = self.get()
         minor_data = [row[:j] + row[j + 1:]
-                          for row_idx, row in enumerate(data) if row_idx != i]
+                      for row_idx, row in enumerate(data) if row_idx != i]
 
         return Matrix(minor_data)
 
@@ -205,7 +206,7 @@ class Matrix:
                 submatrices.append(Matrix(submatrix))
 
         return submatrices
-    
+
     def rank(self):
         rows, cols = self.shape()
         j1 = min(rows, cols)
@@ -215,17 +216,21 @@ class Matrix:
                 return i
 
     @staticmethod
-    def dot(self, other):
-        if isinstance(other, Matrix):
-            if self.shape()[1] == other.shape()[0]:
-                result = [[0] * other.shape()[1] for _ in range(self.shape()[0])]
-                for i in range(self.shape()[0]):
-                    for j in range(other.shape()[1]):
-                        for k in range(self.shape()[1]):
-                            result[i][j] += self.data[i][k] * other.data[k][j]
+    def dot(A, B):
+        if A.is_matrix() and B.is_matrix():
+            a_rows, a_cols = A.shape()
+            b_rows, b_cols = B.shape()
+
+            if a_cols == b_rows:
+                result = [[0] * b_cols for _ in range(A.shape()[0])]
+                for i in range(A.shape()[0]):
+                    for j in range(b_cols):
+                        for k in range(a_cols):
+                            result[i][j] += A.data[i][k] * B.data[k][j]
                 return Matrix(result)
             else:
-                raise ValueError("Matrix dimensions do not match for dot product")
+                raise ValueError(
+                    "Matrix dimensions do not match for dot product")
         else:
             raise ValueError("Dot product requires a Matrix object")
 

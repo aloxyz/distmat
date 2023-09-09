@@ -8,8 +8,8 @@ def main():
     b = Matrix.random_float(4, 4, -99, 99)
 
     # DOT PRODUCT
-    print(Matrix.dot(a,b))
-    print(np.dot(np.array(a.get()), np.array(b.get())))
+    print("\ndistmat:\n", Matrix.dot(a,b))
+    print("numpy: \n", np.dot(np.array(a.get()), np.array(b.get())))
 
     # INVERSE
     print("\ndistmat:\n", a.inv())
