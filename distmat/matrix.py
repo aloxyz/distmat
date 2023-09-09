@@ -1,6 +1,4 @@
 import random
-import array as Array
-
 
 class Matrix:
     def __init__(self, data):
