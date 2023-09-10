@@ -1,17 +1,22 @@
 import random
+import ray
 
 class Matrix:
     def __init__(self, data):
         if isinstance(data, list):
-            self.data = data
+            self.data = [[round(val, 8) for val in row] for row in data]
 
         else:
             raise ValueError("Input must be a list")
 
     def __str__(self):
-        tmp = ""
+        tmp = ''
+
         for row in self.data:
-            tmp = tmp + str(row) + '\n'
+            for item in row:
+                tmp = tmp + '{:12}\t'.format(item)
+
+            tmp = tmp + '\n'
         return tmp
 
     def __getitem__(self, index):
@@ -82,33 +87,6 @@ class Matrix:
         rows, cols = self.shape()
         return rows == cols and cols == 1
 
-    def transpose(self):
-        data = self.get()
-        transpose_array = None
-
-        if self.is_row_vector():
-            transpose_array = [[i] for i in data]
-
-        elif self.is_col_vector():
-            transpose_array = [i[0] for i in data]
-
-        elif self.is_matrix():
-            transpose_array = [[row[column] for row in data]
-                               for column in range(len(data[0]))]
-
-        return Matrix(transpose_array)
-
-    def minor(self, i, j):
-        '''
-        Extract a minor matrix by removing the ith row and jth column
-        '''
-
-        data = self.get()
-        minor_data = [row[:j] + row[j + 1:]
-                      for row_idx, row in enumerate(data) if row_idx != i]
-
-        return Matrix(minor_data)
-
     @staticmethod
     def same_size(A, B):
         '''
@@ -148,6 +126,53 @@ class Matrix:
         else:
             raise ValueError("Input is not a valid vector")
 
+    def get_square_submatrices(self, order):
+        '''
+        Auxiliary function for the rank() function
+        '''
+        data = self.get()
+        rows, cols = self.shape()
+        submatrices = []
+
+        for start_row in range(rows - order + 1):
+            for start_col in range(cols - order + 1):
+                submatrix = []
+
+                for row in range(order):
+                    submatrix.append(
+                        data[start_row + row][start_col:start_col + order])
+
+                submatrices.append(Matrix(submatrix))
+
+        return submatrices
+
+    def transpose(self):
+        data = self.get()
+        transpose_array = None
+
+        if self.is_row_vector():
+            transpose_array = [[i] for i in data]
+
+        elif self.is_col_vector():
+            transpose_array = [i[0] for i in data]
+
+        elif self.is_matrix():
+            transpose_array = [[row[column] for row in data]
+                               for column in range(len(data[0]))]
+
+        return Matrix(transpose_array)
+
+    def minor(self, i, j):
+        '''
+        Extract a minor matrix by removing the ith row and jth column
+        '''
+
+        data = self.get()
+        minor_data = [row[:j] + row[j + 1:]
+                      for row_idx, row in enumerate(data) if row_idx != i]
+
+        return Matrix(minor_data)
+
     def det(self):
         if self.is_square():
             data = self.get()
@@ -171,26 +196,6 @@ class Matrix:
         else:
             raise ValueError(
                 "Cannot compute determinant of a non-square matrix")
-
-    def get_square_submatrices(self, order):
-        '''
-        Auxiliary function for the rank() function
-        '''
-        data = self.get()
-        rows, cols = self.shape()
-        submatrices = []
-
-        for start_row in range(rows - order + 1):
-            for start_col in range(cols - order + 1):
-                submatrix = []
-
-                for row in range(order):
-                    submatrix.append(
-                        data[start_row + row][start_col:start_col + order])
-
-                submatrices.append(Matrix(submatrix))
-
-        return submatrices
 
     def rank(self):
         rows, cols = self.shape()
@@ -234,8 +239,10 @@ class Matrix:
 
             # special case for 2x2 matrix:
             if rows == cols == 2:
-                return [[data[1][1] / det, -1 * data[0][1] / det],
-                        [-1 * data[1][0] / det, data[0][0] / det]]
+                m = [[data[1][1] / det, -1 * data[0][1] / det],
+                     [-1 * data[1][0] / det, data[0][0] / det]]
+
+                return Matrix([[round(i, 8) for i in j] for j in m])
 
             # find matrix of cofactors
             cof_matrix = []
@@ -259,4 +266,4 @@ class Matrix:
                 for column in range(cof_cols):
                     cof_data[row][column] = cof_data[row][column] / det
 
-            return cof_matrix
+            return Matrix([[round(i, 8) for i in j] for j in cof_matrix])
