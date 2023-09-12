@@ -1,5 +1,6 @@
 import random
 import ray
+import tasks as t
 
 class Matrix:
     def __init__(self, data):
@@ -212,11 +213,19 @@ class Matrix:
             b_rows, b_cols = B.shape()
 
             if a_cols == b_rows:
-                result = [[0] * b_cols for _ in range(A.shape()[0])]
-                for i in range(A.shape()[0]):
+                result = [[0] * b_cols for _ in range(a_rows)] # create empty matrix
+                futures = []
+
+                for i in range(a_rows):
                     for j in range(b_cols):
                         for k in range(a_cols):
-                            result[i][j] += A.data[i][k] * B.data[k][j]
+                            # result[i][j] += A.data[i][k] * B.data[k][j]
+                            futures.append(((i, j), t.dot_calc.remote(A, B, i, j, k)))
+                
+                for future in futures:
+                    i, j = future[0]
+                    result[i][j] += ray.get(future[1])
+
                 return Matrix(result)
             else:
                 raise ValueError(
