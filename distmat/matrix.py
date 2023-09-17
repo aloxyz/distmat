@@ -133,19 +133,13 @@ class Matrix:
         '''
         data = self.get()
         rows, cols = self.shape()
-        submatrices = []
+        futures = []
 
         for start_row in range(rows - order + 1):
-            for start_col in range(cols - order + 1):
-                submatrix = []
+            for start_col in range(cols - order + 1):            
+                futures.append(t.get_submatrix_task.remote(start_row, start_col, order, data))
 
-                for row in range(order):
-                    submatrix.append(
-                        data[start_row + row][start_col:start_col + order])
-
-                submatrices.append(Matrix(submatrix))
-
-        return submatrices
+        return ray.get(futures) 
 
     def transpose(self):
         data = self.get()

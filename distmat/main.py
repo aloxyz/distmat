@@ -4,7 +4,7 @@ from matrix import Matrix
 import numpy as np
 
 if __name__ == "__main__":
-    a = Matrix.random_int(8, 8, -99, 99)
+    a = Matrix.random_int(16, 16, -99, 99)
     b = Matrix.random_float(4, 4, -99, 99)
 
     # DOT PRODUCT
@@ -16,12 +16,12 @@ if __name__ == "__main__":
     # print("numpy: \n", np.linalg.inv(np.array(a.get())))
 
     # DETERMINANT
-    print("\nnumpy: ", np.linalg.det(np.array(a.get())))
-    print("distmat: ", a.det())
+    # print("\nnumpy: ", np.linalg.det(np.array(a.get())))
+    # print("distmat: ", a.det())
 
     # RANK
-    # print("\nnumpy: ", np.linalg.matrix_rank(np.array(a.get())))
-    # print("distmat: ", a.rank())
+    print("\nnumpy: ", np.linalg.matrix_rank(np.array(a.get())))
+    print("distmat: ", a.rank())
 
     if ray.is_initialized:
         ray.shutdown()
