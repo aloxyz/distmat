@@ -158,12 +158,23 @@ class Matrix:
         return Matrix(transpose_array)
 
     @ray.remote
-    def minor(A, i, j):
+    def dist_minor(A, i, j):
         '''
         Extract a minor matrix by removing the ith row and jth column
         '''
 
         data = A.get()
+        minor_data = [row[:j] + row[j + 1:]
+                      for row_idx, row in enumerate(data) if row_idx != i]
+
+        return Matrix(minor_data)
+
+    def minor(self, i, j):
+        '''
+        Extract a minor matrix by removing the ith row and jth column
+        '''
+
+        data = self.get()
         minor_data = [row[:j] + row[j + 1:]
                       for row_idx, row in enumerate(data) if row_idx != i]
 
@@ -185,7 +196,7 @@ class Matrix:
                 det_value = 0
 
 
-                minors_futures = [Matrix.minor.remote(self, 0, j) for j in range(cols)]
+                minors_futures = [Matrix.dist_minor.remote(self, 0, j) for j in range(cols)]
                 minors = ray.get(minors_futures)
 
                 for minor, j in zip(minors, range(cols)):
@@ -243,7 +254,6 @@ class Matrix:
         else:
             rows, cols = self.shape()
             data = self.get()
-
             det = self.det()
 
             # special case for 2x2 matrix:
@@ -254,25 +264,17 @@ class Matrix:
                 return Matrix([[round(i, 8) for i in j] for j in m])
 
             # find matrix of cofactors
-            cof_matrix = []
-
-            for row in range(rows):
-                cof_row = []
-
-                for column in range(cols):
-                    minor = self.minor(row, column)
-
-                    cof_row.append(((-1)**(row + column)) * minor.det())
-
-                cof_matrix.append(cof_row)
-
+            cof_rows_futures = [t.inv_cof_matrix.remote(self, row, cols) for row in range(rows)]
+            cof_matrix = ray.get(cof_rows_futures)
             cof_matrix = Matrix(cof_matrix).transpose()
 
             cof_rows, cof_cols = cof_matrix.shape()
             cof_data = cof_matrix.get()
 
-            for row in range(cof_rows):
-                for column in range(cof_cols):
-                    cof_data[row][column] = cof_data[row][column] / det
+            data_futures = [t.inv_calc.remote(row, cof_cols, cof_data, det) for row in range(cof_rows)]
+
+            for data in ray.get(data_futures):
+                for row, col, value in [data]:
+                    cof_data[row][col] = value
 
             return Matrix([[round(i, 8) for i in j] for j in cof_matrix])
