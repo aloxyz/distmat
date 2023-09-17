@@ -163,17 +163,19 @@ class Matrix:
 
         return Matrix(transpose_array)
 
-    def minor(self, i, j):
+    @ray.remote
+    def minor(A, i, j):
         '''
         Extract a minor matrix by removing the ith row and jth column
         '''
 
-        data = self.get()
+        data = A.get()
         minor_data = [row[:j] + row[j + 1:]
                       for row_idx, row in enumerate(data) if row_idx != i]
 
         return Matrix(minor_data)
 
+    # Works for matrices smaller than ~10
     def det(self):
         if self.is_square():
             data = self.get()
@@ -188,8 +190,12 @@ class Matrix:
             else:
                 det_value = 0
 
-                for j in range(cols):
-                    minor = self.minor(0, j)
+
+                minors_futures = [Matrix.minor.remote(self, 0, j) for j in range(cols)]
+                minors = ray.get(minors_futures)
+
+                for minor, j in zip(minors, range(cols)):
+                    # minor = self.minor(0, j)
                     det_value += ((-1) ** j) * data[0][j] * minor.det()
 
                 return det_value
