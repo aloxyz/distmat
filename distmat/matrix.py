@@ -180,7 +180,7 @@ class Matrix:
 
         return Matrix(minor_data)
 
-    # Works for matrices smaller than ~10
+    # Works well for matrices smaller than ~10
     def det(self):
         if self.is_square():
             data = self.get()
@@ -244,6 +244,7 @@ class Matrix:
         else:
             raise ValueError("Dot product requires a Matrix object")
 
+    # Works well for 6x6 matrices
     def inv(self):
         if not self.is_square():
             raise Exception("Matrix must be square")
