@@ -343,7 +343,7 @@ def get_square_submatrices(self, order):
     return submatrices
 \end{lstlisting}
 This is then parallelized by distributing the computation of \textit{get\_square\_submatrices},  creating a further \textbf{remote} auxiliary function, \textit{get\_submatrix\_task}:
-\begin{lstlisting}[language=Python, caption={Rank function}]
+\begin{lstlisting}[language=Python, caption={get\_square\_submatrices}]
 def get_square_submatrices(self, order):
     data = self.get()
     rows, cols = self.shape()
