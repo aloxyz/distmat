@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1695141762 "/home/alo/dev/distmat/latex/paper/main.tex" "main.pdf" "main" 1695141763 0
-  "/home/alo/dev/distmat/latex/paper/main.tex" 1695141760 13637 0d068804b4d5cb54b2791dace039e8f7 ""
+["pdflatex"] 1695148046 "/home/alo/dev/distmat/latex/paper/main.tex" "main.pdf" "main" 1695148047 0
+  "/home/alo/dev/distmat/latex/paper/main.tex" 1695148044 16701 bf43406f335be5a859cafeaef2aaead8 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm" 1136768653 1536 02c06700a42be0f5a28664c7273f82e7 ""
@@ -165,9 +165,9 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1684972800 40326 aba987258e6d6b6da5dec3a727ea174b ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1688393277 4603178 f922b3a8d38e69501903df0e74a512d4 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1688394148 7862959 e6e94a8e4da38cf2bbda6f7067042555 ""
-  "main.aux" 1695141763 2200 6e806babed301e664af39e15e2d79c21 "pdflatex"
-  "main.tex" 1695141760 13637 0d068804b4d5cb54b2791dace039e8f7 ""
-  "main.toc" 1695141763 1080 27aa987a9569b84de9fcc33d90ffa9f9 "pdflatex"
+  "main.aux" 1695148047 2532 ecf2ec5b822c551e6126a1dd57f0da9e "pdflatex"
+  "main.tex" 1695148044 16701 bf43406f335be5a859cafeaef2aaead8 ""
+  "main.toc" 1695148047 1018 75bf5d9eec88847684a9689b88606942 "pdflatex"
   "unime.png" 1669728949 1985265 b0d686c439ed37f076f41c0d4a9ba095 ""
   (generated)
   "main.aux"

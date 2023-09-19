@@ -300,8 +300,75 @@ def dot(A, B):
 \end{lstlisting}
 
 \subsubsection{Determinant}
+
+\pagebreak
 \subsubsection{Rank}
-\subsubsection{Inverse}
+The \textbf{rank} of a matrix $A$, denoted as $\text{rank}(A)$, is defined as the maximum number of linearly independent rows or columns in the matrix. We chose to determine the rank of a matrix by using the minor criterion, also known as the \textbf{criterion of minors}. According to this criterion, the rank of a matrix is equal to the largest order of a non-zero determinant of any square submatrix within the given matrix.
+\\
+\\
+Let $A$ be a matrix of size $m \times n$, and let $j$ be the order of the largest non-zero determinant among all square submatrices of $A$. Then the rank of $A$, denoted as $\text{rank}(A)$, is equal to $j$.
+
+\begin{itemize}
+    \item{To apply the minor criterion, we calculate the determinants of all possible square submatrices of $A$, ranging from $1 \times 1$ to $\min(m,n) \times \min(m,n)$. The order of the largest non-zero determinant among these submatrices gives us the rank of $A$.}
+    \item{If there is a non-zero determinant of order $j$, but all determinants of order $k+1$ or higher are zero, then the rank of $A$ is $j$.}
+\end{itemize}
+This is then brought to code as the following:
+
+\begin{lstlisting}[language=Python, caption={Rank function}]
+def rank(self):
+    rows, cols = self.shape()
+    j1 = min(rows, cols)
+
+    for i in range(j1, 1, -1):
+        if self.get_square_submatrices(i) != -1:
+            return i    
+\end{lstlisting}
+The function \textit{get\_square\_submatrices(i)} is an auxiliary function used to calculate all the possible square submatrices of a matrix of order $i$:
+\begin{lstlisting}[language=Python, caption={get\_square\_submatrices}]
+def get_square_submatrices(self, order):
+    data = self.get()
+    rows, cols = self.shape()
+    submatrices = []
+
+    for start_row in range(rows - order + 1):
+        for start_col in range(cols - order + 1):
+            submatrix = []
+
+            for row in range(order):
+                submatrix.append(
+                    data[start_row + row][start_col:start_col + order])
+
+            submatrices.append(Matrix(submatrix))
+
+    return submatrices
+\end{lstlisting}
+This is then parallelized by distributing the computation of \textit{get\_square\_submatrices},  creating a further \textbf{remote} auxiliary function, \textit{get\_submatrix\_task}:
+\begin{lstlisting}[language=Python, caption={Rank function}]
+def get_square_submatrices(self, order):
+    data = self.get()
+    rows, cols = self.shape()
+    futures = []
+
+    for start_row in range(rows - order + 1):
+        for start_col in range(cols - order + 1):            
+            futures.append(t.get_submatrix_task.remote(start_row, start_col, order, data))
+
+    return ray.get(futures)
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption={get\_submatrix\_task}]
+@ray.remote
+def get_submatrix_task(start_row, start_col, order, data):
+        from matrix import Matrix
+        submatrix = []
+
+        for row in range(order):
+            submatrix.append(
+                data[start_row + row][start_col:start_col + order])
+            
+        return submatrix
+\end{lstlisting}
+
 \pagebreak
 \section{Result of tests}
 
