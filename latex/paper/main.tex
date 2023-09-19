@@ -44,6 +44,7 @@
 \usepackage{eurosym}
 \usepackage[export]{adjustbox}
 
+\usepackage[margin=3cm]{geometry}
 \usepackage{listings}
 \usepackage{xcolor}
 
@@ -141,7 +142,7 @@ prof. Roberto \textsc{Marino} \\
 
 \section{Abstract}
 
-\section{Introduzione}
+\section{Introduction}
 Matrix operations are fundamental in numerous scientific and computational domains, serving as the building blocks for various applications. However, traditional sequential computation on a single machine often becomes a bottleneck, limiting the speed and scalability of matrix calculations. To address this problem, we are going to use an open-source distributed computing framework called \textbf{Ray}.
 
 \subsection{Overview of distributed systems and networks}
@@ -159,7 +160,7 @@ The Ray library is an open-source distributed computing framework primarily desi
 
 
 \pagebreak
-\section{Caso di studio}
+\section{Case study}
 
 \section{Implementation}
     \subsection{Python}
@@ -182,6 +183,125 @@ print(ray.get(futures)) # [0, 1, 4, 9]
 
 \subsection{Ray clusters}
 
+\pagebreak
+\subsection{The Matrix class}
+Before implementing the parallelized algorithms for Ray, we write the code for the serial execution in the \textbf{Matrix} class (most of the functions defined in the class are auxiliary therefore were excluded for practical purposes):
+\begin{lstlisting}[language=Python, label=Matrix class]
+class Matrix:
+    def __init__(self, data):
+        if isinstance(data, list):
+            self.data = [[round(val, 8) for val in row]
+                                        for row in data]
+        else:
+            raise ValueError("Input must be a list")
+    
+    [...]
+
+    def dot(A, B): [...]
+    def det(self): [...]
+    def rank(self): [...]
+    def inv(self): [...]
+\end{lstlisting}
+Which we modify later to achieve parallelization with Ray.
+
+\pagebreak
+\subsubsection{Dot product}
+\textbf{Matrix multiplication} is a binary operation that produces a matrix from two matrices. For matrix multiplication, the number of columns in the first matrix must be equal to the number of rows in the second matrix. The resulting matrix, known as the matrix \textbf{product}, has the number of rows of the first and the number of columns of the second matrix.
+$$
+    A = \begin{bmatrix}
+        a_{11} & a_{12} & \dots  & a_{1n} \\
+        a_{21} & a_{22} & \dots  & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{m1} & a_{m2} & \dots  & a_{mn}
+    \end{bmatrix}, \quad
+    B = \begin{bmatrix}
+        b_{11} & b_{12} & \dots  & b_{1p} \\
+        b_{21} & b_{22} & \dots  & b_{2p} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        b_{n1} & b_{n2} & \dots  & b_{np}
+    \end{bmatrix}
+$$
+
+The matrix multiplication of $A$ and $B$ is denoted as $C = A \cdot B$. The resulting matrix $C$ will have dimensions $m \times p$.
+
+    The entry $c_{ij}$ of the resulting matrix $C$ is computed as follows:
+
+    $$
+        c_{ij} = a_{i1} \cdot b_{1j} + a_{i2} \cdot b_{2j} + \dots + a_{in} \cdot b_{nj} = \sum_{k=1}^{n} a_{ik} \cdot b_{kj}
+    $$
+
+    The resulting matrix $C$ can be expressed as:
+
+    $$
+        C = \begin{bmatrix}
+            c_{11} & c_{12} & \dots  & c_{1p} \\
+            c_{21} & c_{22} & \dots  & c_{2p} \\
+            \vdots & \vdots & \ddots & \vdots \\
+            c_{m1} & c_{m2} & \dots  & c_{mp}
+        \end{bmatrix}
+    $$
+
+The definition above can be described as the following code:
+\begin{lstlisting}[language=Python, caption={Dot function}]
+@staticmethod
+def dot(A, B):
+    if A.is_matrix() and B.is_matrix():
+        a_rows, a_cols = A.shape()
+        b_rows, b_cols = B.shape()
+
+        if a_cols == b_rows:
+            result = [[0] * b_cols for _ in range(A.shape()[0])]
+            for i in range(A.shape()[0]):
+                for j in range(b_cols):
+                    for k in range(a_cols):
+                        result[i][j] += A.data[i][k] * B.data[k][j]
+            return Matrix(result)
+        else:
+            raise ValueError(
+                "Matrix dimensions do not match for dot product")
+    else:
+        raise ValueError("Dot product requires a Matrix object")
+\end{lstlisting}
+\vfill
+To parallelize this function, we simply delegate the calculation made in line 12 to an auxiliary function \textit{dot\_calc} defined in the \textit{tasks.py} file:
+\begin{lstlisting}[language=Python, caption={dot\_calc}]
+@ray.remote
+def dot_calc(A, B, i, j, k):
+    return A.data[i][k] * B.data[k][j]
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption={Parallelized dot function}]
+@staticmethod
+def dot(A, B):
+    if A.is_matrix() and B.is_matrix():
+        a_rows, a_cols = A.shape()
+        b_rows, b_cols = B.shape()
+
+        if a_cols == b_rows:
+            result = [[0] * b_cols for _ in range(a_rows)]
+            futures = []
+
+            for i in range(a_rows):
+                for j in range(b_cols):
+                    for k in range(a_cols):
+                        # result[i][j] += A.data[i][k] * B.data[k][j]
+                        futures.append(((i, j), t.dot_calc.remote(A, B, i, j, k)))
+            
+            for future in futures:
+                i, j = future[0]
+                result[i][j] += ray.get(future[1])
+
+            return Matrix(result)
+        else:
+            raise ValueError(
+                "Matrix dimensions do not match for dot product")
+    else:
+        raise ValueError("Dot product requires a Matrix object")
+\end{lstlisting}
+
+\subsubsection{Determinant}
+\subsubsection{Rank}
+\subsubsection{Inverse}
 \pagebreak
 \section{Result of tests}
 
