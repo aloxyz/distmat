@@ -4,8 +4,8 @@ from matrix import Matrix
 import numpy as np
 
 if __name__ == "__main__":
-    a = Matrix.random_int(6, 6, -99, 99)
-    b = Matrix.random_float(4, 4, -99, 99)
+    a = Matrix.random_int(8, 8, -99, 99)
+    b = Matrix.random_float(8, 8, -99, 99)
 
     # DOT PRODUCT
     # print("\ndistmat:\n", Matrix.dot(a,b))
@@ -25,5 +25,5 @@ if __name__ == "__main__":
 
     if ray.is_initialized:
         ray.shutdown()
-    ray.init(logging_level=logging.ERROR)
+    ray.init(include_dashboard=True)
     
