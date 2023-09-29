@@ -24,7 +24,7 @@ provider:
     # (e.g. the cluster is in an AWS VPC and you're starting ray from your laptop)
     # This is useful when debugging the local node provider with cloud VMs.
     # external_head_ip: YOUR_HEAD_PUBLIC_IP
-    worker_ips: ["192.168.128.211", "192.168.128.212", "192.168.128.213", "192.168.128.214", "192.168.128.215", "192.168.128.221", "192.168.128.222", "192.168.128.223", "192.168.128.224", "192.168.128.225"]
+    worker_ips: ["192.168.128.210", "192.168.128.211", "192.168.128.212", "192.168.128.213", "192.168.128.214", "192.168.128.220", "192.168.128.221", "192.168.128.222", "192.168.128.223", "192.168.128.224"]
     # Optional when running automatic cluster management on prem. If you use a coordinator server,
     # then you can launch multiple autoscaling clusters on the same set of machines, and the coordinator
     # will assign individual nodes to clusters as needed.
