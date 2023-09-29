@@ -1,7 +1,5 @@
 import ray
-import logging
 from matrix import Matrix
-import numpy as np
 import time
 import csv
 
@@ -26,8 +24,11 @@ def test_dot_range(l, u, runs):
     
 def test_dot_size(l, u, runs):
     measures = []
-    sub_runs = []
+    
     for n in range(l, u):
+        sub_run = []
+        sub_run.append(n) # matrix size
+
         for i in range(runs):
             a = Matrix.random_int(n, n, -99, 99)
             b = Matrix.random_float(n, n, -99, 99)
@@ -36,10 +37,10 @@ def test_dot_size(l, u, runs):
             Matrix.dot(a,b)
             t1 = time.time()
 
-            sub_runs.append(t1-t0)
+            sub_run.append(t1-t0)
             print(t1-t0)
 
-        measures.append(sub_runs)
+        measures.append(sub_run)
 
     return measures
 
@@ -49,9 +50,9 @@ if __name__ == "__main__":
         ray.shutdown()
     ray.init(include_dashboard=True)
 
-    test_results = test_dot_size(2, 8, 4)    
+    test_results = test_dot_size(2, 16, 4)    
 
-    with open("output.csv", "w") as f:
+    with open("test_results/test_dot_size_2_16_4.csv", "w") as f:
         writer = csv.writer(f)
         writer.writerows(test_results)
 
