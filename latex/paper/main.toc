@@ -11,7 +11,7 @@
 \contentsline {subsection}{\numberline {4.3}Ray clusters}{4}{}%
 \contentsline {subsection}{\numberline {4.4}The Matrix class}{5}{}%
 \contentsline {subsubsection}{\numberline {4.4.1}Dot product}{6}{}%
-\contentsline {subsubsection}{\numberline {4.4.2}Determinant}{7}{}%
-\contentsline {subsubsection}{\numberline {4.4.3}Rank}{8}{}%
-\contentsline {section}{\numberline {5}Result of tests}{10}{}%
-\contentsline {section}{\numberline {6}Conclusion}{10}{}%
+\contentsline {subsubsection}{\numberline {4.4.2}Determinant}{8}{}%
+\contentsline {subsubsection}{\numberline {4.4.3}Rank}{10}{}%
+\contentsline {section}{\numberline {5}Result of tests}{12}{}%
+\contentsline {section}{\numberline {6}Conclusion}{12}{}%

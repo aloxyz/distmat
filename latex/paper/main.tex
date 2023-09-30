@@ -54,6 +54,8 @@
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
 \lstdefinestyle{mystyle}{
+    aboveskip=15pt, % Adjust the space above the listing
+    belowskip=15pt, % Adjust the space below the listing
     backgroundcolor=\color{backcolour},   
     commentstyle=\color{codegreen},
     keywordstyle=\color{magenta},
@@ -221,17 +223,11 @@ $$
         b_{n1} & b_{n2} & \dots  & b_{np}
     \end{bmatrix}
 $$
-
-The matrix multiplication of $A$ and $B$ is denoted as $C = A \cdot B$. The resulting matrix $C$ will have dimensions $m \times p$.
-
-    The entry $c_{ij}$ of the resulting matrix $C$ is computed as follows:
-
+The matrix multiplication of $A$ and $B$ is denoted as $C = A \cdot B$. The resulting matrix $C$ will have dimensions $m \times p$. The entry $c_{ij}$ of the resulting matrix $C$ is computed as follows:
     $$
         c_{ij} = a_{i1} \cdot b_{1j} + a_{i2} \cdot b_{2j} + \dots + a_{in} \cdot b_{nj} = \sum_{k=1}^{n} a_{ik} \cdot b_{kj}
     $$
-
-    The resulting matrix $C$ can be expressed as:
-
+The resulting matrix $C$ can be expressed as:
     $$
         C = \begin{bmatrix}
             c_{11} & c_{12} & \dots  & c_{1p} \\
@@ -240,7 +236,7 @@ The matrix multiplication of $A$ and $B$ is denoted as $C = A \cdot B$. The resu
             c_{m1} & c_{m2} & \dots  & c_{mp}
         \end{bmatrix}
     $$
-
+    \\
 The definition above can be described as the following code:
 \begin{lstlisting}[language=Python, caption={Dot function}]
 @staticmethod
@@ -299,7 +295,95 @@ def dot(A, B):
         raise ValueError("Dot product requires a Matrix object")
 \end{lstlisting}
 
+\pagebreak
 \subsubsection{Determinant}
+The \textbf{determinant} is a scalar value that is a function of the entries of a square matrix. It characterizes some properties of the matrix and the linear map represented by the matrix. In particular, the determinant is nonzero if and only if the matrix is \textbf{invertible}.
+\\\\
+To compute the determinant of matrices with order greater than 2 we are going to use the \textbf{Laplace method}. Let $A$ be a square matrix of size $n \times n$. The Laplace expansion of the determinant along the $i$th row is given by:
+
+$$
+    \det(A) = a_{i1} C_{i1} + a_{i2} C_{i2} + \ldots + a_{in} C_{in}
+$$
+where $C_{ij}$ denotes the cofactor of the element $a_{ij}$. The \textbf{cofactor} $C_{ij}$ is calculated as follows:
+
+$$
+    C_{ij} = (-1)^{i+j} \cdot \det(M_{ij})
+$$
+where $\det(M_{ij})$ represents the determinant of the submatrix obtained by deleting the $i$th row and $j$th column from matrix $A$.
+\\\\
+Using the Laplace method, the determinant can be calculated recursively by expanding along any row or column until a $2 \times 2$ matrix is reached, for which the determinant can be directly computed. It provides an alternative approach for determining the determinant of a matrix and can be particularly useful for matrices of larger sizes. It's an essential operation since it's used in the other operations of this study.
+\\\\
+The Laplace method can be transposed to code in the following way:
+\begin{lstlisting}[language=Python, caption={Determinant function}]
+def det(self):
+    if self.is_square():
+        data = self.get()
+        _, cols = self.shape()
+
+        if cols == 1:
+            return data[0][0]
+
+        elif cols == 2:
+            return (data[0][0] * data[1][1]) - (data[0][1] * data[1][0])
+
+        else:
+            det_value = 0
+
+            for j in range(cols):
+                minor = self.minor(0, j)
+                det_value += ((-1) ** j) * data[0][j] * minor.det()
+
+            return det_value
+
+    else:
+        raise ValueError("Cannot compute determinant of a non-square matrix")
+\end{lstlisting}
+The function is then parallelized by defining a variant of the \textit{minor} function, \textit{dist\_minor}, which distributes the workload of computing all minors of the matrix.
+
+\begin{lstlisting}[language=Python, caption={dist\_minor}]
+@ray.remote
+def dist_minor(A, i, j):
+    '''
+    Extract a minor matrix by removing the ith row and jth column
+    '''
+
+    data = A.get()
+    minor_data = [row[:j] + row[j + 1:]
+                  for row_idx, row in enumerate(data) if row_idx != i]
+
+    return Matrix(minor_data)
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption={Parallelized determinant function}]
+def det(self):
+if self.is_square():
+    data = self.get()
+    _, cols = self.shape()
+
+    if cols == 1:
+        return data[0][0]
+
+    elif cols == 2:
+        return (data[0][0] * data[1][1]) - (data[0][1] * data[1][0])
+
+    else:
+        det_value = 0
+        minors_futures = 
+            [Matrix.dist_minor.remote(self, 0, j) for j in range(cols)]
+        
+            minors = ray.get(minors_futures)
+
+        for minor, j in zip(minors, range(cols)):
+            # minor = self.minor(0, j)
+            det_value += ((-1) ** j) * data[0][j] * minor.det()
+
+        return det_value
+
+else:
+    raise ValueError(
+        "Cannot compute determinant of a non-square matrix")
+\end{lstlisting}
+
 
 \pagebreak
 \subsubsection{Rank}
