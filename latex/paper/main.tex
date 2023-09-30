@@ -79,63 +79,63 @@
 \begin{document}
 \begin{titlepage}
 
-\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+    \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
 
-\center % Center everything on the page
- 
-%----------------------------------------------------------------------------------------
-%	HEADING SECTIONS
-%----------------------------------------------------------------------------------------
+    \center % Center everything on the page
 
-\textsc{\LARGE Università di Messina}\\[1.5cm] % Name of your university/college
-\textsc{\Large Dipartimento di scienze matematiche e informatiche, scienze fisiche e della terra}\\[0.5cm] % Major heading such as course name
-\textsc{\large Corso di Laurea Triennale in Informatica}\\[0.5cm] % Minor heading such as course title
+    %----------------------------------------------------------------------------------------
+    %	HEADING SECTIONS
+    %----------------------------------------------------------------------------------------
 
-%----------------------------------------------------------------------------------------
-%	TITLE SECTION
-%----------------------------------------------------------------------------------------
+    \textsc{\LARGE Università di Messina}\\[1.5cm] % Name of your university/college
+    \textsc{\Large Dipartimento di scienze matematiche e informatiche, scienze fisiche e della terra}\\[0.5cm] % Major heading such as course name
+    \textsc{\large Corso di Laurea Triennale in Informatica}\\[0.5cm] % Minor heading such as course title
 
-\HRule \\[0.4cm]
-{ \huge \bfseries Distributed computation of linear algebra operations}\\[0.4cm] % Title of your document
-\HRule \\[1.5cm]
- 
-%----------------------------------------------------------------------------------------
-%	AUTHOR SECTION
-%----------------------------------------------------------------------------------------
+    %----------------------------------------------------------------------------------------
+    %	TITLE SECTION
+    %----------------------------------------------------------------------------------------
 
-\begin{minipage}{0.4\textwidth}
-\begin{flushleft} \large
-\emph{Author:}\\
-Gabriele \textsc{Aloisio} \textit{(503264)} \\
-\end{flushleft}
-\end{minipage}
-~
-\begin{minipage}{0.4\textwidth}
-\begin{flushright} \large
-\emph{Supervisor:} \\
-prof. Roberto \textsc{Marino} \\
-\end{flushright}
-\end{minipage}\\[2cm]
+    \HRule \\[0.4cm]
+    { \huge \bfseries Distributed computation of linear algebra operations}\\[0.4cm] % Title of your document
+    \HRule \\[1.5cm]
 
-% If you don't want a supervisor, uncomment the two lines below and remove the section above
-%\Large \emph{Author:}\\
-%John \textsc{Smith}\\[3cm] % Your name
+    %----------------------------------------------------------------------------------------
+    %	AUTHOR SECTION
+    %----------------------------------------------------------------------------------------
 
-%----------------------------------------------------------------------------------------
-%	DATE SECTION
-%----------------------------------------------------------------------------------------
+    \begin{minipage}{0.4\textwidth}
+        \begin{flushleft} \large
+            \emph{Author:}\\
+            Gabriele \textsc{Aloisio} \textit{(503264)} \\
+        \end{flushleft}
+    \end{minipage}
+    ~
+    \begin{minipage}{0.4\textwidth}
+        \begin{flushright} \large
+            \emph{Supervisor:} \\
+            prof. Roberto \textsc{Marino} \\
+        \end{flushright}
+    \end{minipage}\\[2cm]
 
-{\large \today}\\[2cm] % Date, change the \today to a set date if you want to be precise
+    % If you don't want a supervisor, uncomment the two lines below and remove the section above
+    %\Large \emph{Author:}\\
+    %John \textsc{Smith}\\[3cm] % Your name
 
-%----------------------------------------------------------------------------------------
-%	LOGO SECTION
-%----------------------------------------------------------------------------------------
+    %----------------------------------------------------------------------------------------
+    %	DATE SECTION
+    %----------------------------------------------------------------------------------------
 
-\includegraphics[width=70px, keepaspectratio]{unime.png}\\[1cm] % Include a department/university logo - this will require the graphicx package
- 
-%----------------------------------------------------------------------------------------
+    {\large \today}\\[2cm] % Date, change the \today to a set date if you want to be precise
 
-\vfill % Fill the rest of the page with whitespace
+    %----------------------------------------------------------------------------------------
+    %	LOGO SECTION
+    %----------------------------------------------------------------------------------------
+
+    \includegraphics[width=70px, keepaspectratio]{unime.png}\\[1cm] % Include a department/university logo - this will require the graphicx package
+
+    %----------------------------------------------------------------------------------------
+
+    \vfill % Fill the rest of the page with whitespace
 
 \end{titlepage}
 
@@ -150,28 +150,27 @@ Matrix operations are fundamental in numerous scientific and computational domai
 \subsection{Overview of distributed systems and networks}
 A distributed system consists of multiple interconnected computers that collaborate and coordinate their activities to achieve a common goal. These systems are designed to tackle tasks that cannot be efficiently computed by a single machine. Networks serve as the backbone of distributed systems, enabling communication among the connected nodes. Network infrastructures enable coordination, data sharing, and synchronization across distributed systems, regardless of their physical locations.
 
-\pagebreak
 \subsection{The Ray library}
 The Ray library is an open-source distributed computing framework primarily designed for building scalable and high-performance applications. It was developed by the company Anyscale, which aimed to simplify the development of distributed and parallel computing applications. When it comes to matrix operation computation, using Ray for distributed computation offers several advantages over performing the operations on a single machine:
-    \begin{itemize}
-        \item \textbf{Faster execution}: With Ray you can use multiple machines and CPUs to compute operations. This significantly reduces the computation time compared to a single machine. Each machine can work on a subset of the matrix data, completing the calculations in parallel. This distributed approach can lead to substantial speedups.
-        \item \textbf{Scalability}: As the size of the matrices grows, a single machine may struggle to handle the computational demands due to memory limitations or processing power constraints. Ray allows you to scale horizontally by adding more machines to the distributed setup.
-        \item \textbf{Fault tolerance}: Ray offers fault tolerance mechanisms that ensure the continuity of computation even in the presence of failures. If a machine participating in the distributed computation fails, Ray can automatically redistribute the workload to other available machines.
-        \item \textbf{Resource utilization}: With Ray, each machine contributes its processing power and memory capacity to the overall computation. This efficient utilization of resources allows you to make the most of the available hardware infrastructure, compared to a single machine that may be underutilized.
-    \end{itemize}
+\begin{itemize}
+    \item \textbf{Faster execution}: With Ray you can use multiple machines and CPUs to compute operations. This significantly reduces the computation time compared to a single machine. Each machine can work on a subset of the matrix data, completing the calculations in parallel. This distributed approach can lead to substantial speedups.
+    \item \textbf{Scalability}: As the size of the matrices grows, a single machine may struggle to handle the computational demands due to memory limitations or processing power constraints. Ray allows you to scale horizontally by adding more machines to the distributed setup.
+    \item \textbf{Fault tolerance}: Ray offers fault tolerance mechanisms that ensure the continuity of computation even in the presence of failures. If a machine participating in the distributed computation fails, Ray can automatically redistribute the workload to other available machines.
+    \item \textbf{Resource utilization}: With Ray, each machine contributes its processing power and memory capacity to the overall computation. This efficient utilization of resources allows you to make the most of the available hardware infrastructure, compared to a single machine that may be underutilized.
+\end{itemize}
 
 
 \pagebreak
 \section{Case study}
 
 \section{Implementation}
-    \subsection{Python}
-    Python is a versatile and high-level programming language known for its simplicity and readability. It is widely used for a variety of applications, including web development, data analysis, artificial intelligence, scientific computing, and automation. It supports multiple programming paradigms, including procedural, object-oriented, and functional programming, and its large and active community contributes to a vast ecosystem of libraries and frameworks, making it a powerful tool for a wide range of tasks. It is one of the two languages supported by Ray, alongside Java.
-    
-    \subsection{Ray}
-    To parallelize a function with Ray, import Ray and and initialize it with \textit{ray.init()}. Then decorate the function with \textit{@ray.remote} to declare that you want to run this function remotely. Lastly, call the function with \textit{.remote()} instead of calling it normally. This remote call yields a future, a Ray object reference, that you can then fetch with \textit{ray.get}:
+\subsection{Python}
+Python is a versatile and high-level programming language known for its simplicity and readability. It is widely used for a variety of applications, including web development, data analysis, artificial intelligence, scientific computing, and automation. It supports multiple programming paradigms, including procedural, object-oriented, and functional programming, and its large and active community contributes to a vast ecosystem of libraries and frameworks, making it a powerful tool for a wide range of tasks. It is one of the two languages supported by Ray, alongside Java.
 
-    \begin{lstlisting}[language=Python]
+\subsection{Ray}
+To parallelize a function with Ray, import Ray and and initialize it with \textit{ray.init()}. Then decorate the function with \textit{@ray.remote} to declare that you want to run this function remotely. Lastly, call the function with \textit{.remote()} instead of calling it normally. This remote call yields a future, a Ray object reference, that you can then fetch with \textit{ray.get}:
+
+\begin{lstlisting}[language=Python]
 import ray
 ray.init()
 
@@ -183,11 +182,53 @@ futures = [f.remote(i) for i in range(4)]
 print(ray.get(futures)) # [0, 1, 4, 9]
     \end{lstlisting}
 
-\subsection{Ray clusters}
+\subsubsection{Ray clusters}
+To run Ray applications on multiple nodes you must first deploy a \textbf{Ray cluster}. A Ray cluster is a set of worker nodes connected to a common Ray head node. These nodes can be physical machines, virtual machines, or containers running on a cloud infrastructure or a cluster manager like Kubernetes. Ray clusters can be fixed-size, or they may autoscale up and down according to the resources requested by applications running on the cluster.
+\\\\
+Each Ray cluster typically has one special node called the \textbf{head node}. This is where the main driver program is executed, which manages the cluster, schedules tasks, and communicates with the other nodes. The head node also hosts the Ray Dashboard, a web-based interface for monitoring and managing the cluster.
+\\\\
+The other nodes in the cluster are known as \textbf{workers}. These nodes are responsible for executing tasks and running jobs. Workers can be distributed across multiple machines and are managed by the head node. They execute user-defined Python functions and can be scaled up or down dynamically based on demand.
+\\\\
+A ray cluster is set up using a \textit{yaml} file, where all the details about the cluster configuration are defined. Once the file is ready, we simply launch \textit{ray up cluster.yaml} to start a ray instance on all worker nodes over ssh.
+\begin{lstlisting}[caption={cluster.yaml}]
+    cluster_name: distmat
+
+    provider:
+      type: local
+      head_ip: "192.168.128.129"
+      worker_ips:
+        [
+          "192.168.128.210",
+          "192.168.128.211",
+          "192.168.128.212",
+          "192.168.128.213",
+          "192.168.128.214",
+          "192.168.128.220",
+          "192.168.128.221",
+          "192.168.128.222",
+          "192.168.128.223",
+          "192.168.128.224",
+        ]
+    
+    auth:
+      ssh_user: alo
+    
+    upscaling_speed: 1.0
+    idle_timeout_minutes: 5
+    head_start_ray_commands:
+      - ray stop
+      - ulimit -c unlimited && ray start --head --port=6379 --autoscaling-config=~/ray_bootstrap_config.yaml
+    worker_start_ray_commands:
+      - ray stop
+      - ray start --address=$RAY_HEAD_IP:6379
+    
+\end{lstlisting}
+
 
 \pagebreak
 \subsection{The Matrix class}
 Before implementing the parallelized algorithms for Ray, we write the code for the serial execution in the \textbf{Matrix} class (most of the functions defined in the class are auxiliary therefore were excluded for practical purposes):
+
 \begin{lstlisting}[language=Python, label=Matrix class]
 class Matrix:
     def __init__(self, data):
@@ -224,19 +265,19 @@ $$
     \end{bmatrix}
 $$
 The matrix multiplication of $A$ and $B$ is denoted as $C = A \cdot B$. The resulting matrix $C$ will have dimensions $m \times p$. The entry $c_{ij}$ of the resulting matrix $C$ is computed as follows:
-    $$
-        c_{ij} = a_{i1} \cdot b_{1j} + a_{i2} \cdot b_{2j} + \dots + a_{in} \cdot b_{nj} = \sum_{k=1}^{n} a_{ik} \cdot b_{kj}
-    $$
+$$
+    c_{ij} = a_{i1} \cdot b_{1j} + a_{i2} \cdot b_{2j} + \dots + a_{in} \cdot b_{nj} = \sum_{k=1}^{n} a_{ik} \cdot b_{kj}
+$$
 The resulting matrix $C$ can be expressed as:
-    $$
-        C = \begin{bmatrix}
-            c_{11} & c_{12} & \dots  & c_{1p} \\
-            c_{21} & c_{22} & \dots  & c_{2p} \\
-            \vdots & \vdots & \ddots & \vdots \\
-            c_{m1} & c_{m2} & \dots  & c_{mp}
-        \end{bmatrix}
-    $$
-    \\
+$$
+    C = \begin{bmatrix}
+        c_{11} & c_{12} & \dots  & c_{1p} \\
+        c_{21} & c_{22} & \dots  & c_{2p} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        c_{m1} & c_{m2} & \dots  & c_{mp}
+    \end{bmatrix}
+$$
+\\
 The definition above can be described as the following code:
 \begin{lstlisting}[language=Python, caption={Dot function}]
 @staticmethod

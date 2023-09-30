@@ -1,9 +1,10 @@
 # Fdb version 4
-["pdflatex"] 1696093634 "/home/alo/dev/distmat/latex/paper/main.tex" "main.pdf" "main" 1696093636 0
-  "/home/alo/dev/distmat/latex/paper/main.tex" 1696093633 20184 8ac446e320a5709b83edb169591bc894 ""
+["pdflatex"] 1696096664 "/home/alo/dev/distmat/latex/paper/main.tex" "main.pdf" "main" 1696096665 0
+  "/home/alo/dev/distmat/latex/paper/main.tex" 1696096662 22468 867461db85bdf503d3fc6209e9d655b4 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm" 1136768653 1536 02c06700a42be0f5a28664c7273f82e7 ""
+  "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tctt0900.tfm" 1136768653 1536 bda3e6bf9784a4cc572c754e0c3eeb00 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
@@ -41,6 +42,7 @@
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb" 1248133631 36118 fad905eba93cff5bce1e185fe980a177 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb" 1248133631 29078 718ea4567ceff944262b0f5b0800e1d9 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb" 1215737283 145929 f25e56369a345c4ff583b067cd87ce8e ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/cm-super/sftt0900.pfb" 1215737283 170827 2e4b634de7b58578eae1dc93e51dfe48 ""
   "/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1684972800 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/share/texlive/texmf-dist/tex/generic/babel-italian/italian.ldf" 1649019283 11863 da7e32d14d6f13904da303e3e47824fa ""
   "/usr/share/texlive/texmf-dist/tex/generic/babel/babel.sty" 1672087451 151218 8947adcfe23774a8b34494ca536618c3 ""
@@ -121,6 +123,7 @@
   "/usr/share/texlive/texmf-dist/tex/latex/base/ot1enc.dfu" 1684972800 3534 9e491fb32e35bfff6b9ba316480f2ffc ""
   "/usr/share/texlive/texmf-dist/tex/latex/base/size11.clo" 1684972800 8464 1f4991f9def04be6719b2af330c83aac ""
   "/usr/share/texlive/texmf-dist/tex/latex/base/t1enc.dfu" 1684972800 12786 1d31c639b01407e8ed545252503231bc ""
+  "/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmtt.fd" 1684972800 2287 f4ba41fdf4220a57c5e98782deba4406 ""
   "/usr/share/texlive/texmf-dist/tex/latex/base/ts1enc.dfu" 1684972800 5133 2b6b3086fbdf70953c13e087cbcffa1a ""
   "/usr/share/texlive/texmf-dist/tex/latex/base/utf8.def" 1684972800 11506 48e87c4d4c8b8f9871b6f60996d0a635 ""
   "/usr/share/texlive/texmf-dist/tex/latex/collectbox/collectbox.sty" 1666037909 9124 59c3b56f1a073de66e3eea35f9c173c8 ""
@@ -165,9 +168,9 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1684972800 40326 aba987258e6d6b6da5dec3a727ea174b ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1688393277 4603178 f922b3a8d38e69501903df0e74a512d4 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1688394148 7862959 e6e94a8e4da38cf2bbda6f7067042555 ""
-  "main.aux" 1696093635 2886 49c505c77fe83a6074abca0f0a301a6f "pdflatex"
-  "main.tex" 1696093633 20184 8ac446e320a5709b83edb169591bc894 ""
-  "main.toc" 1696093635 1019 f9c55fea53d1638c066e5137ebf9c35c "pdflatex"
+  "main.aux" 1696096665 2995 0665f205d6ec6ce88a5cd574e193507d "pdflatex"
+  "main.tex" 1696096662 22468 867461db85bdf503d3fc6209e9d655b4 ""
+  "main.toc" 1696096665 1024 b664e764dd834b1ee1c322dad95f270a "pdflatex"
   "unime.png" 1669728949 1985265 b0d686c439ed37f076f41c0d4a9ba095 ""
   (generated)
   "main.aux"
