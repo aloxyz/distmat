@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1696096664 "/home/alo/dev/distmat/latex/paper/main.tex" "main.pdf" "main" 1696096665 0
-  "/home/alo/dev/distmat/latex/paper/main.tex" 1696096662 22468 867461db85bdf503d3fc6209e9d655b4 ""
+["pdflatex"] 1696252298 "/home/alo/dev/distmat/latex/paper/main.tex" "main.pdf" "main" 1696252299 0
+  "/home/alo/dev/distmat/latex/paper/main.tex" 1696252298 24341 d7e15449de766878932feea54bb0dcd3 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm" 1136768653 1536 02c06700a42be0f5a28664c7273f82e7 ""
@@ -38,6 +38,7 @@
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb" 1248133631 32734 69e00a6b65cedb993666e42eedb3d48f ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1248133631 32726 0a1aea6fcd6468ee2cf64d891f5c43c8 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1248133631 32626 4f5c1b83753b1dd3a97d1b399a005b4b ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1248133631 37944 359e864bd06cde3b1cf57bb20757fb06 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb" 1248133631 36118 fad905eba93cff5bce1e185fe980a177 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb" 1248133631 29078 718ea4567ceff944262b0f5b0800e1d9 ""
@@ -168,9 +169,9 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1684972800 40326 aba987258e6d6b6da5dec3a727ea174b ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1688393277 4603178 f922b3a8d38e69501903df0e74a512d4 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1688394148 7862959 e6e94a8e4da38cf2bbda6f7067042555 ""
-  "main.aux" 1696096665 2995 0665f205d6ec6ce88a5cd574e193507d "pdflatex"
-  "main.tex" 1696096662 22468 867461db85bdf503d3fc6209e9d655b4 ""
-  "main.toc" 1696096665 1024 b664e764dd834b1ee1c322dad95f270a "pdflatex"
+  "main.aux" 1696252299 3219 cc14ffed43f908c529f8db59d4c761c4 "pdflatex"
+  "main.tex" 1696252298 24341 d7e15449de766878932feea54bb0dcd3 ""
+  "main.toc" 1696252299 1166 cd3522e77c0a3a15b8be1125c3c5c2b9 "pdflatex"
   "unime.png" 1669728949 1985265 b0d686c439ed37f076f41c0d4a9ba095 ""
   (generated)
   "main.aux"

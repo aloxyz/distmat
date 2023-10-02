@@ -191,39 +191,40 @@ The other nodes in the cluster are known as \textbf{workers}. These nodes are re
 \\\\
 A ray cluster is set up using a \textit{yaml} file, where all the details about the cluster configuration are defined. Once the file is ready, we simply launch \textit{ray up cluster.yaml} to start a ray instance on all worker nodes over ssh.
 \begin{lstlisting}[caption={cluster.yaml}]
-    cluster_name: distmat
+cluster_name: distmat
 
-    provider:
-      type: local
-      head_ip: "192.168.128.129"
-      worker_ips:
-        [
-          "192.168.128.210",
-          "192.168.128.211",
-          "192.168.128.212",
-          "192.168.128.213",
-          "192.168.128.214",
-          "192.168.128.220",
-          "192.168.128.221",
-          "192.168.128.222",
-          "192.168.128.223",
-          "192.168.128.224",
-        ]
-    
-    auth:
-      ssh_user: alo
-    
-    upscaling_speed: 1.0
-    idle_timeout_minutes: 5
-    head_start_ray_commands:
-      - ray stop
-      - ulimit -c unlimited && ray start --head --port=6379 --autoscaling-config=~/ray_bootstrap_config.yaml
-    worker_start_ray_commands:
-      - ray stop
-      - ray start --address=$RAY_HEAD_IP:6379
-    
+provider:
+    type: local
+    head_ip: "192.168.128.129"
+    worker_ips:
+    [
+        "192.168.128.210",
+        "192.168.128.211",
+        "192.168.128.212",
+        "192.168.128.213",
+        "192.168.128.214",
+        "192.168.128.220",
+        "192.168.128.221",
+        "192.168.128.222",
+        "192.168.128.223",
+        "192.168.128.224",
+    ]
+
+auth:
+    ssh_user: <user>
+
+upscaling_speed: 1.0
+idle_timeout_minutes: 5
+head_start_ray_commands:
+    - ray stop
+    - ulimit -c unlimited && ray start --head --port=6379 --autoscaling-config=~/ray_bootstrap_config.yaml
+worker_start_ray_commands:
+    - ray stop
+    - ray start --address=$RAY_HEAD_IP:6379
+
 \end{lstlisting}
 
+\subsubsection{Cluster architecture}
 
 \pagebreak
 \subsection{The Matrix class}
@@ -495,6 +496,54 @@ def get_submatrix_task(start_row, start_col, order, data):
 \end{lstlisting}
 
 \pagebreak
+\subsubsection{Inverse}
+The \textbf{inverse of a matrix} is a fundamental concept in linear algebra. For a square matrix $A$, if an inverse exists, it is denoted as $A^{-1}$. A matrix is invertible (or non-singular) if and only if its determinant is non-zero. The concept of the inverse of a matrix is closely related to solving linear systems of equations. Consider a system of linear equations represented in matrix form as $Ax = b$: 
+$$
+\begin{array}{@{}cccc@{}}
+    A & x &  & b \\
+    \begin{bmatrix}
+        a_{11} & a_{12} & \cdots & a_{1n} \\
+        a_{21} & a_{22} & \cdots & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{m1} & a_{m2} & \cdots & a_{mn}
+    \end{bmatrix}
+    &
+    \begin{bmatrix}
+        x_1 \\
+        x_2 \\
+        \vdots \\
+        x_n
+    \end{bmatrix}
+    & = &
+    \begin{bmatrix}
+        b_1 \\
+        b_2 \\
+        \vdots \\
+        b_m
+    \end{bmatrix}
+\end{array}
+$$
+where:
+\begin{itemize}
+    \item{$A$ is the coefficient matrix}
+    \item{$x$ is the vector of variables we want to solve for}
+    \item{$b$ is the vector of constants on the right-hand side}
+\end{itemize}
+The \textbf{solution} for $x$ can be found using the inverse of $A$, hence $x = A^{-1}b$. To find the inverse of a matrix, one common method is to use the formula:
+$$
+    A^{-1} = \frac{1}{\det(A)} \cdot \text{adj}(A)
+$$
+where $\det(A)$ denotes the determinant of matrix $A$ and $\text{adj}(A)$ represents the \textbf{adjugate} of matrix $A$. The adjugate of matrix $A$ is obtained by taking the transpose of the \textbf{matrix of cofactors} of $A$. The cofactor $C_{ij}$ is calculated as:
+$$
+    C_{ij} = (-1)^{i+j} \cdot \det(M_{ij})
+$$
+where $\det(M_{ij})$ represents the determinant of the submatrix obtained by deleting the $i$th row and $j$th column from matrix $A$. The inverse of matrix $A$ satisfies the following condition:
+$$
+    A \cdot A^{-1} = A^{-1} \cdot A = I
+$$
+
+
+
 \section{Result of tests}
 
 
