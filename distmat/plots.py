@@ -1,10 +1,11 @@
 import csv
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
 
 # read data from csv
 data = []
-with open("output.csv", "r") as f:
+with open(sys.argv[1], "r") as f:
     reader = csv.reader(f)
     for row in reader:
         data.append([float(val) for val in row])
@@ -21,5 +22,5 @@ plt.ylabel('Execution Time (s)')
 plt.title('Execution Time vs. Matrix Size')
 plt.grid()
 plt.legend()
-plt.savefig('test_dot_size_2_16_4.png')
+# plt.savefig(f"{sys.argv[1]}.png")
 plt.show()
