@@ -17,12 +17,14 @@ def get_submatrix_task(start_row, start_col, order, data):
 
 @ray.remote
 def inv_cof_matrix(A, row, cols):
-
+    from matrix import Matrix
+    
     cof_row = []
+    minor_futures = [Matrix.dist_minor.remote(A, row, col) for col in range(cols)]
+    minors = ray.get(minor_futures)
 
-    for column in range(cols):
-        minor = A.minor(row, column)
-        cof_row.append(((-1)**(row + column)) * minor.det())
+    for col,minor in zip(range(cols), minors):
+        cof_row.append(((-1)**(row + col)) * minor.det())
 
     return cof_row
 
