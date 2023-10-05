@@ -113,13 +113,13 @@ if __name__ == "__main__":
         ray.shutdown()
     ray.init(include_dashboard=True)
 
-    # test_results = test_inv(2, 9, 3)
+    test_results = test_inv(2, 8, 3)
 
-    # with open("test_results/test_inv_2_20_3.csv", "w") as f:
-    #     writer = csv.writer(f)
-    #     writer.writerows(test_results)
+    with open("test_results/test_inv_2_8_3.csv", "w") as f:
+        writer = csv.writer(f)
+        writer.writerows(test_results)
 
-    a = Matrix.random_float(8, 8, -10**8, 10**8)
-    t0 = time.time()
-    a.inv()
-    print(time.time() - t0)
+    # a = Matrix.random_float(8, 8, -10**8, 10**8)
+    # t0 = time.time()
+    # a.inv()
+    # print(time.time() - t0)
