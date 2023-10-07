@@ -1,14 +1,16 @@
 import ray
-from matrix import Matrix
+from matrix_serial import Matrix
 import time
 import csv
     
-def test_dot(l, u, runs):
+def test_dot(l, u, runs, filename):
     '''Make tests for matrices size l...u'''
     max_n = (u-l)*runs
     counter = 0
     measures = []
     
+    print(f"running test_dot with l={l}, u={u}, runs={runs}")
+
     for n in range(l, u):
         sub_run = []
         sub_run.append(n) # matrix size
@@ -28,14 +30,20 @@ def test_dot(l, u, runs):
 
         measures.append(sub_run)
 
+    with open(f"{filename}_{l}_{u}_{runs}.csv", "w") as f:
+        writer = csv.writer(f)
+        writer.writerows(measures)
+
     return measures
 
-def test_det(l, u, runs):
+def test_det(l, u, runs, filename):
     '''Make tests for matrices size l...u'''
     max_n = (u-l)*runs
     counter = 0
     measures = []
     
+    print(f"running test_det with l={l}, u={u}, runs={runs}")
+
     for n in range(l, u):
         sub_run = []
         sub_run.append(n) # matrix size
@@ -53,15 +61,21 @@ def test_det(l, u, runs):
             print(f"run # {counter}/{max_n}: {t1-t0}")
 
         measures.append(sub_run)
+    
+    with open(f"{filename}_{l}_{u}_{runs}.csv", "w") as f:
+        writer = csv.writer(f)
+        writer.writerows(measures)
 
     return measures
 
-def test_rank(l, u, runs):
+def test_rank(l, u, runs, filename):
     '''Make tests for matrices size l...u'''
     max_n = (u-l)*runs
     counter = 0
     measures = []
     
+    print(f"running test_rank with l={l}, u={u}, runs={runs}")
+
     for n in range(l, u):
         sub_run = []
         sub_run.append(n) # matrix size
@@ -80,14 +94,20 @@ def test_rank(l, u, runs):
 
         measures.append(sub_run)
 
+    with open(f"{filename}_{l}_{u}_{runs}.csv", "w") as f:
+        writer = csv.writer(f)
+        writer.writerows(measures)
+
     return measures
 
-def test_inv(l, u, runs):
+def test_inv(l, u, runs, filename):
     '''Make tests for matrices size l...u'''
     max_n = (u-l)*runs
     counter = 0
     measures = []
     
+    print(f"running test_inv with l={l}, u={u}, runs={runs}")
+
     for n in range(l, u):
         sub_run = []
         sub_run.append(n) # matrix size
@@ -106,20 +126,19 @@ def test_inv(l, u, runs):
 
         measures.append(sub_run)
 
+    with open(f"{filename}_{l}_{u}_{runs}.csv", "w") as f:
+        writer = csv.writer(f)
+        writer.writerows(measures)
+
     return measures
+
 
 if __name__ == "__main__":
     if ray.is_initialized:
         ray.shutdown()
     ray.init(include_dashboard=True)
 
-    test_results = test_inv(2, 8, 3)
-
-    with open("test_results/test_inv_2_8_3.csv", "w") as f:
-        writer = csv.writer(f)
-        writer.writerows(test_results)
-
-    # a = Matrix.random_float(8, 8, -10**8, 10**8)
-    # t0 = time.time()
-    # a.inv()
-    # print(time.time() - t0)
+    test_det(2, 10, 3, "test_results/serial/det")
+    test_dot(2, 30, 5, "test_results/serial/dot")
+    test_inv(2, 8, 3, "test_results/serial/inv")
+    test_rank(2, 500, 5, "test_results/serial/rank")
