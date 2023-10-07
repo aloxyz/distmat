@@ -2,7 +2,7 @@ import csv
 import matplotlib.pyplot as plt
 import numpy as np
 
-def serial_parallel_comparison(csv_name):
+def serial_parallel_comparison(csv_name, func_name):
     # Read data from serial CSV file
     serial_data = []
     with open(f"test_results/serial/{csv_name}", "r") as f:
@@ -32,9 +32,10 @@ def serial_parallel_comparison(csv_name):
     plt.errorbar(parallel_sizes, parallel_means, yerr=parallel_std_devs, fmt='x-', label='Parallel Execution Time')
     plt.xlabel('Matrix Size (n)')
     plt.ylabel('Execution Time (s)')
-    plt.title('Serial vs. Parallel Execution Time')
+    plt.title(f'Serial vs. parallel execution time ({func_name})')
     plt.grid()
     plt.legend()
+    plt.savefig(csv_name.replace("csv", "png"))
     plt.show()
 
 def rank_serial_parallel_comparison(csv_name):
@@ -77,15 +78,17 @@ def rank_serial_parallel_comparison(csv_name):
 
     plt.xlabel('Matrix Size (n)')
     plt.ylabel('Execution Time (s)')
-    plt.title('Serial vs. Parallel Execution Time')
+    plt.title('Serial vs. parallel execution time (rank)')
     plt.grid()
     plt.legend()
+    plt.savefig(csv_name.replace("csv", "png"))
     plt.show()
 
+
 # Call the function with your CSV file name
-serial_parallel_comparison("det_2_10_3.csv")
-serial_parallel_comparison("dot_2_30_5.csv")
-serial_parallel_comparison("inv_2_8_3.csv")
+serial_parallel_comparison("det_2_10_3.csv", "determinant")
+serial_parallel_comparison("dot_2_30_5.csv", "dot product")
+serial_parallel_comparison("inv_2_8_3.csv", "inverse")
 
 
 rank_serial_parallel_comparison("rank_2_500_5.csv")
