@@ -4,16 +4,16 @@
 \contentsline {section}{\numberline {2}Introduction}{2}{}%
 \contentsline {subsection}{\numberline {2.1}Overview of distributed systems and networks}{2}{}%
 \contentsline {subsection}{\numberline {2.2}The Ray library}{2}{}%
+\contentsline {subsection}{\numberline {2.3}Python}{3}{}%
 \contentsline {section}{\numberline {3}Case study}{3}{}%
-\contentsline {section}{\numberline {4}Implementation}{3}{}%
-\contentsline {subsection}{\numberline {4.1}Python}{3}{}%
-\contentsline {subsection}{\numberline {4.2}Ray}{3}{}%
-\contentsline {subsubsection}{\numberline {4.2.1}Ray clusters}{3}{}%
-\contentsline {subsubsection}{\numberline {4.2.2}Cluster architecture}{4}{}%
-\contentsline {subsection}{\numberline {4.3}The Matrix class}{5}{}%
-\contentsline {subsubsection}{\numberline {4.3.1}Dot product}{6}{}%
-\contentsline {subsubsection}{\numberline {4.3.2}Determinant}{8}{}%
-\contentsline {subsubsection}{\numberline {4.3.3}Rank}{10}{}%
-\contentsline {subsubsection}{\numberline {4.3.4}Inverse}{12}{}%
-\contentsline {section}{\numberline {5}Result of tests}{15}{}%
-\contentsline {section}{\numberline {6}Conclusion}{15}{}%
+\contentsline {subsection}{\numberline {3.1}Execution of tests}{4}{}%
+\contentsline {subsection}{\numberline {3.2}Graphing the results}{6}{}%
+\contentsline {section}{\numberline {4}Implementation}{7}{}%
+\contentsline {subsection}{\numberline {4.1}Ray}{7}{}%
+\contentsline {subsubsection}{\numberline {4.1.1}Ray clusters}{7}{}%
+\contentsline {subsection}{\numberline {4.2}The Matrix class}{9}{}%
+\contentsline {subsubsection}{\numberline {4.2.1}Dot product}{10}{}%
+\contentsline {subsubsection}{\numberline {4.2.2}Determinant}{12}{}%
+\contentsline {subsubsection}{\numberline {4.2.3}Rank}{14}{}%
+\contentsline {subsubsection}{\numberline {4.2.4}Inverse}{16}{}%
+\contentsline {section}{\numberline {5}Conclusion}{19}{}%

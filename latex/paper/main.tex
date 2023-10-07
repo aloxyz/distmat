@@ -160,14 +160,157 @@ The Ray library is an open-source distributed computing framework primarily desi
     \item \textbf{Resource utilization}: With Ray, each machine contributes its processing power and memory capacity to the overall computation. This efficient utilization of resources allows you to make the most of the available hardware infrastructure, compared to a single machine that may be underutilized.
 \end{itemize}
 
+\subsection{Python}
+Python is a versatile and high-level programming language known for its simplicity and readability. It is widely used for a variety of applications, including web development, data analysis, artificial intelligence, scientific computing, and automation. Python's strength lies in its support for multiple programming paradigms, including procedural, object-oriented, and functional programming. Its large and active community contributes to a vast ecosystem of libraries and frameworks, making it a powerful tool for a wide range of tasks.
+\\\\
+In the context of this paper, Python serves as the primary programming language for conducting tests and implementing linear algebra operations. Additionally, Matplotlib is utilized for graphing and visualizing the results of these tests.
+\\\\
+The object-oriented programming (OOP) paradigm has been employed in this research to represent matrices. This approach enhances code organization and readability while facilitating the implementation of complex linear algebra operations.
+\\\\
+It's worth noting that Python is one of the two languages supported by Ray, with the other being Java, making it a suitable choice for distributed computing and parallelization.
 
-\pagebreak
 \section{Case study}
 
-\section{Implementation}
-\subsection{Python}
-Python is a versatile and high-level programming language known for its simplicity and readability. It is widely used for a variety of applications, including web development, data analysis, artificial intelligence, scientific computing, and automation. It supports multiple programming paradigms, including procedural, object-oriented, and functional programming, and its large and active community contributes to a vast ecosystem of libraries and frameworks, making it a powerful tool for a wide range of tasks. It is one of the two languages supported by Ray, alongside Java.
+In this section, we present the case study conducted to evaluate the performance of distributed computation of linear algebra operations using Ray 2.4.0 on a cluster comprised of 10 computers with specifications provided by the University of Messina. The experiments include the caluclation of determinant, dot product, matrix inversion, and rank. For both serial and parallel execution, we conducted tests with increasing matrix sizes and repetitions to gather comprehensive performance data.
+\\\\
+The cluster used for our experiments is composed of ten computers with the following specifications, provided by the University of Messina:
+\begin{itemize}
+    \item {RAM: 8GB}
+    \item {CPU: DA INSERIRE}
+\end{itemize}
+\pagebreak
+\subsection{Execution of tests}
+For our experiments, we considered the following parameters:
+\begin{itemize}
+    \item \textbf{Determinant calculation:} Matrices of sizes $n = 2 \dots 10$ were used, with each $n$ value being executed three times. The average execution time was recorded for analysis.
+    \item \textbf{Dot product:} Matrices of sizes $n = 2 \dots 30$ were employed, with each $n$ value being executed five times.
+    \item \textbf{Inverse:} Matrices of sizes $n = 2 \dots 8$ were utilized, with each $n$ value being executed three times.
+    \item \textbf{Rank:} Matrices of sizes $n = 2 \dots 500$ were tested, with each $n$ value being executed five times.
+\end{itemize}
+\vfill
+For each type of operation, the code iterates through different matrix sizes, executing the operation multiple times for each size to capture variations in performance, and recording the execution times for analysis. The results of these tests are stored in separate CSV files, organized by operation type and parameter configuration. This is achieved with the following Python script:
+\pagebreak
+\begin{lstlisting}[language=Python, label=main.py]
+import ray
+from matrix_serial import Matrix
+import time
+import csv
+    
+def test_dot(l, u, runs, filename):
+    '''Make tests for matrices size l...u'''
+    max_n = (u-l)*runs
+    counter = 0
+    measures = []
+    
+    print(f"running test_dot with l={l}, u={u}, runs={runs}")
 
+    for n in range(l, u):
+        sub_run = []
+        sub_run.append(n) # matrix size
+
+        for i in range(runs):
+            a = Matrix.random_int(n, n, -10**8, 10**8)
+            b = Matrix.random_float(n, n, -99, 99)
+
+            t0 = time.time()
+            Matrix.dot(a,b)
+            t1 = time.time()
+
+            sub_run.append(t1-t0)
+
+            counter += 1
+            print(f"run # {counter}/{max_n}: {t1-t0}")
+
+        measures.append(sub_run)
+
+    with open(f"{filename}_{l}_{u}_{runs}.csv", "w") as f:
+        writer = csv.writer(f)
+        writer.writerows(measures)
+
+    return measures
+
+def test_det(l, u, runs, filename):
+    [...]
+def test_rank(l, u, runs, filename):
+    [...]
+def test_inv(l, u, runs, filename):
+    [...]
+
+if __name__ == "__main__":
+    if ray.is_initialized:
+        ray.shutdown()
+    ray.init(include_dashboard=True)
+
+    test_det(2, 10, 3, "test_results/[[serial/parallel]]/det")
+    test_dot(2, 30, 5, "test_results/[[serial/parallel]]/dot")
+    test_inv(2, 8, 3, "test_results/[[serial/parallel]]/inv")
+    test_rank(2, 500, 5, "test_results/[[serial/parallel]]/rank")
+    \end{lstlisting}
+
+\subsection{Graphing the results}
+The code loads CSV files onto defined variables and then generates plots with error bars to visualize the performance differences between serial and parallel execution using \textit{matplotlib}. The primary goal is to assess the efficiency and scalability of these operations when executed in parallel. The resulting plots are saved as PNG files for analysis.
+\\\\
+A different function was defined for the plotting of rank, downsampling the data. This is because of its particular case of increasing standard deviation value, thus legibility reasons.
+
+\begin{lstlisting}[language=Python, label=plots.py]
+import csv
+import matplotlib.pyplot as plt
+import numpy as np
+
+def serial_parallel_comparison(csv_name, func_name):
+    # Read data from serial CSV file
+    serial_data = []
+    with open(f"test_results/serial/{csv_name}", "r") as f:
+        reader = csv.reader(f)
+        for row in reader:
+            serial_data.append([float(val) for val in row])
+
+    # Read data from parallel CSV file
+    parallel_data = []
+    with open(f"test_results/parallel/{csv_name}", "r") as f:
+        reader = csv.reader(f)
+        for row in reader:
+            parallel_data.append([float(val) for val in row])
+
+    # Extract serial data
+    serial_sizes = [run[0] for run in serial_data]
+    serial_means = [np.mean(runs) for runs in serial_data]
+    serial_std_devs = [np.std(runs) for runs in serial_data]
+
+    # Extract parallel data
+    parallel_sizes = [run[0] for run in parallel_data]
+    parallel_means = [np.mean(runs) for runs in parallel_data]
+    parallel_std_devs = [np.std(runs) for runs in parallel_data]
+
+    # Plot data
+    plt.errorbar(serial_sizes, serial_means, yerr=serial_std_devs, fmt='o-', label='Serial Execution Time')
+    plt.errorbar(parallel_sizes, parallel_means, yerr=parallel_std_devs, fmt='x-', label='Parallel Execution Time')
+    plt.xlabel('Matrix Size (n)')
+    plt.ylabel('Execution Time (s)')
+    plt.title(f'Serial vs. parallel execution time ({func_name})')
+    plt.grid()
+    plt.legend()
+    plt.savefig(csv_name.replace("csv", "png"))
+    plt.show()
+
+def rank_serial_parallel_comparison(csv_name):
+    [...]
+    # Downsample the data
+    n = 10
+    serial_sizes = serial_sizes[::n]
+    serial_means = serial_means[::n]
+    serial_std_devs = serial_std_devs[::n]
+    parallel_sizes = parallel_sizes[::n]
+    parallel_means = parallel_means[::n]
+    parallel_std_devs = parallel_std_devs[::n]
+    [...]
+
+serial_parallel_comparison("det_2_10_3.csv", "determinant")
+serial_parallel_comparison("dot_2_30_5.csv", "dot product")
+serial_parallel_comparison("inv_2_8_3.csv", "inverse")
+rank_serial_parallel_comparison("rank_2_500_5.csv")
+\end{lstlisting}
+\section{Implementation}
 \subsection{Ray}
 To parallelize a function with Ray, import Ray and and initialize it with \textit{ray.init()}. Then decorate the function with \textit{@ray.remote} to declare that you want to run this function remotely. Lastly, call the function with \textit{.remote()} instead of calling it normally. This remote call yields a future, a Ray object reference, that you can then fetch with \textit{ray.get}:
 
@@ -193,7 +336,6 @@ The other nodes in the cluster are known as \textbf{workers}. These nodes are re
 A ray cluster is set up using a \textit{yaml} file, where all the details about the cluster configuration are defined. Once the file is ready, we simply launch \textit{ray up cluster.yaml} to start a ray instance on all worker nodes over ssh.
 \begin{lstlisting}[caption={cluster.yaml}]
 cluster_name: distmat
-
 provider:
     type: local
     head_ip: "192.168.128.129"
@@ -210,10 +352,8 @@ provider:
         "192.168.128.223",
         "192.168.128.224",
     ]
-
 auth:
     ssh_user: <user>
-
 upscaling_speed: 1.0
 idle_timeout_minutes: 5
 head_start_ray_commands:
@@ -222,12 +362,7 @@ head_start_ray_commands:
 worker_start_ray_commands:
     - ray stop
     - ray start --address=$RAY_HEAD_IP:6379
-
 \end{lstlisting}
-
-\subsubsection{Cluster architecture}
-/scrivere informazioni riguardo il cluster, come le specifiche tecniche e la quantita di macchine/
-
 \pagebreak
 \subsection{The Matrix class}
 Before implementing the parallelized algorithms for Ray, we write the code for the serial execution in the \textbf{Matrix} class (most of the functions defined in the class are auxiliary therefore were excluded for practical purposes):
@@ -652,8 +787,6 @@ def inv(self):
         return Matrix([[round(i, 8) for i in j] for j in cof_matrix])
 \end{lstlisting}
 
-
-\section{Result of tests}
 
 
 \section{Conclusion}
