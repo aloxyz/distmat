@@ -44,6 +44,7 @@
 \usepackage{eurosym}
 \usepackage[export]{adjustbox}
 
+\usepackage{float}
 \usepackage[margin=3cm]{geometry}
 \usepackage{listings}
 \usepackage{xcolor}
@@ -795,12 +796,14 @@ The \textbf{serial} execution times are generally faster than the parallel execu
 \\\\
 Conversely, for smaller matrix sizes (2 and 3), \textbf{parallel} execution outperforms serial execution, with execution times measured in microseconds ( $10^{-6}$ seconds). Nevertheless, as the matrix size grows (4 and beyond), parallel execution times increase significantly, suggesting that the overhead associated with parallelization may begin to outweigh the benefits of parallelism for larger matrices. Importantly, the standard deviation for parallel execution times remains relatively stable as matrix size increases, indicating consistent results across multiple runs.
 
-\begin{figure}
-    \includegraphics[width=0.8\textwidth, keepaspectratio, center]{img/det_2_10_3.png}
+\begin{figure}[H]
+    \includegraphics[width=0.8\textwidth, keepaspectratio]{img/det_2_10_3.png}
+    \centering
     \label{fig:det}
     \caption{Determinant}
 
-    \includegraphics[width=0.8\textwidth, keepaspectratio, center]{img/det_2_10_3_detail.png}
+    \includegraphics[width=0.8\textwidth, keepaspectratio]{img/det_2_10_3_detail.png}
+    \centering
     \label{fig:det_detail}
     \caption{Detailed plot}
 \end{figure}   
@@ -808,31 +811,36 @@ Conversely, for smaller matrix sizes (2 and 3), \textbf{parallel} execution outp
 
 \subsection{Dot product}
 
-\begin{figure}
-    \includegraphics[width=0.8\textwidth, keepaspectratio, center]{img/dot_2_30_5.png}
+\begin{figure}[H]
+    \includegraphics[width=0.8\textwidth, keepaspectratio]{img/dot_2_30_5.png}
+    \centering
     \label{fig:dot}
     \caption{Dot product}
 
-    \includegraphics[width=0.8\textwidth, keepaspectratio, center]{img/dot_2_30_5_detail.png}
+    \includegraphics[width=0.8\textwidth, keepaspectratio]{img/dot_2_30_5_detail.png}
+    \centering
     \label{fig:dot_detail}
     \caption{Detailed plot}
 \end{figure}  
 
 \subsection{Inverse}
 
-\begin{figure}
-    \includegraphics[width=0.8\textwidth, keepaspectratio, center]{img/inv_2_8_3.png}
+\begin{figure}[H]
+    \includegraphics[width=0.8\textwidth, keepaspectratio]{img/inv_2_8_3.png}
+    \centering
     \label{fig:inv}
     \caption{Inverse}
 
-    \includegraphics[width=0.8\textwidth, keepaspectratio, center]{img/inv_2_8_3_detail.png}
+    \includegraphics[width=0.8\textwidth, keepaspectratio]{img/inv_2_8_3_detail.png}
+    \centering
     \label{fig:inv_detail}
     \caption{Detailed plot}
 \end{figure}  
 
 \subsection{Rank}
-\begin{figure}
-    \includegraphics[width=0.8\textwidth, keepaspectratio, center]{img/rank_2_500_5.png}
+\begin{figure}[H]
+    \includegraphics[width=0.8\textwidth, keepaspectratio]{img/rank_2_500_5.png}
+    \centering
     \label{fig:rank}
     \caption{Rank}
 \end{figure}  

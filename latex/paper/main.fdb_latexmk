@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1696858174 "/home/alo/dev/distmat/latex/paper/main.tex" "main.pdf" "main" 1696858175 0
-  "/home/alo/dev/distmat/latex/paper/main.tex" 1696858081 36650 27fbb82c31f6b56a9eb21df3782a1ed4 ""
+["pdflatex"] 1696863048 "/home/alo/dev/distmat/latex/paper/main.tex" "main.pdf" "main" 1696863050 0
+  "/home/alo/dev/distmat/latex/paper/main.tex" 1696863048 36730 7824ef505ec1913e23ba1c5c69c26bcd ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm" 1136768653 1536 02c06700a42be0f5a28664c7273f82e7 ""
@@ -133,6 +133,7 @@
   "/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty" 1601931149 46845 3b58f70c6e861a13d927bff09d35ecbc ""
   "/usr/share/texlive/texmf-dist/tex/latex/eurosym/eurosym.sty" 1137110118 3028 8faeef64adee9b964b5e7f5e45921024 ""
   "/usr/share/texlive/texmf-dist/tex/latex/filecontents/filecontents.sty" 1569102703 3408 71173360dc73c4a3f80bb0bc7b926ba0 ""
+  "/usr/share/texlive/texmf-dist/tex/latex/float/float.sty" 1137110151 6749 16d2656a1984957e674b149555f1ea1d ""
   "/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty" 1578002852 41601 9cf6c5257b1bc7af01a58859749dd37a ""
   "/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg" 1459978653 1213 620bba36b25224fa9b7e1ccb4ecb76fd ""
   "/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg" 1465944070 1224 978390e9c2234eab29404bc21b268d1e ""
@@ -176,9 +177,9 @@
   "img/inv_2_8_3.png" 1696857939 33016 d7ee473615581f773b7d5fb7bff2f872 ""
   "img/inv_2_8_3_detail.png" 1696858173 34564 ced432f981170036d59867c068cdad1a ""
   "img/rank_2_500_5.png" 1696694001 35198 b7eddc3f484ebc9f5a15438d7648ff4c ""
-  "main.aux" 1696858175 5202 78b1085f874d55e7b91eedb785263597 "pdflatex"
-  "main.tex" 1696858081 36650 27fbb82c31f6b56a9eb21df3782a1ed4 ""
-  "main.toc" 1696858175 1479 9c2cda5a772081274a78041f4d2bd41a "pdflatex"
+  "main.aux" 1696863050 5202 878de901f8a4e1e9a7d588b0801ae170 "pdflatex"
+  "main.tex" 1696863048 36730 7824ef505ec1913e23ba1c5c69c26bcd ""
+  "main.toc" 1696863050 1479 0d3c7e63e8ff743cba8c772dc86dad51 "pdflatex"
   "unime.png" 1669728949 1985265 b0d686c439ed37f076f41c0d4a9ba095 ""
   (generated)
   "main.aux"
