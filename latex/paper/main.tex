@@ -792,9 +792,9 @@ def inv(self):
 \section{Results of tests}
 
 \subsection{Determinant}
-The \textbf{serial} execution times are generally faster than the parallel execution times for smaller matrix sizes (2 and 3), with serial execution times measured in microseconds. However, as the matrix size increases, serial execution times also increase due to higher complexity of determinant calculations for larger matrices. Notably, the standard deviation for serial execution times also rises with matrix size, indicating increased variability in execution times for larger matrices in serial execution.
+The \textbf{serial} execution times are generally faster than the \textbf{parallel} execution times, with both serial and parallel measured in microseconds ($10^{-6}$ seconds) for smaller matrices ($n \le 3$). As the matrix size increases, serial execution times also increase due to the higher complexity of determinant calculations. This trend is consistent with the observation that \textbf{parallel execution is generally slower than serial}, and this performance gap tends to widen as the matrix sizes increase. This suggests that the overhead associated with parallelization may begin to outweigh the benefits of parallelism for larger matrices.
 \\\\
-Conversely, for smaller matrix sizes (2 and 3), \textbf{parallel} execution outperforms serial execution, with execution times measured in microseconds ( $10^{-6}$ seconds). Nevertheless, as the matrix size grows (4 and beyond), parallel execution times increase significantly, suggesting that the overhead associated with parallelization may begin to outweigh the benefits of parallelism for larger matrices. Importantly, the standard deviation for parallel execution times remains relatively stable as matrix size increases, indicating consistent results across multiple runs.
+The standard deviation for serial execution times also rises with matrix size, indicating increased variability in execution times for larger matrices in serial execution, while the standard deviation for parallel execution times remains relatively stable as matrix size increases, indicating consistent results across multiple runs.
 
 \begin{figure}[H]
     \includegraphics[width=0.8\textwidth, keepaspectratio]{img/det_2_10_3.png}
@@ -810,7 +810,9 @@ Conversely, for smaller matrix sizes (2 and 3), \textbf{parallel} execution outp
 
 
 \subsection{Dot product}
-
+The parallel execution times for the dot product function exhibit a similar trend compared to the determinant function. In this case, the serial execution is generally faster and increases linearly as the matrix size grows. The execution times for both serial and parallel executions are measured in microseconds ($10^{-6}$ seconds) for smaller matrices ($n \le 3$). As the matrix size increases, the performance of the parallel execution degrades, and the execution times become increasingly slower. This is in contrast to the determinant function, where the parallel execution times increased, but the performance was still somewhat decent for smaller matrices. Here, the performance gap between parallel and serial execution widens as the matrix sizes increase, suggesting that the overhead associated with parallelization becomes more pronounced for larger matrices.
+\\\\
+The standard deviation for serial execution times also rises with matrix size. This indicates an increased variability in execution times for larger matrices in the serial execution. In contrast, the standard deviation for parallel execution times remains relatively stable as matrix size increases, indicating more consistent results across multiple runs.
 \begin{figure}[H]
     \includegraphics[width=0.8\textwidth, keepaspectratio]{img/dot_2_30_5.png}
     \centering
