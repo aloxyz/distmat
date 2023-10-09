@@ -14,15 +14,15 @@
 % 
 % Instructions for using this template:
 % This title page is capable of being compiled as is. This is not useful for 
-% including it in another document. To do this, you have two options: 
+% including it in another document. To do this, we have two options: 
 %
 % 1) Copy/paste everything between \begin{document} and \end{document} 
-% starting at \begin{titlepage} and paste this into another LaTeX file where you 
+% starting at \begin{titlepage} and paste this into another LaTeX file where we 
 % want your title page.
 % OR
 % 2) Remove everything outside the \begin{titlepage} and \end{titlepage} and 
-% move this file to the same directory as the LaTeX file you wish to add it to. 
-% Then add \input{./title_page_1.tex} to your LaTeX file where you want your
+% move this file to the same directory as the LaTeX file we wish to add it to. 
+% Then add \input{./title_page_1.tex} to your LaTeX file where we want your
 % title page.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -118,15 +118,15 @@
         \end{flushright}
     \end{minipage}\\[2cm]
 
-    % If you don't want a supervisor, uncomment the two lines below and remove the section above
+    % If we don't want a supervisor, uncomment the two lines below and remove the section above
     %\Large \emph{Author:}\\
-    %John \textsc{Smith}\\[3cm] % Your name
+    %John \textsc{Smith}\\[3cm] % your name
 
     %----------------------------------------------------------------------------------------
     %	DATE SECTION
     %----------------------------------------------------------------------------------------
 
-    {\large \today}\\[2cm] % Date, change the \today to a set date if you want to be precise
+    {\large \today}\\[2cm] % Date, change the \today to a set date if we want to be precise
 
     %----------------------------------------------------------------------------------------
     %	LOGO SECTION
@@ -154,10 +154,10 @@ A distributed system consists of multiple interconnected computers that collabor
 \subsection{The Ray library}
 The Ray library is an open-source distributed computing framework primarily designed for building scalable and high-performance applications. It was developed by the company Anyscale, which aimed to simplify the development of distributed and parallel computing applications. When it comes to matrix operation computation, using Ray for distributed computation offers several advantages over performing the operations on a single machine:
 \begin{itemize}
-    \item \textbf{Faster execution}: With Ray you can use multiple machines and CPUs to compute operations. This significantly reduces the computation time compared to a single machine. Each machine can work on a subset of the matrix data, completing the calculations in parallel. This distributed approach can lead to substantial speedups.
-    \item \textbf{Scalability}: As the size of the matrices grows, a single machine may struggle to handle the computational demands due to memory limitations or processing power constraints. Ray allows you to scale horizontally by adding more machines to the distributed setup.
+    \item \textbf{Faster execution}: With Ray we can use multiple machines and CPUs to compute operations. This significantly reduces the computation time compared to a single machine. Each machine can work on a subset of the matrix data, completing the calculations in parallel. This distributed approach can lead to substantial speedups.
+    \item \textbf{Scalability}: As the size of the matrices grows, a single machine may struggle to handle the computational demands due to memory limitations or processing power constraints. Ray allows we to scale horizontally by adding more machines to the distributed setup.
     \item \textbf{Fault tolerance}: Ray offers fault tolerance mechanisms that ensure the continuity of computation even in the presence of failures. If a machine participating in the distributed computation fails, Ray can automatically redistribute the workload to other available machines.
-    \item \textbf{Resource utilization}: With Ray, each machine contributes its processing power and memory capacity to the overall computation. This efficient utilization of resources allows you to make the most of the available hardware infrastructure, compared to a single machine that may be underutilized.
+    \item \textbf{Resource utilization}: With Ray, each machine contributes its processing power and memory capacity to the overall computation. This efficient utilization of resources allows we to make the most of the available hardware infrastructure, compared to a single machine that may be underutilized.
 \end{itemize}
 
 \subsection{Python}
@@ -312,7 +312,7 @@ rank_serial_parallel_comparison("rank_2_500_5.csv")
 \end{lstlisting}
 \section{Implementation}
 \subsection{Ray}
-To parallelize a function with Ray, import Ray and and initialize it with \textit{ray.init()}. Then decorate the function with \textit{@ray.remote} to declare that you want to run this function remotely. Lastly, call the function with \textit{.remote()} instead of calling it normally. This remote call yields a future, a Ray object reference, that you can then fetch with \textit{ray.get}:
+To parallelize a function with Ray, import Ray and and initialize it with \textit{ray.init()}. Then decorate the function with \textit{@ray.remote} to declare that we want to run this function remotely. Lastly, call the function with \textit{.remote()} instead of calling it normally. This remote call yields a future, a Ray object reference, that we can then fetch with \textit{ray.get}:
 
 \begin{lstlisting}[language=Python]
 import ray
@@ -327,7 +327,7 @@ print(ray.get(futures)) # [0, 1, 4, 9]
     \end{lstlisting}
 
 \subsubsection{Ray clusters}
-To run Ray applications on multiple nodes you must first deploy a \textbf{Ray cluster}. A Ray cluster is a set of worker nodes connected to a common Ray head node. These nodes can be physical machines, virtual machines, or containers running on a cloud infrastructure or a cluster manager like Kubernetes. Ray clusters can be fixed-size, or they may autoscale up and down according to the resources requested by applications running on the cluster.
+To run Ray applications on multiple nodes we must first deploy a \textbf{Ray cluster}. A Ray cluster is a set of worker nodes connected to a common Ray head node. These nodes can be physical machines, virtual machines, or containers running on a cloud infrastructure or a cluster manager like Kubernetes. Ray clusters can be fixed-size, or they may autoscale up and down according to the resources requested by applications running on the cluster.
 \\\\
 Each Ray cluster typically has one special node called the \textbf{head node}. This is where the main driver program is executed, which manages the cluster, schedules tasks, and communicates with the other nodes. The head node also hosts the Ray Dashboard, a web-based interface for monitoring and managing the cluster.
 \\\\
@@ -786,9 +786,58 @@ def inv(self):
 
         return Matrix([[round(i, 8) for i in j] for j in cof_matrix])
 \end{lstlisting}
+\pagebreak
+
+\section{Results of tests}
+
+\subsection{Determinant}
+The \textbf{serial} execution times are generally faster than the parallel execution times for smaller matrix sizes (2 and 3), with serial execution times measured in microseconds. However, as the matrix size increases, serial execution times also increase due to higher complexity of determinant calculations for larger matrices. Notably, the standard deviation for serial execution times also rises with matrix size, indicating increased variability in execution times for larger matrices in serial execution.
+\\\\
+Conversely, for smaller matrix sizes (2 and 3), \textbf{parallel} execution outperforms serial execution, with execution times measured in microseconds ( $10^{-6}$ seconds). Nevertheless, as the matrix size grows (4 and beyond), parallel execution times increase significantly, suggesting that the overhead associated with parallelization may begin to outweigh the benefits of parallelism for larger matrices. Importantly, the standard deviation for parallel execution times remains relatively stable as matrix size increases, indicating consistent results across multiple runs.
+
+\begin{figure}
+    \includegraphics[width=0.8\textwidth, keepaspectratio, center]{img/det_2_10_3.png}
+    \label{fig:det}
+    \caption{Determinant}
+
+    \includegraphics[width=0.8\textwidth, keepaspectratio, center]{img/det_2_10_3_detail.png}
+    \label{fig:det_detail}
+    \caption{Detailed plot}
+\end{figure}   
 
 
+\subsection{Dot product}
+
+\begin{figure}
+    \includegraphics[width=0.8\textwidth, keepaspectratio, center]{img/dot_2_30_5.png}
+    \label{fig:dot}
+    \caption{Dot product}
+
+    \includegraphics[width=0.8\textwidth, keepaspectratio, center]{img/dot_2_30_5_detail.png}
+    \label{fig:dot_detail}
+    \caption{Detailed plot}
+\end{figure}  
+
+\subsection{Inverse}
+
+\begin{figure}
+    \includegraphics[width=0.8\textwidth, keepaspectratio, center]{img/inv_2_8_3.png}
+    \label{fig:inv}
+    \caption{Inverse}
+
+    \includegraphics[width=0.8\textwidth, keepaspectratio, center]{img/inv_2_8_3_detail.png}
+    \label{fig:inv_detail}
+    \caption{Detailed plot}
+\end{figure}  
+
+\subsection{Rank}
+\begin{figure}
+    \includegraphics[width=0.8\textwidth, keepaspectratio, center]{img/rank_2_500_5.png}
+    \label{fig:rank}
+    \caption{Rank}
+\end{figure}  
 
 \section{Conclusion}
+
 
 \end{document}
