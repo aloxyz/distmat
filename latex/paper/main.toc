@@ -20,5 +20,5 @@
 \contentsline {subsection}{\numberline {5.1}Determinant}{19}{}%
 \contentsline {subsection}{\numberline {5.2}Dot product}{21}{}%
 \contentsline {subsection}{\numberline {5.3}Inverse}{23}{}%
-\contentsline {subsection}{\numberline {5.4}Rank}{24}{}%
-\contentsline {section}{\numberline {6}Conclusion}{24}{}%
+\contentsline {subsection}{\numberline {5.4}Rank}{25}{}%
+\contentsline {section}{\numberline {6}Conclusion}{25}{}%

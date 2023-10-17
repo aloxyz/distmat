@@ -145,6 +145,7 @@
 \pagebreak
 
 \section{Abstract}
+Our study explores the performance of distributed linear algebra operations executed in both serial and parallel modes across varying matrix sizes. We find that serial execution outperforms parallel execution, especially for smaller matrices, but as matrix size increases, the performance gap widens. This suggests that parallelization's overhead can outweigh its advantages for larger matrices. Additionally, standard deviation in execution times increases with matrix size. Our case study uses the Ray framework on a 10-computer cluster provided by the University of Messina. The cluster's 8GB of RAM supports our comprehensive tests of determinant, dot product, matrix inversion, and rank calculations across different matrix sizes. This research contributes insights for optimizing distributed computing in the era of big data and scalable computation.
 
 \section{Introduction}
 Matrix operations are fundamental in numerous scientific and computational domains, serving as the building blocks for various applications. However, traditional sequential computation on a single machine often becomes a bottleneck, limiting the speed and scalability of matrix calculations. To address this problem, we are going to use an open-source distributed computing framework called \textbf{Ray}.
@@ -826,6 +827,10 @@ The standard deviation for serial execution times also rises with matrix size. T
 \end{figure}  
 
 \subsection{Inverse}
+In the parallel execution, the execution times for the inverse function are generally faster for smaller matrices ($n \le 3$), with execution times measured in seconds. However, for larger matrices ($n \ge 4$), the parallel execution times increase significantly, with a noticeable increase in execution times and less consistent performance. The standard deviation is also considerably higher for parallel execution in larger matrices.
+\\\\
+In contrast, the serial execution times for the inverse function remain relatively stable and are consistently faster than the corresponding parallel execution times for all matrix sizes. The standard deviation for serial execution is low.
+
 
 \begin{figure}[H]
     \includegraphics[width=0.8\textwidth, keepaspectratio]{img/inv_2_8_3.png}
@@ -840,6 +845,8 @@ The standard deviation for serial execution times also rises with matrix size. T
 \end{figure}  
 
 \subsection{Rank}
+In the case of rank calculation, both parallel and serial show more or less the same amount of execution time, with a linear increase with the matrix size. However, the standard deviation for parallel execution increases considerably as the matrix size grows. This indicates that parallel execution becomes more variable and less consistent for larger matrices, while serial execution maintains a more stable and predictable performance.
+
 \begin{figure}[H]
     \includegraphics[width=0.8\textwidth, keepaspectratio]{img/rank_2_500_5.png}
     \centering
@@ -848,6 +855,12 @@ The standard deviation for serial execution times also rises with matrix size. T
 \end{figure}  
 
 \section{Conclusion}
+Our investigation into the performance of distributed linear algebra operations, executed in both serial and parallel modes, has given important insights into the dynamics of distributed computing across diferent matrix sizes.
 
+First, we observed that serial execution times, when measured in microseconds for smaller matrices ($n \le 3$), consistently outperform their parallel counterparts. However, as matrix size increases, the execution times for serial calculations grow. This trend agrees with the observation that parallel execution generally lags behind serial execution, and this performance gap widens with growing matrix sizes. This suggests that the overhead linked to parallelization can, in fact, eclipse the advantages of parallelism, especially for bigger matrices. Thus, we identified that the standard deviation of both serial and parallel execution times increase with matrix size. Altough the degree of this increase changes with the operation performed.
+
+The standard deviation for serial execution in the dot product function also exhibits an upward trajectory with growing matrix size. In contrast, parallel execution standard deviation remains comparatively constant.
+
+In sum, for our experiemnts, serial execution always outperforms parallel execution, with both serial execution times and standard deviations sensitive to matrix size. This reveals that the advantages of parallelization are not universally applicable, with the performance gains being countered by overhead in some scenarios.
 
 \end{document}
