@@ -856,11 +856,11 @@ In the case of rank calculation, both parallel and serial show more or less the 
 
 \section{Conclusion}
 Our investigation into the performance of distributed linear algebra operations, executed in both serial and parallel modes, has given important insights into the dynamics of distributed computing across diferent matrix sizes.
-
+\\\\
 First, we observed that serial execution times, when measured in microseconds for smaller matrices ($n \le 3$), consistently outperform their parallel counterparts. However, as matrix size increases, the execution times for serial calculations grow. This trend agrees with the observation that parallel execution generally lags behind serial execution, and this performance gap widens with growing matrix sizes. This suggests that the overhead linked to parallelization can, in fact, eclipse the advantages of parallelism, especially for bigger matrices. Thus, we identified that the standard deviation of both serial and parallel execution times increase with matrix size. Altough the degree of this increase changes with the operation performed.
-
+\\\\
 The standard deviation for serial execution in the dot product function also exhibits an upward trajectory with growing matrix size. In contrast, parallel execution standard deviation remains comparatively constant.
-
+\\\\
 In sum, for our experiemnts, serial execution always outperforms parallel execution, with both serial execution times and standard deviations sensitive to matrix size. This reveals that the advantages of parallelization are not universally applicable, with the performance gains being countered by overhead in some scenarios.
 
 \end{document}
