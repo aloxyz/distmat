@@ -4,4 +4,4 @@
 \beamer@sectionintoc {4}{Multiplication}{19}{0}{4}
 \beamer@sectionintoc {5}{Determinant}{25}{0}{5}
 \beamer@sectionintoc {6}{Inverse}{34}{0}{6}
-\beamer@sectionintoc {7}{Rank}{38}{0}{7}
+\beamer@sectionintoc {7}{Rank}{44}{0}{7}

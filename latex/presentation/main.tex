@@ -290,7 +290,7 @@ def dot(A, B):
     It's an essential operation since it's used in the other operations of this study.
 \end{frame}
 
-\begin{frame}[fragile]{Determinant with Ray (Serial)}
+\begin{frame}[fragile]{Determinant function (Serial)}
     \begin{lstlisting}[language=Python]
 def det(self):
 if self.is_square():
@@ -322,7 +322,7 @@ else:
             \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Determinant with Ray (minor)}
+\begin{frame}[fragile]{Determinant function (minor)}
     The \textit{minor} function
     \begin{lstlisting}[language=Python]
     def minor(self, i, j):
@@ -339,7 +339,7 @@ else:
     Then becomes the parallelized function \textit{dist\_minor}:
 \end{frame}
 
-\begin{frame}[fragile]{Determinant with Ray (dist\_minor)}
+\begin{frame}[fragile]{Determinant function (dist\_minor)}
     \begin{lstlisting}[language=Python]
 @ray.remote
 def dist_minor(A, i, j):
@@ -356,7 +356,7 @@ def dist_minor(A, i, j):
     So finally the distributed determinant function will be:
 \end{frame}
 
-\begin{frame}[fragile]{Determinant with Ray (Parallel)}
+\begin{frame}[fragile]{Determinant function (Parallel)}
 
     \begin{lstlisting}[language=Python]
     def det(self):
@@ -414,10 +414,135 @@ def dist_minor(A, i, j):
     where $\det(M_{ij})$ represents the determinant of the submatrix obtained by deleting the $i$th row and $j$th column from matrix $A$.
 \end{frame}
 
-\begin{frame}[fragile]{Inverse with Ray}
+\begin{frame}[fragile]{Inverse function (Serial) (1)}
     \begin{lstlisting}[language=Python]
-            codice inversa
+def inv(self):
+if not self.is_square():
+    raise Exception("Matrix must be square")
+
+elif self.det() == 0:
+    raise Exception("Matrix is not invertible")
+
+else:
+    rows, cols = self.shape()
+    data = self.get()
+
+    det = self.det()
+
+    # special case for 2x2 matrix:
+    if rows == cols == 2:
+        return [[data[1][1] / det, -1 * data[0][1] / det],
+                [-1 * data[1][0] / det, data[0][0] / det]]
+
+...
         \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Inverse function (Serial) (2)}
+    \begin{lstlisting}[language=Python]
+...
+    # find matrix of cofactors
+    cof_matrix = []
+
+    for row in range(rows):
+        cof_row = []
+
+        for column in range(cols):
+            minor = self.minor(row, column)
+
+            cof_row.append(((-1)**(row + column)) * minor.det())
+
+        cof_matrix.append(cof_row)
+
+    cof_matrix = Matrix(cof_matrix).transpose()
+
+    cof_rows, cof_cols = cof_matrix.shape()
+    cof_data = cof_matrix.get()
+
+    for row in range(cof_rows):
+        for column in range(cof_cols):
+            cof_data[row][column] = cof_data[row][column] / det
+
+    return cof_matrix
+        \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Distributing the inverse function}
+    To distribute the inverse function we will need two auxiliary functions: \textit{inv\_cof\_matrix} and \textit{inv\_calc}
+\end{frame}
+
+\begin{frame}[fragile]{inv\_cof\_matrix}
+    Find all the cofactor matrices of a given matrix
+    \begin{lstlisting}[language=Python]
+@ray.remote
+def inv_cof_matrix(A, row, cols):
+    from matrix import Matrix
+    
+    cof_row = []
+    minor_futures = [Matrix.dist_minor.remote(A, row, col) for col in range(cols)]
+    minors = ray.get(minor_futures)
+
+    for col,minor in zip(range(cols), minors):
+        cof_row.append(((-1)**(row + col)) * minor.det())
+
+    return cof_row
+        \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{inv\_calc}
+    Calculation step for the main function
+    \begin{lstlisting}[language=Python]
+@ray.remote
+def inv_calc(row, cof_cols, cof_data, det):
+    for col in range(cof_cols):
+        return (row, col, (cof_data[row][col] / det))
+        \end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{Inverse function (Parallel) (1)}
+    \begin{lstlisting}[language=Python]
+def inv(self):
+if not self.is_square():
+    raise Exception("Matrix must be square")
+
+elif self.det() == 0:
+    raise Exception("Matrix is not invertible")
+
+else:
+    rows, cols = self.shape()
+    data = self.get()
+    det = self.det()
+
+    # special case for 2x2 matrix:
+    if rows == cols == 2:
+        m = [[data[1][1] / det, -1 * data[0][1] / det],
+                [-1 * data[1][0] / det, data[0][0] / det]]
+
+        return Matrix([[round(i, 8) for i in j] for j in m])
+...    
+            \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Inverse function (Parallel) (2)}
+    \begin{lstlisting}[language=Python]
+...
+    # find matrix of cofactors
+    cof_rows_futures = [t.inv_cof_matrix.remote(self, row, cols) for row in range(rows)]
+    cof_matrix = ray.get(cof_rows_futures)
+    cof_matrix = Matrix(cof_matrix).transpose()
+
+    cof_rows, cof_cols = cof_matrix.shape()
+    cof_data = cof_matrix.get()
+
+    data_futures = [t.inv_calc.remote(row, cof_cols, cof_data, det) for row in range(cof_rows)]
+
+    for data in ray.get(data_futures):
+        for row, col, value in [data]:
+            cof_data[row][col] = value
+
+    return Matrix([[round(i, 8) for i in j] for j in cof_matrix])
+            \end{lstlisting}
 \end{frame}
 
 \section{Rank}
@@ -436,7 +561,7 @@ def dist_minor(A, i, j):
     If there is a non-zero determinant of order $j$, but all determinants of order $k+1$ or higher are zero, then the rank of $A$ is $j$.
 \end{frame}
 
-\begin{frame}[fragile]{Rank with Ray}
+\begin{frame}[fragile]{Rank function}
     \begin{lstlisting}[language=Python]
             codice rango
         \end{lstlisting}

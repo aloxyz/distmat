@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1698684250 "/home/alo/dev/distmat/latex/presentation/main.tex" "main.pdf" "main" 1698684253 0
-  "/home/alo/dev/distmat/latex/presentation/main.tex" 1698684251 16276 b956e23e1c76e9c040d4ea19d35e18fe ""
+["pdflatex"] 1698685418 "/home/alo/dev/distmat/latex/presentation/main.tex" "main.pdf" "main" 1698685420 0
+  "/home/alo/dev/distmat/latex/presentation/main.tex" 1698685417 19731 0d6f8c0a3005c75947c46cb726df1f1c ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcss1095.tfm" 1136768653 1536 f0fa079cdc83a6ffeda21e42352cf1ea ""
@@ -230,12 +230,12 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1684972800 40326 aba987258e6d6b6da5dec3a727ea174b ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1688393277 4603178 f922b3a8d38e69501903df0e74a512d4 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1688394148 7862959 e6e94a8e4da38cf2bbda6f7067042555 ""
-  "main.aux" 1698684252 8083 359568a8092da93547ddcf9b2e5fd067 "pdflatex"
-  "main.nav" 1698684252 5079 bd43bf701ca983cc2db1ed395059468b "pdflatex"
-  "main.out" 1698684252 717 39abe4534e06294c9ace13119c000ce9 "pdflatex"
-  "main.tex" 1698684251 16276 b956e23e1c76e9c040d4ea19d35e18fe ""
-  "main.toc" 1698684252 340 5c5c0ae0e5c5173e9f6c3431e4ba4377 "pdflatex"
-  "main.vrb" 1698684252 113 6eb683054a70d27068b2ea5fde3861c7 "pdflatex"
+  "main.aux" 1698685420 8852 f5a9b63452120a22b868e93ebf8ab881 "pdflatex"
+  "main.nav" 1698685420 5632 bcdc74eb3af4e71b56d8801f48ddc5ce "pdflatex"
+  "main.out" 1698685420 717 39abe4534e06294c9ace13119c000ce9 "pdflatex"
+  "main.tex" 1698685417 19731 0d6f8c0a3005c75947c46cb726df1f1c ""
+  "main.toc" 1698685420 340 84897da90948a4515e9ae0998745a342 "pdflatex"
+  "main.vrb" 1698685420 113 78e04d8a0b99c2ae536fac713f3d9050 "pdflatex"
   "unime.png" 1691488717 1985265 b0d686c439ed37f076f41c0d4a9ba095 ""
   (generated)
   "main.aux"
