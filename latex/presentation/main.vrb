@@ -1,4 +1,16 @@
-\frametitle{Rank function}
+\frametitle{get\_square\_submatrices (Parallel)}
 \begin{lstlisting}[language=Python]
-            codice rango
+def get_square_submatrices(self, order):
+'''
+Auxiliary function for the rank() function
+'''
+data = self.get()
+rows, cols = self.shape()
+futures = []
+
+for start_row in range(rows - order + 1):
+    for start_col in range(cols - order + 1):
+        futures.append(t.get_submatrix_task.remote(start_row, start_col, order, data))
+
+return ray.get(futures)
         \end{lstlisting}

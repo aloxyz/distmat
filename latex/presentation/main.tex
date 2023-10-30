@@ -561,9 +561,75 @@ else:
     If there is a non-zero determinant of order $j$, but all determinants of order $k+1$ or higher are zero, then the rank of $A$ is $j$.
 \end{frame}
 
-\begin{frame}[fragile]{Rank function}
+\begin{frame}[fragile]{Rank function (Serial)}
     \begin{lstlisting}[language=Python]
-            codice rango
+def rank(self):
+rows, cols = self.shape()
+j1 = min(rows, cols)
+
+for i in range(j1, 1, -1):
+    if self.get_square_submatrices(i) != -1:
+        return i
+        \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{get\_square\_submatrices (Serial)}
+    The main protagonist here is the \textit{get\_square\_submatrices} function:
+    \begin{lstlisting}[language=Python]
+def get_square_submatrices(self, order):
+'''
+Auxiliary function for the rank() function
+'''
+data = self.get()
+rows, cols = self.shape()
+submatrices = []
+
+for start_row in range(rows - order + 1):
+    for start_col in range(cols - order + 1):
+        submatrix = []
+
+        for row in range(order):
+            submatrix.append(
+                data[start_row + row][start_col:start_col + order])
+
+        submatrices.append(Matrix(submatrix))
+
+return submatrices
+                    \end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]{{get\_submatrix\_task}}
+    We will distribute \textit{get\_square\_submatrices} by defining an auxiliary function \textit{get\_submatrix\_task}:
+    
+    \begin{lstlisting}[language=Python]
+@ray.remote
+def get_submatrix_task(start_row, start_col, order, data):
+        from matrix import Matrix
+        submatrix = []
+
+        for row in range(order):
+            submatrix.append(
+                data[start_row + row][start_col:start_col + order])
+            
+        return submatrix
+        \end{lstlisting}
+\end{frame}
+\begin{frame}[fragile]{get\_square\_submatrices (Parallel)}
+    \begin{lstlisting}[language=Python]
+def get_square_submatrices(self, order):
+'''
+Auxiliary function for the rank() function
+'''
+data = self.get()
+rows, cols = self.shape()
+futures = []
+
+for start_row in range(rows - order + 1):
+    for start_col in range(cols - order + 1):            
+        futures.append(t.get_submatrix_task.remote(start_row, start_col, order, data))
+
+return ray.get(futures) 
         \end{lstlisting}
 \end{frame}
 
