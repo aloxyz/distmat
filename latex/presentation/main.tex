@@ -1,6 +1,38 @@
 \documentclass{beamer}
 \usetheme{metropolis}
-\usepackage{verbatim}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{transparent}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+% \definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+\definecolor{backcolour}{rgb}{0.98,0.98,0.98}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\fontsize{7}{5}\selectfont
+    aboveskip=15pt, % Adjust the space above the listing
+    belowskip=15pt, % Adjust the space below the listing
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=1
+}
+
+\lstset{style=mystyle}
 
 % \AtBeginSection[]
 % {
@@ -78,60 +110,31 @@
 \end{frame}
 
 \section{Implementation in Python}
-\begin{frame}{The Matrix and RayMatrix classes}
+\begin{frame}{The Matrix classe}
     Before implementing the parallelized algorithms for Ray, we wrote the code for the serial execution in the \alert{Matrix} class:
 \end{frame}
 
 \begin{frame}[fragile]{The Matrix class}
-    \begin{verbatim}
-        class Matrix:
-            def __init__(self, elements):
-                [...]
-                self.elements = elements
-            def inv(self): [...]
-            def det(self): [...]
-            def product(self, b): [...]
-            def rank(self, order): [...]
-            [...]
-
-    \end{verbatim}
+    \begin{lstlisting}[language=Python]
+class Matrix:
+    def __init__(self, data):
+        if isinstance(data, list):
+            self.data = [[round(val, 8) for val in row]
+                                        for row in data]
+        else:
+            raise ValueError("Input must be a list")
+    [...]
+    def dot(A, B): [...]
+    def det(self): [...]
+    def rank(self): [...]
+    def inv(self): [...]
+\end{lstlisting}
 
     (Most of the functions defined in the class are auxiliary therefore were excluded for practical purposes)
 \end{frame}
 
-\begin{frame}{The RayMatrix class}
-    The \alert{RayMatrix} class is an extension of the Matrix class that inherits its attributes and methods. Operations that had to be parallelized were overrided and new auxiliary methods (methods that start with \textit{task\textunderscore}) decorated with \textbf{@ray.remote} were added:
-\end{frame}
-
-\begin{frame}[fragile]{The RayMatrix class}
-    \begin{tiny}
-        \begin{verbatim}
-        class RayMatrix(Matrix):
-            def __init__(self, elements):
-                super().__init__(elements)
-            
-            @ray.remote
-            def task_rank_det(submatrix, j):
-
-            @ray.remote
-            def task_get_square_submatrix(self, start_row, start_col, row, order):
-
-            @ray.remote
-            def task_det(self, elements, i):
-
-            @ray.remote
-            def task_inv_cof(self, a, i, j):
-
-            @staticmethod
-            @ray.remote
-            def task_multiply(a, b, i, j, k):
-            
-            @staticmethod
-            @ray.remote
-            def task_sum(results):
-        
-    \end{verbatim}
-    \end{tiny}
+\begin{frame}{The Matrix class}
+    We modify the Matrix class in a later time to parallelize its operations
 \end{frame}
 
 \section{Operations}
@@ -185,80 +188,69 @@
     $$
 \end{frame}
 
-\begin{frame}[fragile]{Multiplication with Ray (1)}
-    \begin{small}
-        \begin{verbatim}
+\begin{frame}[fragile]{Multiplication with Ray (Serial implementation)}
+    \begin{lstlisting}[language=Python]
 @staticmethod
-def product(a, b):
-    a_columns = a.size()["columns"]
-    a_rows = a.size()["rows"]
+def dot(A, B):
+    if A.is_matrix() and B.is_matrix():
+        a_rows, a_cols = A.shape()
+        b_rows, b_cols = B.shape()
 
-    b_columns = b.size()["columns"]
-
-    if a_rows != b_columns:
-        raise ValueError(
-            """
-            Number of columns of the first matrix 
-            must match the number of rows of the second matrix
-            """
-            )
+        if a_cols == b_rows:
+            result = [[0] * b_cols for _ in range(A.shape()[0])]
+            for i in range(A.shape()[0]):
+                for j in range(b_cols):
+                    for k in range(a_cols):
+                        result[i][j] += A.data[i][k] * B.data[k][j]
+            return Matrix(result)
+        else:
+            raise ValueError(
+                "Matrix dimensions do not match for dot product")
     else:
-    ...
-    
-    \end{verbatim}
-    \end{small}
+        raise ValueError("Dot product requires a Matrix object")
+    \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Multiplication with Ray (2)}
-    \begin{tiny}
-        \begin{verbatim}
-a_elements = a.get()  # Get the elements of matrix a
-b_elements = b.get()  # Get the elements of matrix b
+\begin{frame}[fragile]{Multiplication with Ray (dot\_calc)}
+    To parallelize this function, we simply delegate the calculation to an auxiliary function \textit{dot\_calc}:
 
-result = [[0] * b_columns for _ in range(a_rows)]  # Create a result matrix filled with zeros
-tasks = []  # Initialize an empty list to store the tasks
+    \begin{lstlisting}[language=Python]
+@staticmethod
+@ray.remote
+def task_multiply(a, b, i, j, k):
+    return a[i][k] * b[k][j]
+    \end{lstlisting}
 
-# Iterate over rows of matrix a
-for i in range(a_rows):
-    # Iterate over columns of matrix b
-    for j in range(b_columns):
-        elements_to_multiply = []  # Initialize an empty list to store the elements to be multiplied
-        
-        # Iterate over columns of matrix a and rows of matrix b
-        for k in range(a_columns):
-            # Add a task to multiply the elements at position (i, k) and (k, j)
-            elements_to_multiply.append(
-                RayMatrix.task_multiply.remote(a=a_elements, b=b_elements, i=i, j=j, k=k)
-            )
-        
-        # Add the task to compute the sum of multiplied elements
-        tasks.append(RayMatrix.task_sum.remote(results=ray.get(elements_to_multiply)))
-    \end{verbatim}
-    \end{tiny}
 \end{frame}
 
-\begin{frame}[fragile]{Multiplication with Ray (3)}
-    \begin{verbatim}
-# Get the results of all the tasks
-results = ray.get(tasks)
+\begin{frame}[fragile]{Multiplication with Ray (Parallel)}
+    \begin{lstlisting}[language=Python]
+@staticmethod
+def dot(A, B):
+    if A.is_matrix() and B.is_matrix():
+        a_rows, a_cols = A.shape()
+        b_rows, b_cols = B.shape()
 
-# Fill the result matrix with the computed results
-for i in range(a_rows):
-    for j in range(b_columns):
-        result[i][j] = results.pop(0)
+        if a_cols == b_rows:
+            result = [[0] * b_cols for _ in range(a_rows)]
+            futures = []
 
-return RayMatrix(result)
+            for i in range(a_rows):
+                for j in range(b_cols):
+                    for k in range(a_cols):
+                        futures.append(((i, j), t.dot_calc.remote(A, B, i, j, k)))
             
-    \end{verbatim}
-\end{frame}
+            for future in futures:
+                i, j = future[0]
+                result[i][j] += ray.get(future[1])
 
-\begin{frame}[fragile]{Multiplication with Ray(4)}
-    \begin{verbatim}
-        @staticmethod
-        @ray.remote
-        def task_multiply(a, b, i, j, k):
-            return a[i][k] * b[k][j]
-    \end{verbatim}
+            return Matrix(result)
+        else:
+            raise ValueError(
+                "Matrix dimensions do not match for dot product")
+    else:
+        raise ValueError("Dot product requires a Matrix object")
+\end{lstlisting}
 \end{frame}
 
 \section{Determinant}
@@ -298,9 +290,8 @@ return RayMatrix(result)
     It's an essential operation since it's used in the other operations of this study.
 \end{frame}
 
-\begin{frame}[fragile]{Determinant with Ray (1)}
-    \begin{tiny}
-        \begin{verbatim}
+\begin{frame}[fragile]{Determinant with Ray (Serial)}
+    \begin{lstlisting}[language=Python]
 def det(self):
 if self.is_square():
     size = self.size()["rows"]
@@ -328,31 +319,74 @@ if self.is_square():
 else:
     raise ValueError("Cannot compute determinant of a non-square matrix")
         
-            \end{verbatim}
-    \end{tiny}
+            \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Determinant with Ray (2)}
+\begin{frame}[fragile]{Determinant with Ray (minor)}
+    The \textit{minor} function
+    \begin{lstlisting}[language=Python]
+    def minor(self, i, j):
+    '''
+    Extract a minor matrix by removing the ith row and jth column
+    '''
 
-    \begin{small}
-        \begin{verbatim}
+    data = self.get()
+    minor_data = [row[:j] + row[j + 1:]
+                    for row_idx, row in enumerate(data) if row_idx != i]
+
+    return Matrix(minor_data)
+\end{lstlisting}
+    Then becomes the parallelized function \textit{dist\_minor}:
+\end{frame}
+
+\begin{frame}[fragile]{Determinant with Ray (dist\_minor)}
+    \begin{lstlisting}[language=Python]
 @ray.remote
-def task_det(self, elements, i):
-    size = len(elements)
-    submatrix_det_sum = 0
-    mats = self.get_square_submatrices(i)
+def dist_minor(A, i, j):
+    '''
+    Extract a minor matrix by removing the ith row and jth column
+    '''
 
-    for j in range(1, size):
-        submatrix_det = mats[j].det2()
-        submatrix_det_sum += 
-            elements[i][j] * ((-1) ** (i + j + 2)) 
-                * submatrix_det
+    data = A.get()
+    minor_data = [row[:j] + row[j + 1:]
+                    for row_idx, row in enumerate(data) if row_idx != i]
 
-    return submatrix_det_sum
-    \end{verbatim}
-    \end{small}
-
+    return Matrix(minor_data)
+        \end{lstlisting}
+    So finally the distributed determinant function will be:
 \end{frame}
+
+\begin{frame}[fragile]{Determinant with Ray (Parallel)}
+
+    \begin{lstlisting}[language=Python]
+    def det(self):
+        if self.is_square():
+            data = self.get()
+            _, cols = self.shape()
+    
+            if cols == 1:
+                return data[0][0]
+    
+            elif cols == 2:
+                return (data[0][0] * data[1][1]) - (data[0][1] * data[1][0])
+    
+            else:
+                det_value = 0
+    
+    
+                minors_futures = [Matrix.dist_minor.remote(self, 0, j) for j in range(cols)]
+                minors = ray.get(minors_futures)
+    
+                for minor, j in zip(minors, range(cols)):
+                    # minor = self.minor(0, j)
+                    det_value += ((-1) ** j) * data[0][j] * minor.det()
+    
+                return det_value
+    \end{lstlisting}
+\end{frame}
+
+
+
 
 \section{Inverse}
 \begin{frame}{Inverse of a matrix (1)}
@@ -381,11 +415,9 @@ def task_det(self, elements, i):
 \end{frame}
 
 \begin{frame}[fragile]{Inverse with Ray}
-    \begin{small}
-        \begin{verbatim}
+    \begin{lstlisting}[language=Python]
             codice inversa
-        \end{verbatim}
-    \end{small}
+        \end{lstlisting}
 \end{frame}
 
 \section{Rank}
@@ -397,19 +429,17 @@ def task_det(self, elements, i):
 
 \begin{frame}{Criterion of minors}
 
-Let $A$ be a matrix of size $m \times n$, and let $j$ be the order of the largest non-zero determinant among all square submatrices of $A$. Then the rank of $A$, denoted as $\text{rank}(A)$, is equal to $j$.
+    Let $A$ be a matrix of size $m \times n$, and let $j$ be the order of the largest non-zero determinant among all square submatrices of $A$. Then the rank of $A$, denoted as $\text{rank}(A)$, is equal to $j$.
 
-To apply the minor criterion, we calculate the determinants of all possible square submatrices of $A$, ranging from $1 \times 1$ to $\min(m,n) \times \min(m,n)$. The order of the largest non-zero determinant among these submatrices gives us the rank of $A$.
+    To apply the minor criterion, we calculate the determinants of all possible square submatrices of $A$, ranging from $1 \times 1$ to $\min(m,n) \times \min(m,n)$. The order of the largest non-zero determinant among these submatrices gives us the rank of $A$.
 
-If there is a non-zero determinant of order $j$, but all determinants of order $k+1$ or higher are zero, then the rank of $A$ is $j$.
+    If there is a non-zero determinant of order $j$, but all determinants of order $k+1$ or higher are zero, then the rank of $A$ is $j$.
 \end{frame}
 
 \begin{frame}[fragile]{Rank with Ray}
-    \begin{small}
-        \begin{verbatim}
+    \begin{lstlisting}[language=Python]
             codice rango
-        \end{verbatim}
-    \end{small}
+        \end{lstlisting}
 \end{frame}
 
 \end{document}

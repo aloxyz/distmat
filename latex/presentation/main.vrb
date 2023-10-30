@@ -1,6 +1,4 @@
 \frametitle{Rank with Ray}
-\begin{small}
-        \begin{verbatim}
+\begin{lstlisting}[language=Python]
             codice rango
-        \end{verbatim}
-    \end{small}
+        \end{lstlisting}
