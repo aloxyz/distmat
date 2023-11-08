@@ -5,3 +5,5 @@
 \beamer@sectionintoc {5}{Determinant}{25}{0}{5}
 \beamer@sectionintoc {6}{Inverse}{34}{0}{6}
 \beamer@sectionintoc {7}{Rank}{44}{0}{7}
+\beamer@sectionintoc {8}{Results of tests}{51}{0}{8}
+\beamer@sectionintoc {9}{Conclusion}{57}{0}{9}

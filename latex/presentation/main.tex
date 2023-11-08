@@ -4,6 +4,7 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{transparent}
+\usepackage{wasysym}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -601,7 +602,7 @@ return submatrices
 
 \begin{frame}[fragile]{{get\_submatrix\_task}}
     We will distribute \textit{get\_square\_submatrices} by defining an auxiliary function \textit{get\_submatrix\_task}:
-    
+
     \begin{lstlisting}[language=Python]
 @ray.remote
 def get_submatrix_task(start_row, start_col, order, data):
@@ -631,6 +632,50 @@ for start_row in range(rows - order + 1):
 
 return ray.get(futures) 
         \end{lstlisting}
+\end{frame}
+\section{Results of tests}
+\begin{frame}[fragile]{Description of tests}
+    For our experiments, we considered the following parameters:
+\begin{itemize}
+    \item \textbf{Determinant calculation:} $n = 2 \dots 10$, each $n$ executed three times.
+    \item \textbf{Dot product:} $n = 2 \dots 30$, each $n$ executed five times.
+    \item \textbf{Inverse:} $n = 2 \dots 8$, each $n$ executed three times.
+    \item \textbf{Rank:} $n = 2 \dots 500$, each $n$ executed five times.
+\end{itemize}
+\vfill
+For each type of operation, the code iterates through different matrix sizes, executing the operation multiple times for each size to capture variations in performance
+\end{frame}
+
+
+\begin{frame}[fragile]{Results of tests (Multiplication)}
+    \centering
+    \includegraphics[width=\textwidth]{../img/dot_2_30_5.png}
+\end{frame}
+
+\begin{frame}[fragile]{Results of tests (Determinant)}
+    \centering
+    \includegraphics[width=\textwidth]{../img/det_2_10_3.png}
+\end{frame}
+
+\begin{frame}[fragile]{Results of tests (Inverse)}
+    \centering
+    \includegraphics[width=\textwidth]{../img/inv_2_8_3.png}
+\end{frame}
+
+\begin{frame}[fragile]{Results of tests (Rank)}
+    \centering
+    \includegraphics[width=\textwidth]{../img/rank_2_500_5.png}
+\end{frame}
+
+\section{Conclusion}
+\begin{frame}[fragile]{Conclusion}
+    Serial execution always outperforms parallel execution, with both serial execution times and standard deviations sensitive to matrix size. This reveals that the advantages of parallelization are not universally applicable, with the performance gains being countered by overhead in some scenarios.
+\end{frame}
+
+\begin{frame}[standout]
+    Thanks for reading
+    \\
+    \Huge\smiley{}
 \end{frame}
 
 \end{document}

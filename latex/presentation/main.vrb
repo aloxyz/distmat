@@ -1,16 +1,2 @@
-\frametitle{get\_square\_submatrices (Parallel)}
-\begin{lstlisting}[language=Python]
-def get_square_submatrices(self, order):
-'''
-Auxiliary function for the rank() function
-'''
-data = self.get()
-rows, cols = self.shape()
-futures = []
-
-for start_row in range(rows - order + 1):
-    for start_col in range(cols - order + 1):
-        futures.append(t.get_submatrix_task.remote(start_row, start_col, order, data))
-
-return ray.get(futures)
-        \end{lstlisting}
+\frametitle{Conclusion}
+Serial execution always outperforms parallel execution, with both serial execution times and standard deviations sensitive to matrix size. This reveals that the advantages of parallelization are not universally applicable, with the performance gains being countered by overhead in some scenarios.
